@@ -1,6 +1,10 @@
 import feathers from "../services";
 
 async function authenticate(data) {
+  data = {
+    ...data,
+    strategy: "local"
+  };
   const { user } = await feathers.authenticate(data);
   return user;
 }
@@ -14,4 +18,4 @@ async function logout() {
   await feathers.logout();
 }
 
-export { authenticate, logout, reAuthenticate };
+export default { authenticate, logout, reAuthenticate };

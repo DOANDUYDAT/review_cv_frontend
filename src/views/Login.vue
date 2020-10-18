@@ -1,8 +1,8 @@
 <template>
   <v-main>
-    <v-container>
-      <v-card>
-        <div class="text-h5 text-center">
+    <v-container class="d-flex flex-column justify-center screen--full">
+      <v-card width="50%" class="pa-10 mx-auto">
+        <div class="text-h5 text-center mb-5">
           Đăng nhập
         </div>
         <v-form>
@@ -27,7 +27,7 @@
   </v-main>
 </template>
 <script>
-import { authenticate } from "../api/authentication";
+import authService from "../api/authentication";
 export default {
   name: "Login",
   components: {
@@ -42,11 +42,28 @@ export default {
   methods: {
     login() {
       const data = this.form;
-      const user = authenticate(data);
-      if (user) {
-        //this.$router.push({ name="home" });
-      }
+      authService
+        .authenticate(data)
+        .then(user => {
+          this.$router.push({ name: "About" });
+          this.$swal({
+            position: "center",
+            icon: "success",
+            title: "hello" + user.email,
+            showConfirmButton: false,
+            timer: 1500
+          });
+        })
+        .catch(err => {
+          console.log(err);
+          this.$swal("error: ", err.message, "error");
+        });
     }
   }
 };
 </script>
+<style lang="scss" scoped>
+.screen--full {
+  height: 100vh;
+}
+</style>

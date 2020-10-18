@@ -7,4 +7,4 @@ async function get(id, params) {
   return user;
 }
 
-export { get };
+export default { get };
