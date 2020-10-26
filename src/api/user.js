@@ -7,4 +7,9 @@ async function get(id, params) {
   return user;
 }
 
-export default { get };
+async function create(data) {
+  const response = await userService.create(data);
+  return response;
+}
+
+export default { get, create };
