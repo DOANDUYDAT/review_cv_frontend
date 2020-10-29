@@ -12,4 +12,9 @@ async function create(data) {
   return response;
 }
 
-export default { get, create };
+async function getAllUsers(params){
+  const users = await userService.find(params);
+  return users;
+}
+
+export default { get, create, getAllUsers };

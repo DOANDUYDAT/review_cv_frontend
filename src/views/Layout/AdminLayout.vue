@@ -1,0 +1,110 @@
+<template>
+  <v-app>
+    <v-app-bar
+      color="#43a047"
+      dark
+      src="https://picsum.photos/1920/1080?random"
+      clipped-left
+      app
+    >
+      <v-toolbar-title>Admin</v-toolbar-title>
+
+      <v-spacer></v-spacer>
+      <v-btn>
+        <span>Đần Thúi</span>
+        <v-icon right>mdi-account-circle</v-icon>
+      </v-btn>
+    </v-app-bar>
+    <v-navigation-drawer v-model="drawer" clipped app>
+      <v-list>
+        <template v-for="item in items">
+          <v-list-group :key="item.text">
+            <template v-slot:activator>
+              <v-list-item-icon>
+                <v-icon>{{ item.icon }}</v-icon>
+              </v-list-item-icon>
+              <v-list-item-title>{{ item.text }}</v-list-item-title>
+            </template>
+            <v-list-item
+              v-for="(child, i) in item.children"
+              :key="i"
+              :to="child.link"
+            >
+              <v-list-item-content class="mx-6">{{
+                child.text
+              }}</v-list-item-content>
+            </v-list-item>
+          </v-list-group>
+        </template>
+      </v-list>
+    </v-navigation-drawer>
+    <v-main>
+      <v-container class="mx-auto" fluid>
+        <alert-list></alert-list>
+        <breadcrumb-base></breadcrumb-base>
+        <router-view></router-view>
+      </v-container>
+    </v-main>
+  </v-app>
+</template>
+
+<script>
+import BreadcrumbBase from "../Admin/BreadcrumbBase";
+import AlertList from "../Admin/AlertList";
+
+export default {
+  name: "Admin",
+  data() {
+    return {
+      items: [
+        {
+          text: "Quản lý tài khoản người dùng",
+          icon: "mdi-account",
+          children: [
+            {
+              text: "Danh sách người dùng",
+              link: "/Admin/Members"
+            },
+            {
+              text: "Danh sách đăng ký mới",
+              link: "/Admin/New-members"
+            }
+          ]
+        },
+        {
+          text: "Quản lý tài khoản chuyên gia",
+          icon: "mdi-account-star",
+          children: [
+            {
+              text: "Danh sách chuyên gia",
+              link: "/Admin/Specialists"
+            },
+            {
+              text: "Danh sách đăng ký mới",
+              link: "/Admin/New-specialists"
+            }
+          ]
+        },
+        {
+          text: "Quản lý tài khoản cộng tác viên",
+          icon: "mdi-account-multiple",
+          children: [
+            {
+              text: "Danh sách cộng tác viên",
+              link: "/Admin/Volunteers"
+            },
+            {
+              text: "Danh sách đăng ký mới",
+              link: "/Admin/New-volunteers"
+            }
+          ]
+        }
+      ]
+    };
+  },
+  components: {
+    BreadcrumbBase,
+    AlertList
+  }
+};
+</script>

@@ -1,63 +1,58 @@
 <template>
-  <v-main class="bg">
-    <v-container class="d-flex flex-column justify-center screen--full">
-      <ValidationObserver v-slot="{ invalid }">
-        <v-card
-          :width="$vuetify.breakpoint.xs ? '100%' : '50%'"
-          class="pa-10 mx-auto"
-        >
-          <v-toolbar dark flat>
-            <v-card-title class="layout justify-center">
-              <span class="headline">Đăng nhập</span>
-            </v-card-title>
-          </v-toolbar>
+  <v-container class="d-flex flex-column justify-center screen--full bg" fluid>
+    <ValidationObserver v-slot="{ invalid }">
+      <v-card :width="widthCard" class="pa-10 mx-auto">
+        <v-toolbar dark flat>
+          <v-card-title class="layout justify-center">
+            <span class="headline">Đăng nhập</span>
+          </v-card-title>
+        </v-toolbar>
 
-          <v-form>
-            <ValidationProvider
-              mode="aggressive"
-              name="email"
-              rules="required|email"
-              v-slot="{ errors }"
-              :bails="false"
-            >
-              <v-text-field
-                v-model="form.email"
-                prepend-icon="mdi-email"
-                label="Email"
-                type="email"
-              ></v-text-field>
-              <span class="red--text text--lighten-1">{{ errors[0] }}</span>
-            </ValidationProvider>
-            <ValidationProvider
-              mode="aggressive"
-              name="password"
-              rules="required|alpha_dash|min:6"
-              v-slot="{ errors }"
-              :bails="false"
-            >
-              <v-text-field
-                :type="form.showPassword ? 'text' : 'password'"
-                v-model="form.password"
-                label="Password"
-                counter="16"
-                prepend-icon="mdi-lock"
-                :append-icon="form.showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-                @click:append="form.showPassword = !form.showPassword"
-                @keyup.enter="login"
-              ></v-text-field>
-              <span class="red--text text--lighten-1">{{ errors[0] }}</span>
-            </ValidationProvider>
-          </v-form>
+        <v-form>
+          <ValidationProvider
+            mode="aggressive"
+            name="email"
+            rules="required|email"
+            v-slot="{ errors }"
+            :bails="false"
+          >
+            <v-text-field
+              v-model="form.email"
+              prepend-icon="mdi-email"
+              label="Email"
+              type="email"
+            ></v-text-field>
+            <span class="red--text text--lighten-1">{{ errors[0] }}</span>
+          </ValidationProvider>
+          <ValidationProvider
+            mode="aggressive"
+            name="password"
+            rules="required|alpha_dash|min:6"
+            v-slot="{ errors }"
+            :bails="false"
+          >
+            <v-text-field
+              :type="form.showPassword ? 'text' : 'password'"
+              v-model="form.password"
+              label="Password"
+              counter="16"
+              prepend-icon="mdi-lock"
+              :append-icon="form.showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+              @click:append="form.showPassword = !form.showPassword"
+              @keyup.enter="login"
+            ></v-text-field>
+            <span class="red--text text--lighten-1">{{ errors[0] }}</span>
+          </ValidationProvider>
+        </v-form>
 
-          <v-card-actions class="d-flex justify-end">
-            <v-btn color="primary" @click="login" :disabled="invalid"
-              >Đăng nhập</v-btn
-            >
-          </v-card-actions>
-        </v-card>
-      </ValidationObserver>
-    </v-container>
-  </v-main>
+        <v-card-actions class="d-flex justify-end">
+          <v-btn color="primary" @click="login" :disabled="invalid"
+            >Đăng nhập</v-btn
+          >
+        </v-card-actions>
+      </v-card>
+    </ValidationObserver>
+  </v-container>
 </template>
 <script>
 import authService from "../api/authentication";
@@ -73,6 +68,24 @@ export default {
       password: ""
     }
   }),
+  computed: {
+    widthCard() {
+      switch (this.$vuetify.breakpoint.name) {
+        case "xs":
+          return "100%";
+        case "sm":
+          return "100%";
+        case "md":
+          return "60%";
+        case "lg":
+          return 500;
+        case "xl":
+          return 500;
+        default:
+          return "100%";
+      }
+    }
+  },
   methods: {
     login() {
       const data = this.form;
@@ -105,7 +118,7 @@ export default {
   background-image: linear-gradient(0.25turn, #00bda0 30%, #007ddd);
 }
 .bg {
-  background-image: url("https://img.powerpoint.com.vn/uploads/2019/06/09/hinh-nen-powerpoint-vu-tru-mau-sac_092723116.jpg");
+  background-image: url("../assets/background.jpg");
   background-size: cover;
 }
 </style>
