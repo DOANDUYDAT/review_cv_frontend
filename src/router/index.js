@@ -1,5 +1,9 @@
+/* eslint-disable no-unused-vars */
 import Vue from "vue";
 import VueRouter from "vue-router";
+
+import authService from "@/api/authentication";
+
 import Home from "../views/Home";
 import PageNotFound from "../views/PageNotFound";
 
@@ -106,6 +110,22 @@ const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.path === "/Login" || to.path === "/") {
+    next();
+  } else {
+    authService
+      .reAuthenticate()
+      .then(user => next())
+      .catch(err =>
+        next({
+          path: "/Login",
+          query: { redirect: to.fullPath }
+        })
+      );
+  }
 });
 
 export default router;

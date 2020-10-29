@@ -66,6 +66,7 @@
 
 <script>
 import userService from "@/api/user";
+import authService from "@/api/authentication";
 
 export default {
   data: () => ({
@@ -126,7 +127,13 @@ export default {
 
   methods: {
     async getData() {
-      const allUsers = await userService.getAllUsers({});
+      await authService.reAuthenticate();
+      const allUsers = await userService.find({
+        query: {
+          $sort: { createdAt: -1 },
+          $limit: 25
+        }
+      });
       this.users = allUsers;
     },
     initialize() {
@@ -176,7 +183,8 @@ export default {
         this.editedItem = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
       }, 300);
-    }
+    },
+    save() {}
 
     // async save() {
     //   const user = this.editedItem;

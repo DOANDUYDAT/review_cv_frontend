@@ -93,7 +93,7 @@ export default {
         .authenticate(data)
         // eslint-disable-next-line no-unused-vars
         .then(user => {
-          this.$router.push({ name: "About" });
+          // this.$router.push({ name: "About" });
           this.$swal({
             position: "center",
             icon: "success",

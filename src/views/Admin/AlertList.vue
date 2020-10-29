@@ -8,13 +8,16 @@
 
 <script>
 // import AlertItem from "./AlertItem";
-import { mapState } from "vuex";
+// import { mapState } from "vuex";
 
 export default {
   computed: {
-    ...mapState({
-      alerts: state => state.alert.all
-    })
+    // ...mapState({
+    //   alerts: state => state.alert.all
+    // })
+    alerts() {
+      return [];
+    }
   },
   components: {
     // AlertItem

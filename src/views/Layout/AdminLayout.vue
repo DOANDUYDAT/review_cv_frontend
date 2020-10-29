@@ -15,7 +15,7 @@
         <v-icon right>mdi-account-circle</v-icon>
       </v-btn>
     </v-app-bar>
-    <v-navigation-drawer v-model="drawer" clipped app>
+    <v-navigation-drawer clipped app>
       <v-list>
         <template v-for="item in items">
           <v-list-group :key="item.text">
