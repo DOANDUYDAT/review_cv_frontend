@@ -93,7 +93,7 @@ export default {
         .authenticate(data)
         // eslint-disable-next-line no-unused-vars
         .then(user => {
-          // this.$router.push({ name: "About" });
+          this.$router.push({ path: "/About" });
           this.$swal({
             position: "center",
             icon: "success",
@@ -103,7 +103,6 @@ export default {
           });
         })
         .catch(err => {
-          console.log(err);
           this.$swal("error: ", err.message, "error");
         });
     }
