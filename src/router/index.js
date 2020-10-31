@@ -7,6 +7,8 @@ import ContentCV from "../views/CV_content";
 import InforCV from "../views/Quan_Ly_CV/InforCV.vue"
 import MauCV from "../views/Quan_Ly_CV/MauCV.vue"
 import QuanLy from "../views/Quan_Ly_CV/Quan_Ly.vue"
+import Home from "../views/Home";
+import PageNotFound from "../views/PageNotFound";
 
 Vue.use(VueRouter);
 
@@ -49,6 +51,7 @@ const routes = [
 
   {
     path: "/about",
+    path: "/About",
     name: "About",
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
@@ -57,9 +60,32 @@ const routes = [
       import(/* webpackChunkName: "about" */ "../views/About.vue")
   },
   {
-    path: "/login",
+    path: "/Login",
     name: "Login",
-    component: () => import("../views/Login.vue")
+    component: (/* webpackChunkName: "login" */) => import("../views/Login.vue")
+  },
+  {
+    path: "/SignUpMember",
+    name: "Sign Up Member",
+    component: (/* webpackChunkName: "signup" */) =>
+      import("../views/SignUpMember")
+  },
+  {
+    path: "/SignUpSpecialist",
+    name: "Sign Up Specialist",
+    component: (/* webpackChunkName: "signup" */) =>
+      import("../views/SignUpSpecialist")
+  },
+  {
+    path: "/SignUpVolunteer",
+    name: "Sign Up Volunteer",
+    component: (/* webpackChunkName: "signup" */) =>
+      import("../views/SignUpVolunteer")
+  },
+  {
+    path: "*",
+    name: "Page Not Found",
+    component: PageNotFound
   }
 ];
 
