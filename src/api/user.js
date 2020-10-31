@@ -1,4 +1,5 @@
-import feathers from "../services";
+/* eslint-disable no-unused-vars */
+import feathers from "../services/restClient";
 
 const userService = feathers.service("users");
 
@@ -7,4 +8,14 @@ async function get(id, params) {
   return user;
 }
 
-export default { get };
+async function create(data) {
+  const response = await userService.create(data);
+  return response;
+}
+
+async function getAllUsers(params) {
+  const users = await userService.find(params);
+  return users;
+}
+
+export default userService;

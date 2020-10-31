@@ -1,4 +1,4 @@
-import feathers from "../services";
+import feathers from "../services/restClient";
 
 async function authenticate(data) {
   data = {

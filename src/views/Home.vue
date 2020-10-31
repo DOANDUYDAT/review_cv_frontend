@@ -1,44 +1,42 @@
 <template>
-  <v-main>
-    <v-container>
-      <v-card
-        class="screen--full d-flex justify-center flex-column align-center mx-auto"
+  <v-container>
+    <v-card
+      class="screen--full d-flex justify-center flex-column align-center mx-auto"
+    >
+      <v-btn
+        class="mt-2"
+        width="50%"
+        depressed
+        color="primary"
+        @click="GoToLoginPage"
+        >Đăng nhập</v-btn
       >
-        <v-btn
-          class="mt-2"
-          width="50%"
-          depressed
-          color="primary"
-          @click="GoToLoginPage"
-          >Đăng nhập</v-btn
-        >
-        <v-btn
-          class="mt-2"
-          width="50%"
-          depressed
-          color="warning"
-          @click="GoToSignUpMemberPage"
-          >Đăng ký làm thành viên</v-btn
-        >
-        <v-btn
-          class="mt-2"
-          width="50%"
-          depressed
-          color="success"
-          @click="GoToSignUpSpecialistPage"
-          >Đăng ký làm chuyên gia</v-btn
-        >
-        <v-btn
-          class="mt-2"
-          width="50%"
-          depressed
-          color="error"
-          @click="GoToSignUpVolunteerPage"
-          >Đăng ký làm cộng tác viên</v-btn
-        >
-      </v-card>
-    </v-container>
-  </v-main>
+      <v-btn
+        class="mt-2"
+        width="50%"
+        depressed
+        color="warning"
+        @click="GoToSignUpMemberPage"
+        >Đăng ký làm thành viên</v-btn
+      >
+      <v-btn
+        class="mt-2"
+        width="50%"
+        depressed
+        color="success"
+        @click="GoToSignUpSpecialistPage"
+        >Đăng ký làm chuyên gia</v-btn
+      >
+      <v-btn
+        class="mt-2"
+        width="50%"
+        depressed
+        color="error"
+        @click="GoToSignUpVolunteerPage"
+        >Đăng ký làm cộng tác viên</v-btn
+      >
+    </v-card>
+  </v-container>
 </template>
 
 <script>
