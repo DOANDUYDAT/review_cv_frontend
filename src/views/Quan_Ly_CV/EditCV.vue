@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-tabs class="service__list">
-      <v-tab class="service__item large_padding" to="/content">
+      <v-tab class="service__item large_padding" @click="currentTabComponent(0)">
         <h3 class="service__title">Tông màu</h3>
         <div class="service__option">
           <button class="btn btn__font default_hover">
@@ -21,7 +21,7 @@
                 <button class="btn btn__font large_size">
                     <span class="large_size">A</span>
                 </button>
-      
+
     </div> -->
         <!-- <v-container>
     <v-row align="center">
@@ -63,7 +63,7 @@
           </button>
         </div>
       </v-tab>
-      <v-tab class="service__item large_padding">
+      <v-tab class="service__item large_padding" @click="currentTabComponent(1)">
         <h3 class="service__title">Thêm mục</h3>
         <div class="service__option">
           <button class="btn btn__font default_hover">
@@ -71,7 +71,7 @@
           </button>
         </div>
       </v-tab>
-      <v-tab class="service__item large_padding">
+      <v-tab class="service__item large_padding" @click="currentTabComponent(2)">
         <h3 class="service__title">Đổi mẫu CV</h3>
         <div class="service__option">
           <button class="btn btn__font default_hover">
@@ -90,21 +90,33 @@
     </v-tabs>
     <!-- <VueEditor ></VueEditor>
     <AddCV></AddCV> -->
-    <router-view></router-view>
+    <!-- <router-view></router-view> -->
+    <component v-bind:is="currentTab"></component>
   </v-container>
 </template>
 <script>
-// import AddCV from './Add_CV'
+import AddCV from './Add_CV'
+import ContentCV from './CV_content'
+import MauCV from './MauCV'
 // import VueEditor from './Editor'
 export default {
   name: "EditCV",
   data: () => ({
     options: ["14px", "16px", "20px"],
     fonts: ["Times New Roman", "Arial", "Sans-serief", "Tahoma"],
-    select_size: "Times New Roman"
+    select_size: "Times New Roman",
+    currentTab: "ContentCV",
+    subComponents: ["ContentCV", "AddCV", "MauCV"]
   }),
+  methods: {
+    currentTabComponent: function(id) {
+      this.currentTab = this.subComponents[id]
+    }
+  },
   components: {
-    // AddCV,
+    AddCV,
+    ContentCV,
+    MauCV
     // VueEditor
   }
 };
@@ -216,5 +228,10 @@ export default {
 
 .largeSize {
   font-size: 18px;
-}</style
->>
+}
+
+.v-tabs-bar {
+  height: auto;
+}
+</style>
+

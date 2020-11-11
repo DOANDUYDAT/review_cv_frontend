@@ -5,7 +5,7 @@
         <span> Danh sach CV</span>
       </v-col>
       <v-col cols="2">
-        <v-btn color="success" href="/mau-cv" target="_blank">
+        <v-btn color="success" href="/CV/mau-cv" target="_blank">
           <v-icon>mdi-plus</v-icon>
           Tao moi
         </v-btn>

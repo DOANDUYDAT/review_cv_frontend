@@ -98,7 +98,7 @@ const routes = [
         path: "mau-cv",
         name: "MauCV",
         component: () =>
-          import(/* webpackChunkName: "CV" */ "../views/Quan_Ly_CV/MauCV"),
+          import(/* webpackChunkName: "CV" */ "../views/Quan_Ly_CV/MauCV.vue"),
         meta: {
           requiresAuth: false
         }
@@ -107,7 +107,7 @@ const routes = [
         path: "infor",
         name: "InforCV",
         component: () =>
-          import(/* webpackChunkName: "CV" */ "../views/Quan_Ly_CV/InforCV"),
+          import(/* webpackChunkName: "CV" */ "../views/Quan_Ly_CV/InforCV.vue"),
         meta: {
           requiresAuth: false
         }
@@ -116,7 +116,7 @@ const routes = [
         path: "edit",
         name: "EditCV",
         component: () =>
-          import(/* webpackChunkName: "CV" */ "../views/Quan_Ly_CV/EditCV"),
+          import(/* webpackChunkName: "CV" */ "../views/Quan_Ly_CV/EditCV.vue"),
         meta: {
           requiresAuth: false
         }
@@ -125,7 +125,7 @@ const routes = [
         path: "content-cv",
         name: "ContentCV",
         component: () =>
-          import(/* webpackChunkName: "CV" */ "../views/Quan_Ly_CV/CV_content"),
+          import(/* webpackChunkName: "CV" */ "../views/Quan_Ly_CV/CV_content.vue"),
         meta: {
           requiresAuth: false
         }
@@ -134,7 +134,7 @@ const routes = [
         path: "add-cv",
         name: "AddCV",
         component: () =>
-          import(/* webpackChunkName: "CV" */ "../views/Quan_Ly_CV/Add_CV"),
+          import(/* webpackChunkName: "CV" */ "../views/Quan_Ly_CV/Add_CV.vue"),
         meta: {
           requiresAuth: false
         }
