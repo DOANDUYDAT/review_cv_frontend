@@ -2,8 +2,8 @@
   <v-data-table
     :headers="headers"
     :items="users"
-    :sort-by="['userId']"
-    user-key="userId"
+    :sort-by="['id']"
+    user-key="id"
     :sort-asc="[true]"
     :search="search"
   >
@@ -18,8 +18,8 @@
         <v-text-field
           v-model="search"
           append-icon="mdi-magnify"
-          label="Search theo Id hoặc quyền người dùng"
-          color="it-blue-lighten"
+          label="Search"
+          color="blue"
           single-line
           hide-details
         ></v-text-field>
@@ -57,57 +57,73 @@
         </v-dialog>
       </v-toolbar>
     </template>
-    <!-- <template v-slot:item.action="{ item }">
-      <v-icon small class="mr-2" @click.stop="editItem(item)" color="it-blue-lighten">mdi-pencil</v-icon>
-      <v-icon small @click.stop="deleteItem(item)" color="gg-red">mdi-trash-can-outline</v-icon>
-    </template> -->
+    <template v-slot:[`item.action`]="{ item }">
+      <v-icon small class="mr-2" @click.stop="viewItem(item)" color="blue"
+        >mdi-eye</v-icon
+      >
+      <v-icon small class="mr-2" @click.stop="editItem(item)" color="green"
+        >mdi-pencil</v-icon
+      >
+      <v-icon small @click.stop="deleteItem(item)" color="red"
+        >mdi-trash-can-outline</v-icon
+      >
+    </template>
+    <template v-slot:[`item.isActive`]="{ item }">
+      <v-chip :color="getColor(item.isActive)" dark>{{ item.isActive }}</v-chip>
+    </template>
   </v-data-table>
 </template>
 
 <script>
-import userService from "@/api/user";
-import authService from "@/api/authentication";
+// import userService from "@/api/user";
+// import authService from "@/api/authentication";
 
 export default {
   data: () => ({
     dialog: false,
     search: "",
+    isActive: ["Đang xử lý", "Từ chối"],
     headers: [
       {
-        text: "User Id",
+        text: "Id",
         value: "id",
         sortable: false,
         filterable: true
       },
       {
-        text: "Name",
-        value: "name",
+        text: "Username",
+        value: "userName",
         sortable: true,
         filterable: false
       },
       { text: "Email", value: "email", sortable: false, filterable: false },
       { text: "Phone", value: "phone", sortable: false, filterable: false },
-      { text: "Address", value: "address", sortable: false, filterable: false },
-
-      {
-        text: "Birthday",
-        value: "dateOfBirth",
-        align: "center",
-        sortable: true,
-        filterable: false
-      },
-
+      { text: "State", value: "isActive", sortable: false, filterable: false },
       { text: "Actions", align: "center", value: "action", filterable: false }
     ],
-    roles: ["user", "staff", "admin"],
-    users: [],
-    editedIndex: -1,
-    editedItem: {
-      role: ""
-    },
-    defaultItem: {
-      role: ""
-    }
+    users: [
+      {
+        id: "001",
+        userName: "Le Thanh",
+        email: "lethanh98@gmail.com",
+        phone: "0123456789",
+        isActive: "Từ chối"
+      },
+      {
+        id: "002",
+        userName: "Duong Thoa",
+        email: "duongthoa98@gmail.com",
+        phone: "0123445566",
+        isActive: "Đang xử lý"
+      },
+      {
+        id: "003",
+        userName: "Doan Dat",
+        email: "doandat98@gmail.com",
+        phone: "0336221717",
+        isActive: "Đang xử lý"
+      }
+    ]
   }),
 
   computed: {
@@ -127,45 +143,19 @@ export default {
 
   methods: {
     async getData() {
-      await authService.reAuthenticate();
-      const allUsers = await userService.find({
-        query: {
-          $sort: { createdAt: -1 },
-          $limit: 25
-        }
-      });
-      this.users = allUsers;
+      // await authService.reAuthenticate();
+      // const allUsers = await userService.find({
+      //   query: {
+      //     $sort: { createdAt: -1 },
+      //     $limit: 25
+      //   }
+      // });
+      // this.users = allUsers;
     },
-    initialize() {
-      this.users = [
-        {
-          userId: "001",
-          name: "Le Thanh",
-          email: "lethanh98@gmail.com",
-          phone: "0123456789",
-          address: "Truong Dinh, Hai Ba Trung",
-          birthday: "26/06/1998",
-          role: "User"
-        },
-        {
-          userId: "002",
-          name: "Duong Thoa",
-          email: "duongthoa98@gmail.com",
-          phone: "0123445566",
-          address: "Dai La, Hai Ba Trung",
-          birthday: "04/11/1998",
-          role: "User"
-        },
-        {
-          userId: "003",
-          name: "Doan Dat",
-          email: "doandat98@gmail.com",
-          phone: "0336221717",
-          address: "Phap Van",
-          birthday: "28/04/1998",
-          role: "User"
-        }
-      ];
+    viewItem(item) {
+      this.viewItem = this.users.indexOf(item);
+      this.viewItem = Object.assign({}, item);
+      this.dialog = true;
     },
     editItem(item) {
       this.editedIndex = this.users.indexOf(item);
@@ -184,26 +174,30 @@ export default {
         this.editedIndex = -1;
       }, 300);
     },
-    save() {}
-
-    // async save() {
-    //   const user = this.editedItem;
-    //   try {
-    //     const isSuccess = await staffService.updateStaff(user);
-    //     console.log(isSuccess);
-    //     if (isSuccess) {
-    //       await this.getData();
-    //       this.$store.dispatch("alert/success", {
-    //         message: "Update Successfully!"
-    //       });
-    //       this.close();
-    //     }
-    //   } catch (error) {
-    //     this.$store.dispatch("alert/error", {
-    //       message: error
-    //     });
-    //   }
-    // }
+    save() {},
+    getColor(isActive) {
+      if (isActive == "Từ chối") return "red";
+      else return "orange";
+    }
   }
+
+  // async save() {
+  //   const user = this.editedItem;
+  //   try {
+  //     const isSuccess = await staffService.updateStaff(user);
+  //     console.log(isSuccess);
+  //     if (isSuccess) {
+  //       await this.getData();
+  //       this.$store.dispatch("alert/success", {
+  //         message: "Update Successfully!"
+  //       });
+  //       this.close();
+  //     }
+  //   } catch (error) {
+  //     this.$store.dispatch("alert/error", {
+  //       message: error
+  //     });
+  //   }
+  // }
 };
 </script>
