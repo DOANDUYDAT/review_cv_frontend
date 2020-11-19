@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container v-if="!save">
     <v-tabs class="service__list">
       <v-tab class="service__item large_padding" @click="currentTabComponent(0)">
         <h3 class="service__title">Tông màu</h3>
@@ -11,29 +11,7 @@
       </v-tab>
       <v-tab class="service__item">
         <h3 class="service__title">Co chu</h3>
-        <!-- <div class="service__option">
-                <button class="btn btn__font">
-                    <span>A</span>
-                </button>
-                <button class="btn btn__font active">
-                    <span class="mid_size">A</span>
-                </button>
-                <button class="btn btn__font large_size">
-                    <span class="large_size">A</span>
-                </button>
-
-    </div> -->
-        <!-- <v-container>
-    <v-row align="center">
-      <v-col
-        class="d-flex"
-        cols="12"
-        sm="6"
-      > -->
         <v-select :items="fonts" v-model="select_size" dense></v-select>
-        <!-- </v-col>
-    </v-row>
-    </v-container> -->
       </v-tab>
       <v-tab class="service__item">
         <h3 class="service__title">Co chu</h3>
@@ -79,7 +57,7 @@
           </button>
         </div>
       </v-tab>
-      <v-tab class="service__item large_padding">
+      <v-tab class="service__item large_padding" @click="saveCV">
         <h3 class="service__title">Lưu CV</h3>
         <div class="service__option">
           <button class="btn btn__font default_hover">
@@ -88,10 +66,36 @@
         </div>
       </v-tab>
     </v-tabs>
-    <!-- <VueEditor ></VueEditor>
-    <AddCV></AddCV> -->
-    <!-- <router-view></router-view> -->
     <component v-bind:is="currentTab"></component>
+  </v-container>
+  <v-container v-else>
+    <v-row class="spaceColumn">
+      <v-col cols="6">
+        <h2>
+          <v-icon>mdi-check</v-icon>
+          {{saveMessage }}
+        </h2>
+        <p class="keyCV">{{ keyCV }}</p>
+        <v-row class="spaceColumn">
+          <v-btn @click="saveCV">
+            <v-icon>mdi-pencil</v-icon>
+                        Sua lai CV
+          </v-btn>
+          <v-btn>
+            <v-icon>mdi-eye</v-icon>
+                        Xem
+          </v-btn>
+          <v-btn>
+            <v-icon>mdi-download</v-icon>
+                        Tai xuong
+          </v-btn>
+        </v-row>
+      </v-col>
+      <v-col cols="6" class="jobFound">
+        <h2>Co {{jobCount }} cong viec phu hop voi ban</h2>
+        <v-btn color="success">Xem ngay</v-btn>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 <script>
@@ -106,11 +110,18 @@ export default {
     fonts: ["Times New Roman", "Arial", "Sans-serief", "Tahoma"],
     select_size: "Times New Roman",
     currentTab: "ContentCV",
-    subComponents: ["ContentCV", "AddCV", "MauCV"]
+    subComponents: ["ContentCV", "AddCV", "MauCV"],
+    save: false,
+    saveMessage: '',
+    jobCount: 0,
+    keyCV: 'https://i.topcv.vn/ledinhduc?ref=3525428'
   }),
   methods: {
     currentTabComponent: function(id) {
       this.currentTab = this.subComponents[id]
+    },
+    saveCV: function() {
+      this.save = !this.save
     }
   },
   components: {
@@ -232,6 +243,31 @@ export default {
 
 .v-tabs-bar {
   height: auto;
+}
+.keyCV {
+  border-radius: 10px;
+  text-align: center;
+  border: 2px solid gray;
+  padding: 15px;
+  margin-top: 20px;
+}
+.spaceColumn {
+  justify-content: space-between;
+  margin-top: 50px;
+}
+.jobFound {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-direction: column;
+}
+.col-6 {
+      padding: 35px;
+    /* margin-right: 50px; */
+    background: #f1f1f1;
+}
+.col-6:last-child {
+  margin-right: 0;
 }
 </style>
 
