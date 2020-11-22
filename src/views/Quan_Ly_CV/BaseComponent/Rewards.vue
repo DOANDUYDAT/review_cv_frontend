@@ -1,0 +1,40 @@
+<template>
+  <div class="cv__rewards item__cv">
+    <div class="cv__infor--content ">
+      <div class="cv__rewards--title item__cv--title">
+        <input type="text" value="GIẢI THƯỞNG " />
+      </div>
+      <v-divider></v-divider>
+      <div class="cv__rewards--content content__cv">
+        <input
+          type="text"
+          value="Giải khuyến khích học sinh giỏi Quốc gia Hóa học năm 12 "
+        />
+        <div class="option__content">
+          <v-btn color="success">
+            <v-icon>mdi-plus</v-icon>
+            Them
+          </v-btn>
+          <v-btn color="error">
+            <v-icon>mdi-minus</v-icon>
+            Xoa
+          </v-btn>
+        </div>
+      </div>
+    </div>
+    <div class="option">
+      <v-icon> mdi-menu</v-icon>
+      <v-icon> mdi-menu-down</v-icon>
+      <v-icon> mdi-menu-up </v-icon>
+      <v-btn color="error">
+        <v-icon>mdi-minus</v-icon>
+        An muc
+      </v-btn>
+    </div>
+  </div>
+</template>
+<script>
+export default {
+  name: "Rewards"
+};
+</script>

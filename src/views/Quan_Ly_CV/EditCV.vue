@@ -14,6 +14,25 @@
       </v-tab>
       <v-tab class="service__item">
         <h3 class="service__title">Co chu</h3>
+        <!-- <div class="service__option">
+                <button class="btn btn__font">
+                    <span>A</span>
+                </button>
+                <button class="btn btn__font active">
+                    <span class="mid_size">A</span>
+                </button>
+                <button class="btn btn__font large_size">
+                    <span class="large_size">A</span>
+                </button>
+
+    </div> -->
+        <!-- <v-container>
+    <v-row align="center">
+      <v-col
+        class="d-flex"
+        cols="12"
+        sm="6"
+      > -->
         <v-select :items="fonts" v-model="select_size" dense></v-select>
       </v-tab>
       <v-tab class="service__item">
@@ -112,6 +131,63 @@ import AddCV from "./Add_CV";
 import ContentCV from "./CV_content";
 import MauCV from "./MauCV";
 // import VueEditor from './Editor'
+
+const CV1 = {
+  cvId: "1",
+  userId: "12a",
+  name: "cv thuc tap",
+  link: "",
+  createAt: "22/10/2020",
+  updatedAt: "22/11/2020",
+  content: [
+    {
+      order: 1,
+      name: "mucTieu",
+      isShow: true,
+      type: "GoalJob",
+      content: [
+        {
+          name: "cty 1",
+          value: "react",
+          id: "1"
+        },
+        {
+          name: "cty 2",
+          value: "vue",
+          id: "2"
+        }
+      ]
+    },
+    {
+      order: 3,
+      type: "Education",
+      isShow: true,
+      name: "hoc van",
+      content: [
+        {
+          name: "bang 1",
+          value: "ktqd",
+          id: "1"
+        },
+        {
+          name: "bang 2",
+          value: "bk",
+          id: "2"
+        }
+      ]
+    },
+    {
+      order: 2,
+      type: "Hobbies",
+      isShow: true,
+      name: "so thich",
+      content: ["doc sach", "xem phim"]
+    }
+  ]
+};
+
+import { mapActions } from "vuex";
+
 export default {
   name: "EditCV",
   data: () => ({
@@ -123,7 +199,8 @@ export default {
     save: false,
     saveMessage: "",
     jobCount: 0,
-    keyCV: "https://i.topcv.vn/ledinhduc?ref=3525428"
+    keyCV: "https://i.topcv.vn/ledinhduc?ref=3525428",
+    Cv: {}
   }),
   methods: {
     currentTabComponent: function(id) {
@@ -131,13 +208,18 @@ export default {
     },
     saveCV: function() {
       this.save = !this.save;
-    }
+    },
+    ...mapActions("Cv", ["initState"])
   },
   components: {
     AddCV,
     ContentCV,
     MauCV
     // VueEditor
+  },
+  created() {
+    // set state
+    this.initState(CV1);
   }
 };
 </script>

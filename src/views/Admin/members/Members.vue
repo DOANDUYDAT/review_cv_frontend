@@ -65,8 +65,9 @@
 </template>
 
 <script>
+// eslint-disable-next-line no-unused-vars
 import userService from "@/api/user";
-import authService from "@/api/authentication";
+import messageService from "@/api/message";
 
 export default {
   data: () => ({
@@ -127,11 +128,12 @@ export default {
 
   methods: {
     async getData() {
-      await authService.reAuthenticate();
-      const allUsers = await userService.find({
+      // const allUsers = await messageService.get("5f9e28eb3d777911e3d78765", {
+      //   query: {}
+      // });
+      const allUsers = await messageService.find({
         query: {
-          $sort: { createdAt: -1 },
-          $limit: 25
+          authorId: "5f9c36c9412dbc1f216dcfae"
         }
       });
       this.users = allUsers;
