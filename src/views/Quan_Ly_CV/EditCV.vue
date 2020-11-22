@@ -1,7 +1,10 @@
 <template>
   <v-container v-if="!save">
     <v-tabs class="service__list">
-      <v-tab class="service__item large_padding" @click="currentTabComponent(0)">
+      <v-tab
+        class="service__item large_padding"
+        @click="currentTabComponent(0)"
+      >
         <h3 class="service__title">Tông màu</h3>
         <div class="service__option">
           <button class="btn btn__font default_hover">
@@ -41,7 +44,10 @@
           </button>
         </div>
       </v-tab>
-      <v-tab class="service__item large_padding" @click="currentTabComponent(1)">
+      <v-tab
+        class="service__item large_padding"
+        @click="currentTabComponent(1)"
+      >
         <h3 class="service__title">Thêm mục</h3>
         <div class="service__option">
           <button class="btn btn__font default_hover">
@@ -49,7 +55,10 @@
           </button>
         </div>
       </v-tab>
-      <v-tab class="service__item large_padding" @click="currentTabComponent(2)">
+      <v-tab
+        class="service__item large_padding"
+        @click="currentTabComponent(2)"
+      >
         <h3 class="service__title">Đổi mẫu CV</h3>
         <div class="service__option">
           <button class="btn btn__font default_hover">
@@ -73,35 +82,35 @@
       <v-col cols="6">
         <h2>
           <v-icon>mdi-check</v-icon>
-          {{saveMessage }}
+          {{ saveMessage }}
         </h2>
         <p class="keyCV">{{ keyCV }}</p>
         <v-row class="spaceColumn">
           <v-btn @click="saveCV">
             <v-icon>mdi-pencil</v-icon>
-                        Sua lai CV
+            Sua lai CV
           </v-btn>
           <v-btn>
             <v-icon>mdi-eye</v-icon>
-                        Xem
+            Xem
           </v-btn>
           <v-btn>
             <v-icon>mdi-download</v-icon>
-                        Tai xuong
+            Tai xuong
           </v-btn>
         </v-row>
       </v-col>
       <v-col cols="6" class="jobFound">
-        <h2>Co {{jobCount }} cong viec phu hop voi ban</h2>
+        <h2>Co {{ jobCount }} cong viec phu hop voi ban</h2>
         <v-btn color="success">Xem ngay</v-btn>
       </v-col>
     </v-row>
   </v-container>
 </template>
 <script>
-import AddCV from './Add_CV'
-import ContentCV from './CV_content'
-import MauCV from './MauCV'
+import AddCV from "./Add_CV";
+import ContentCV from "./CV_content";
+import MauCV from "./MauCV";
 // import VueEditor from './Editor'
 export default {
   name: "EditCV",
@@ -112,16 +121,16 @@ export default {
     currentTab: "ContentCV",
     subComponents: ["ContentCV", "AddCV", "MauCV"],
     save: false,
-    saveMessage: '',
+    saveMessage: "",
     jobCount: 0,
-    keyCV: 'https://i.topcv.vn/ledinhduc?ref=3525428'
+    keyCV: "https://i.topcv.vn/ledinhduc?ref=3525428"
   }),
   methods: {
     currentTabComponent: function(id) {
-      this.currentTab = this.subComponents[id]
+      this.currentTab = this.subComponents[id];
     },
     saveCV: function() {
-      this.save = !this.save
+      this.save = !this.save;
     }
   },
   components: {
@@ -262,12 +271,11 @@ export default {
   flex-direction: column;
 }
 .col-6 {
-      padding: 35px;
-    /* margin-right: 50px; */
-    background: #f1f1f1;
+  padding: 35px;
+  /* margin-right: 50px; */
+  background: #f1f1f1;
 }
 .col-6:last-child {
   margin-right: 0;
 }
 </style>
-
