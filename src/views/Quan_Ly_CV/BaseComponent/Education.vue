@@ -9,11 +9,11 @@
         <div class="cv__study--content content__cv">
           <input type="text" :value="item.value" />
           <div class="option__content">
-            <v-btn color="success">
+            <v-btn color="success" small>
               <v-icon>mdi-plus</v-icon>
               Them
             </v-btn>
-            <v-btn color="error">
+            <v-btn color="error" small>
               <v-icon>mdi-minus</v-icon>
               Xoa
             </v-btn>
@@ -25,7 +25,7 @@
       <v-icon> mdi-menu</v-icon>
       <v-icon @click="incrementOrder(data.order)"> mdi-menu-down</v-icon>
       <v-icon @click="decrementOrder(data.order)"> mdi-menu-up </v-icon>
-      <v-btn color="error">
+      <v-btn color="error" small @click="hiddenCategory(data.order)">
         <v-icon>mdi-minus</v-icon>
         An muc
       </v-btn>
@@ -37,8 +37,14 @@ import { mapActions } from "vuex";
 export default {
   name: "Education",
   methods: {
-    ...mapActions("Cv", ["incrementOrder", "decrementOrder"])
+    ...mapActions("Cv", ["incrementOrder", "decrementOrder", "hiddenCategory"])
   },
   props: ["data"]
 };
 </script>
+
+<style lang="scss">
+.option__content .v-btn:first-child {
+  margin-right: 10px;
+}
+</style>
