@@ -35,12 +35,8 @@
 export default {
   name: "GoalJob",
   data() {
-    return {
-
-    }
+    return {};
   },
-  methods: {
-
-  }
-}
+  methods: {}
+};
 </script>
