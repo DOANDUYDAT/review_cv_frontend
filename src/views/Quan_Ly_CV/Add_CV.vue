@@ -71,19 +71,13 @@ export default {
     }), //get cv tu module Store Cv
     contentCV() {
       const cvContent = [...this.catalogs.content];
+      // const cvContent = [];
       return cvContent;
     }
   },
   methods: {
     changeChecked() {
-      // this.contentCV = [...this.catalogs.content];
-      // const catalogCV = [...this.catalogs.content];
-      // for (let i = 0; i < catalogCV.length; i++) {
-      //   catalogCV[i].isShow = false;
-      // }
-      debugger;
       this.catalogs.content.forEach(e => (e.isShow = false));
-      // console.log(catalogCV);
     },
     allChecked() {
       // this.contentCV = [...this.catalogs.content];
@@ -98,7 +92,7 @@ export default {
     ...mapActions("Cv", ["initState"])
   },
   created() {
-    this.catalogs = Object.assign({}, this.currentCv);
+    this.catalogs = JSON.parse(JSON.stringify(this.currentCv));
   }
 };
 </script>
