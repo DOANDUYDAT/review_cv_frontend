@@ -40,11 +40,11 @@
             <v-icon>mdi-download</v-icon>
             Tai xuong
           </v-btn>
-          <v-btn href="/edit" target="_blank">
+          <v-btn href="/CV/edit">
             <v-icon>mdi-pencil</v-icon>
             Sua
           </v-btn>
-          <v-btn>
+          <v-btn @click="deleteCV(inforCV.id)">
             <v-icon>mdi-delete</v-icon>
             Xoa
           </v-btn>
@@ -63,6 +63,11 @@ export default {
     return {
       inforCV: this.infor
     };
+  },
+  methods: {
+    deleteCV: function(id) {
+      console.log(id);
+    }
   },
   mounted: function() {
     console.log(this.infor);

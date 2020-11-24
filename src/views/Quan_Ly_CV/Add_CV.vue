@@ -5,11 +5,11 @@
         <v-card class="mx-auto">
           <v-list>
             <v-list-item-group>
-              <v-list-item v-for="(item, i) in catalogs" :key="i">
-                <v-checkbox color="darken-3" v-model="item.checked">
+              <v-list-item v-for="(item, i) in contentCV" :key="i">
+                <v-checkbox color="darken-3" v-model="item.isShow">
                 </v-checkbox>
                 <v-list-item-content>
-                  <v-list-item-title v-text="item.title"></v-list-item-title>
+                  <v-list-item-title v-text="item.type"></v-list-item-title>
                 </v-list-item-content>
                 <v-list-item-icon>
                   <v-icon v-text="icon" right></v-icon>
@@ -39,37 +39,11 @@
           <span>Bỏ chọn hết</span>
         </div>
       </div>
-      <!-- <v-row justify="center" align="center">
-              <v-col cols="12">
-                  <v-row>
-                      <v-col cols="4">
-                          <v-icon v-text="icon" class="mr-2" :size="iconSize"></v-icon>
-                  <span >Bố cục mặc định</span>
-                      </v-col>
-                      <v-col cols="4">
-                          <v-icon class="mr-2" :size="iconSize"> mdi-checkbox-marked-circle-outline</v-icon>
-                  <span>Chọn hết</span>
-                      </v-col>
-                      <v-col cols="4">
-                          <v-icon v-text="icon" class="mr-2" :size="iconSize"></v-icon>
-                  <span>Bỏ chọn hết</span>
-                      </v-col>
-                  </v-row>
-                  <v-row class="mx-auto">
-                      <v-btn depressed color="primary">
-                          Cap nhat
-                      </v-btn>
-                      <v-btn>
-                          Huy
-                      </v-btn>
-                  </v-row>
-                  
-
-            </v-col> 
-        </v-row> -->
       <div class="button__list mt-5">
         <div class="button__item">
-          <v-btn color="primary" depressed>Cập nhật</v-btn>
+          <v-btn color="primary" depressed @click="updateCateory()"
+            >Cập nhật</v-btn
+          >
         </div>
         <div class="button__item">
           <v-btn depressed>Hủy</v-btn>
@@ -80,70 +54,45 @@
 </template>
 
 <script>
+import { mapState, mapActions } from "vuex";
+
 export default {
   name: "AddCV",
   data: () => ({
     icon: "mdi-menu",
     iconSize: "14px",
-    catalogs: [
-      {
-        title: "Cac ky nang",
-        checked: true
-      },
-      {
-        title: "Muc tieu nghe nghiep",
-        checked: true
-      },
-      {
-        title: "Hoc van",
-        checked: true
-      },
-      {
-        title: "Giai thuong",
-        checked: true
-      },
-      {
-        title: "So thich",
-        checked: true
-      },
-      {
-        title: "Kinh nghiem lam viec",
-        checked: true
-      },
-      {
-        title: "Hoat dong",
-        checked: true
-      },
-      {
-        title: "Chung chi",
-        checked: true
-      },
-      {
-        title: "Thong tin them",
-        checked: true
-      },
-      {
-        title: "Nguoi tham chieu",
-        checked: true
-      },
-      {
-        title: "Du an",
-        checked: true
-      }
-    ]
+    catalogs: {}
+    // contentCV: []
   }),
   components: {},
+  computed: {
+    ...mapState({
+      currentCv: state => state.Cv.cv
+    }), //get cv tu module Store Cv
+    contentCV() {
+      const cvContent = [...this.catalogs.content];
+      // const cvContent = [];
+      return cvContent;
+    }
+  },
   methods: {
     changeChecked() {
-      this.catalogs.map(catalog => {
-        catalog.checked = false;
-      });
+      this.catalogs.content.forEach(e => (e.isShow = false));
     },
     allChecked() {
-      this.catalogs.map(catalog => {
-        catalog.checked = true;
+      // this.contentCV = [...this.catalogs.content];
+      const catalogCV = [...this.catalogs.content];
+      catalogCV.forEach(e => {
+        e.isShow = true;
       });
-    }
+    },
+    updateCateory() {
+      this.initState(this.catalogs);
+    },
+    ...mapActions("Cv", ["initState"])
+  },
+  created() {
+    this.catalogs = JSON.parse(JSON.stringify(this.currentCv));
   }
 };
 </script>

@@ -75,8 +75,9 @@
 </template>
 
 <script>
-// import userService from "@/api/user";
-// import authService from "@/api/authentication";
+// eslint-disable-next-line no-unused-vars
+import userService from "@/api/user";
+import messageService from "@/api/message";
 
 export default {
   data: () => ({
@@ -143,14 +144,15 @@ export default {
 
   methods: {
     async getData() {
-      // await authService.reAuthenticate();
-      // const allUsers = await userService.find({
-      //   query: {
-      //     $sort: { createdAt: -1 },
-      //     $limit: 25
-      //   }
+      // const allUsers = await messageService.get("5f9e28eb3d777911e3d78765", {
+      //   query: {}
       // });
-      // this.users = allUsers;
+      const allUsers = await messageService.find({
+        query: {
+          authorId: "5f9c36c9412dbc1f216dcfae"
+        }
+      });
+      this.users = allUsers;
     },
     viewItem(item) {
       this.viewItem = this.users.indexOf(item);

@@ -7,7 +7,7 @@
           <v-img src="https://picsum.photos/id/11/500/300"></v-img>
           <div class="nen">
             <div class="maucv__infor">
-              <v-btn color="success" href="/edit">
+              <v-btn color="success" href="/CV/edit">
                 <v-icon>mdi-check</v-icon>
                 Dùng mẫu này
               </v-btn>

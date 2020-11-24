@@ -1,7 +1,10 @@
 <template>
-  <v-container>
+  <v-container v-if="!save">
     <v-tabs class="service__list">
-      <v-tab class="service__item large_padding" to="/content">
+      <v-tab
+        class="service__item large_padding"
+        @click="currentTabComponent(0)"
+      >
         <h3 class="service__title">Tông màu</h3>
         <div class="service__option">
           <button class="btn btn__font default_hover">
@@ -21,7 +24,7 @@
                 <button class="btn btn__font large_size">
                     <span class="large_size">A</span>
                 </button>
-      
+
     </div> -->
         <!-- <v-container>
     <v-row align="center">
@@ -31,9 +34,6 @@
         sm="6"
       > -->
         <v-select :items="fonts" v-model="select_size" dense></v-select>
-        <!-- </v-col>
-    </v-row>
-    </v-container> -->
       </v-tab>
       <v-tab class="service__item">
         <h3 class="service__title">Co chu</h3>
@@ -63,7 +63,10 @@
           </button>
         </div>
       </v-tab>
-      <v-tab class="service__item large_padding">
+      <v-tab
+        class="service__item large_padding"
+        @click="currentTabComponent(1)"
+      >
         <h3 class="service__title">Thêm mục</h3>
         <div class="service__option">
           <button class="btn btn__font default_hover">
@@ -71,7 +74,10 @@
           </button>
         </div>
       </v-tab>
-      <v-tab class="service__item large_padding">
+      <v-tab
+        class="service__item large_padding"
+        @click="currentTabComponent(2)"
+      >
         <h3 class="service__title">Đổi mẫu CV</h3>
         <div class="service__option">
           <button class="btn btn__font default_hover">
@@ -79,7 +85,7 @@
           </button>
         </div>
       </v-tab>
-      <v-tab class="service__item large_padding">
+      <v-tab class="service__item large_padding" @click="saveCV">
         <h3 class="service__title">Lưu CV</h3>
         <div class="service__option">
           <button class="btn btn__font default_hover">
@@ -88,24 +94,132 @@
         </div>
       </v-tab>
     </v-tabs>
-    <!-- <VueEditor ></VueEditor>
-    <AddCV></AddCV> -->
-    <router-view></router-view>
+    <component v-bind:is="currentTab"></component>
+  </v-container>
+  <v-container v-else>
+    <v-row class="spaceColumn">
+      <v-col cols="6">
+        <h2>
+          <v-icon>mdi-check</v-icon>
+          {{ saveMessage }}
+        </h2>
+        <p class="keyCV">{{ keyCV }}</p>
+        <v-row class="spaceColumn">
+          <v-btn @click="saveCV">
+            <v-icon>mdi-pencil</v-icon>
+            Sua lai CV
+          </v-btn>
+          <v-btn>
+            <v-icon>mdi-eye</v-icon>
+            Xem
+          </v-btn>
+          <v-btn>
+            <v-icon>mdi-download</v-icon>
+            Tai xuong
+          </v-btn>
+        </v-row>
+      </v-col>
+      <v-col cols="6" class="jobFound">
+        <h2>Co {{ jobCount }} cong viec phu hop voi ban</h2>
+        <v-btn color="success">Xem ngay</v-btn>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 <script>
-// import AddCV from './Add_CV'
+import AddCV from "./Add_CV";
+import ContentCV from "./CV_content";
+import MauCV from "./MauCV";
 // import VueEditor from './Editor'
+
+const CV1 = {
+  cvId: "1",
+  userId: "12a",
+  name: "cv thuc tap",
+  link: "",
+  createAt: "22/10/2020",
+  updatedAt: "22/11/2020",
+  content: [
+    {
+      order: 1,
+      name: "mucTieu",
+      isShow: true,
+      type: "GoalJob",
+      content: [
+        {
+          name: "cty 1",
+          value: "react",
+          id: "1"
+        },
+        {
+          name: "cty 2",
+          value: "vue",
+          id: "2"
+        }
+      ]
+    },
+    {
+      order: 3,
+      type: "Education",
+      isShow: true,
+      name: "hoc van",
+      content: [
+        {
+          name: "bang 1",
+          value: "ktqd",
+          id: "1"
+        },
+        {
+          name: "bang 2",
+          value: "bk",
+          id: "2"
+        }
+      ]
+    },
+    {
+      order: 2,
+      type: "Hobbies",
+      isShow: true,
+      name: "so thich",
+      content: ["doc sach", "xem phim"]
+    }
+  ]
+};
+
+import { mapActions } from "vuex";
+
 export default {
   name: "EditCV",
   data: () => ({
     options: ["14px", "16px", "20px"],
     fonts: ["Times New Roman", "Arial", "Sans-serief", "Tahoma"],
-    select_size: "Times New Roman"
+    select_size: "Times New Roman",
+    currentTab: "ContentCV",
+    subComponents: ["ContentCV", "AddCV", "MauCV"],
+    save: false,
+    saveMessage: "",
+    jobCount: 0,
+    keyCV: "https://i.topcv.vn/ledinhduc?ref=3525428",
+    Cv: {}
   }),
+  methods: {
+    currentTabComponent: function(id) {
+      this.currentTab = this.subComponents[id];
+    },
+    saveCV: function() {
+      this.save = !this.save;
+    },
+    ...mapActions("Cv", ["initState"])
+  },
   components: {
-    // AddCV,
+    AddCV,
+    ContentCV,
+    MauCV
     // VueEditor
+  },
+  created() {
+    // set state
+    this.initState(CV1);
   }
 };
 </script>
@@ -216,5 +330,34 @@ export default {
 
 .largeSize {
   font-size: 18px;
-}</style
->>
+}
+
+.v-tabs-bar {
+  height: auto;
+}
+.keyCV {
+  border-radius: 10px;
+  text-align: center;
+  border: 2px solid gray;
+  padding: 15px;
+  margin-top: 20px;
+}
+.spaceColumn {
+  justify-content: space-between;
+  margin-top: 50px;
+}
+.jobFound {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-direction: column;
+}
+.col-6 {
+  padding: 35px;
+  /* margin-right: 50px; */
+  background: #f1f1f1;
+}
+.col-6:last-child {
+  margin-right: 0;
+}
+</style>
