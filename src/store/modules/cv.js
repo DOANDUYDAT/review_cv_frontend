@@ -24,28 +24,41 @@ const mutations = {
     state.cv = cv;
   },
   incrementOrder(state, order) {
-    const nextOrder = order + 1;
-    // const nextItem = state.cv.content.filter(e => e.order === nextOrder);
-    state.cv.content.forEach(e => {
-      if (e.order === order) {
-        e.order++;
-      } else if (e.order === nextOrder) {
-        e.order--;
-      }
-    });
-    // content
-    // for(let i=0; i< state.cv.content)
+    debugger;
+    const length = state.cv.content.length;
+    if (order != length) {
+      // const nextItem = state.cv.content.filter(e => e.order === nextOrder);
+      const nextOrder = order + 1;
+      state.cv.content.forEach(e => {
+        if (e.order === order) {
+          e.order++;
+        } else if (e.order === nextOrder) {
+          e.order--;
+        }
+      });
+      // content
+      // for(let i=0; i< state.cv.content)
+    }
   },
   decrementOrder(state, order) {
-    const previousOrder = order - 1;
-    // const previousItem = state.cv.content.filter(e => e.order === previousOrder);
-    state.cv.content.forEach(e => {
-      if (e.order === previousOrder) {
-        e.order++;
-      } else if (e.order === order) {
-        e.order--;
-      }
-    });
+    if (order > 1) {
+      const previousOrder = order - 1;
+      // const previousItem = state.cv.content.filter(e => e.order === previousOrder);
+      state.cv.content.forEach(e => {
+        if (e.order === previousOrder) {
+          e.order++;
+        } else if (e.order === order) {
+          e.order--;
+        }
+      });
+    }
+  },
+  hiddenCategory(state, order) {
+    debugger;
+    const categoryItem = state.cv.content.filter(
+      item => item.order == order
+    )[0];
+    categoryItem.isShow = !categoryItem.isShow;
   }
 };
 const actions = {
@@ -57,6 +70,9 @@ const actions = {
   },
   decrementOrder({ state, commit }, order) {
     commit("decrementOrder", order);
+  },
+  hiddenCategory({ state, commit }, order) {
+    commit("hiddenCategory", order);
   }
 };
 

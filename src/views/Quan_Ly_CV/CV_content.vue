@@ -34,7 +34,7 @@
             </div>
           </div>
           <div v-for="item in contentOrdered" :key="item.id">
-            <component :is="item.isShow ? item.type : ''" :data="item"/>
+            <component :is="item.isShow ? item.type : ''" :data="item" />
           </div>
           <!-- <GoalJob></GoalJob>
           <Education></Education>

@@ -24,11 +24,11 @@
             </v-col>
           </v-row>
           <div class="option__content">
-            <v-btn color="success" @click="addItem($event)">
+            <v-btn color="success" @click="addItem($event)" small>
               <v-icon>mdi-plus</v-icon>
               Them
             </v-btn>
-            <v-btn color="error" @click="deleteContent($event)">
+            <v-btn color="error" @click="deleteContent($event)" small>
               <v-icon>mdi-minus</v-icon>
               Xoa
             </v-btn>
@@ -40,7 +40,7 @@
       <v-icon> mdi-menu</v-icon>
       <v-icon> mdi-menu-down</v-icon>
       <v-icon> mdi-menu-up </v-icon>
-      <v-btn color="error">
+      <v-btn color="error" small>
         <v-icon>mdi-minus</v-icon>
         An muc
       </v-btn>

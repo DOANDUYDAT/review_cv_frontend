@@ -107,7 +107,9 @@ const routes = [
         path: "infor",
         name: "InforCV",
         component: () =>
-          import(/* webpackChunkName: "CV" */ "../views/Quan_Ly_CV/InforCV.vue"),
+          import(
+            /* webpackChunkName: "CV" */ "../views/Quan_Ly_CV/InforCV.vue"
+          ),
         meta: {
           requiresAuth: false
         }
@@ -125,7 +127,9 @@ const routes = [
         path: "content-cv",
         name: "ContentCV",
         component: () =>
-          import(/* webpackChunkName: "CV" */ "../views/Quan_Ly_CV/CV_content.vue"),
+          import(
+            /* webpackChunkName: "CV" */ "../views/Quan_Ly_CV/CV_content.vue"
+          ),
         meta: {
           requiresAuth: false
         }

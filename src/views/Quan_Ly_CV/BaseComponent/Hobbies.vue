@@ -8,11 +8,11 @@
       <div class="cv__hobbies--content content__cv">
         <input type="text" value="World hello" />
         <div class="option__content">
-          <v-btn color="success">
+          <v-btn color="success" x-small>
             <v-icon>mdi-plus</v-icon>
             Them
           </v-btn>
-          <v-btn color="error">
+          <v-btn color="error" x-small>
             <v-icon>mdi-minus</v-icon>
             Xoa
           </v-btn>
@@ -23,7 +23,7 @@
       <v-icon> mdi-menu</v-icon>
       <v-icon> mdi-menu-down</v-icon>
       <v-icon> mdi-menu-up </v-icon>
-      <v-btn color="error">
+      <v-btn color="error" small>
         <v-icon>mdi-minus</v-icon>
         An muc
       </v-btn>
