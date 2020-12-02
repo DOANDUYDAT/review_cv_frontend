@@ -230,6 +230,43 @@ const routes = [
     ]
   },
   {
+    path: "/forums",
+    component: () =>
+      import(
+        /* webpackChunkName: "forums" */ "../views/Layout/ForumsLayout.vue"
+      ),
+    meta: {
+      requiresAuth: true
+    },
+    children: [
+      {
+        path: "",
+        name: "Forums Home",
+        component: () =>
+          import(/* webpackChunkName: "forums" */ "../views/Forums/Home.vue"),
+        meta: {
+          requiresAuth: true
+        }
+      },
+      {
+        path: "questions/:questionId/:questionTitle",
+        name: "Question Detail",
+        component: () =>
+          import(
+            /* webpackChunkName: "forums" */ "../views/Forums/Question.vue"
+          )
+      },
+      {
+        path: "questions/ask",
+        name: "Question Ask",
+        component: () =>
+          import(
+            /* webpackChunkName: "forums" */ "../views/Forums/QuestionAsk.vue"
+          )
+      }
+    ]
+  },
+  {
     path: "/Forbidden",
     name: "Forbidden",
     component: () =>
@@ -243,7 +280,7 @@ const routes = [
     name: "Page Not Found",
     component: PageNotFound,
     meta: {
-      requiresAuth: false
+      requiresAuth: true
     }
   }
 ];
@@ -255,6 +292,7 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
+  console.info(to);
   authService
     .reAuthenticate()
     .then(user => {

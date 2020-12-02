@@ -90,7 +90,7 @@ export default {
     login() {
       const data = this.form;
       authService
-        .authenticate(data)
+        .login(data)
         // eslint-disable-next-line no-unused-vars
         .then(user => {
           this.$router.push({ path: "/About" });
