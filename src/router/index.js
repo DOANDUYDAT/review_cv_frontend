@@ -21,7 +21,7 @@ const routes = [
       ),
     children: [
       {
-        path: "",
+        path: "home",
         name: "Home",
         component: Home,
         meta: {
@@ -146,8 +146,8 @@ const routes = [
     ]
   },
   {
-    path: "/Admin",
-    name: "Admin",
+    path: "/admin",
+    name: "admin",
     component: () =>
       import(/* webpackChunkName: "admin" */ "../views/Layout/AdminLayout.vue"),
     meta: {
@@ -161,18 +161,6 @@ const routes = [
         component: () =>
           import(
             /* webpackChunkName: "admin" */ "../views/Admin/members/Members.vue"
-          ),
-        meta: {
-          requiresAuth: true,
-          roles: ["admin"]
-        }
-      },
-      {
-        path: "New-members",
-        name: "New-members",
-        component: () =>
-          import(
-            /* webpackChunkName: "admin" */ "../views/Admin/members/NewMembers.vue"
           ),
         meta: {
           requiresAuth: true,
@@ -228,6 +216,16 @@ const routes = [
         }
       }
     ]
+  },
+  {
+    path: "/uploadCV",
+    name: "UploadCV",
+    component: () =>
+      import(/* webpackChunkName: "admin" */ "../views/Layout/HomeLayout.vue"),
+    meta: {
+      requiresAuth: true,
+      roles: ["member"]
+    }
   },
   {
     path: "/Forbidden",
