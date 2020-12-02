@@ -1,6 +1,6 @@
 import feathers from "../services/restClient";
 
-async function authenticate(data) {
+async function login(data) {
   data = {
     ...data,
     strategy: "local"
@@ -18,4 +18,9 @@ async function logout() {
   await feathers.logout();
 }
 
-export default { authenticate, logout, reAuthenticate };
+async function getCurrentUser() {
+  const { user } = await feathers.get("authentication");
+  return user;
+}
+
+export default { login, logout, reAuthenticate, getCurrentUser };
