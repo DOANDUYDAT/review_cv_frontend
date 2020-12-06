@@ -21,7 +21,7 @@ const routes = [
       ),
     children: [
       {
-        path: "",
+        path: "home",
         name: "Home",
         component: Home,
         meta: {
@@ -85,7 +85,7 @@ const routes = [
     children: [
       {
         path: "",
-        name: "QuanLy",
+        name: "Quan Ly",
         component: () =>
           import(
             /* webpackChunkName: "CV" */ "../views/Quan_Ly_CV/Quan_Ly.vue"
@@ -146,8 +146,8 @@ const routes = [
     ]
   },
   {
-    path: "/Admin",
-    name: "Admin",
+    path: "/admin",
+    name: "admin",
     component: () =>
       import(/* webpackChunkName: "admin" */ "../views/Layout/AdminLayout.vue"),
     meta: {
@@ -161,18 +161,6 @@ const routes = [
         component: () =>
           import(
             /* webpackChunkName: "admin" */ "../views/Admin/members/Members.vue"
-          ),
-        meta: {
-          requiresAuth: true,
-          roles: ["admin"]
-        }
-      },
-      {
-        path: "New-members",
-        name: "New-members",
-        component: () =>
-          import(
-            /* webpackChunkName: "admin" */ "../views/Admin/members/NewMembers.vue"
           ),
         meta: {
           requiresAuth: true,
@@ -225,6 +213,135 @@ const routes = [
         meta: {
           requiresAuth: true,
           roles: ["admin"]
+        }
+      }
+    ]
+  },
+  {
+    path: "/memberHome",
+    component: () =>
+      import(
+        /* webpackChunkName: "memberHome" */ "../views/Layout/MemberLayout.vue"
+      ),
+    meta: {
+      requiresAuth: true,
+      roles: ["admin"]
+    },
+    children: [
+      {
+        path: "",
+        name: "Upload CV",
+        component: () =>
+          import(
+            /* webpackChunkName: "memberHome" */ "../views/Member/UploadCV.vue"
+          ),
+        meta: {
+          requiresAuth: false
+        }
+      },
+      {
+        path: "update-profile",
+        name: "Update Profile",
+        component: () =>
+          import(
+            /* webpackChunkName: "memberHome" */ "../views/Member/UpdateProfile.vue"
+          ),
+        meta: {
+          requiresAuth: false
+        }
+      }
+    ]
+  },
+  {
+    path: "/specialistHome",
+    name: "Specialist Home",
+    component: () =>
+      import(
+        /* webpackChunkName: "specialistHome" */ "../views/Layout/SpecialistLayout.vue"
+      ),
+    meta: {
+      requiresAuth: true,
+      roles: ["admin"]
+    },
+    children: [
+      {
+        path: "",
+        name: "Upload CV",
+        component: () =>
+          import(
+            /* webpackChunkName: "specialistHome" */ "../views/Member/UploadCV.vue"
+          ),
+        meta: {
+          requiresAuth: false
+        }
+      },
+      {
+        path: "update-specialist-profile",
+        name: "Update Specialist Profile",
+        component: () =>
+          import(
+            /* webpackChunkName: "specialistHome" */ "../views/Specialist/UpdateSpecialistProfile.vue"
+          ),
+        meta: {
+          requiresAuth: false
+        }
+      }
+    ]
+  },
+  {
+    path: "/volunteerHome",
+    name: "Volunteer Home",
+    component: () =>
+      import(
+        /* webpackChunkName: "volunteerHome" */ "../views/Layout/VolunteerLayout.vue"
+      ),
+    meta: {
+      requiresAuth: true,
+      roles: ["admin"]
+    },
+    children: [
+      {
+        path: "",
+        name: "Upload CV",
+        component: () =>
+          import(
+            /* webpackChunkName: "volunteerHome" */ "../views/Member/UploadCV.vue"
+          ),
+        meta: {
+          requiresAuth: false
+        }
+      },
+      {
+        path: "update-volunteer-profile",
+        name: "Update Volunteer Profile",
+        component: () =>
+          import(
+            /* webpackChunkName: "volunteerHome" */ "../views/Volunteer/UpdateVolunteerProfile.vue"
+          ),
+        meta: {
+          requiresAuth: false
+        }
+      },
+      {
+        path: "convert-point",
+        name: "Convert Point",
+        component: () =>
+          import(
+            /* webpackChunkName: "volunteerHome" */ "../views/Volunteer/ConvertPoint.vue"
+          ),
+        meta: {
+          requiresAuth: false
+        }
+      },
+      {
+        path: "exchange-gift",
+        name: "Exchange Gift",
+        component: () =>
+          import(
+            /* webpackChunkName: "volunteerHome" */ "../views/Volunteer/ExchangeGift.vue"
+          ),
+        meta: {
+          requiresAuth: false
         }
       }
     ]

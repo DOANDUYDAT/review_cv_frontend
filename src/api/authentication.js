@@ -18,9 +18,9 @@ async function logout() {
   await feathers.logout();
 }
 
-async function getCurrentUser() {
+async function getCurrentUserId() {
   const { user } = await feathers.get("authentication");
-  return user;
+  return user._id;
 }
 
-export default { login, logout, reAuthenticate, getCurrentUser };
+export default { login, logout, reAuthenticate, getCurrentUserId };

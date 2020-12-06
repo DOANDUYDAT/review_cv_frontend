@@ -64,10 +64,6 @@ export default {
             {
               text: "Danh sách người dùng",
               link: "/Admin/Members"
-            },
-            {
-              text: "Danh sách đăng ký mới",
-              link: "/Admin/New-members"
             }
           ]
         },

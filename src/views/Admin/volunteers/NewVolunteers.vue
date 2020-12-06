@@ -25,43 +25,61 @@
         ></v-text-field>
         <v-dialog v-model="dialog" max-width="500px">
           <v-card>
-            <v-toolbar color="gg-red" dark flat>
-              <v-card-title class="flex-grow-1 justify-center">
-                <span class="headline">hi</span>
+            <v-toolbar color="blue" dark flat>
+              <v-card-title class="layout justify-center">
+                <span class="headline">Thông tin tài khoản cộng tác viên</span>
               </v-card-title>
+              <v-btn color="blue" text @click="close"
+                ><v-icon color="white" dark>
+                  mdi-close
+                </v-icon></v-btn
+              >
             </v-toolbar>
-
             <v-card-text>
               <v-container>
                 <v-row>
-                  <v-col cols="12" sm="6" md="12">
-                    <v-row align="center">
-                      <v-col cols="3">
-                        <v-subheader>
-                          <b>Role:</b>
-                        </v-subheader>
-                      </v-col>
-                      <v-col cols="9"> </v-col>
-                    </v-row>
+                  <v-col cols="12" sm="6" md="6">
+                    <v-text-field
+                      v-model="editedItem.id"
+                      label="Id"
+                      readonly
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="6">
+                    <v-text-field
+                      v-model="editedItem.userName"
+                      label="Username"
+                      readonly
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="6">
+                    <v-text-field
+                      v-model="editedItem.email"
+                      label="Email"
+                      readonly
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="6">
+                    <v-text-field
+                      v-model="editedItem.phone"
+                      label="Phone"
+                      readonly
+                    ></v-text-field>
                   </v-col>
                 </v-row>
               </v-container>
             </v-card-text>
-
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="it-blue-lighten" text @click="close">Cancel</v-btn>
-              <v-btn color="it-blue-lighten" text @click="save">Save</v-btn>
+              <v-btn color="blue" outlined @click="accept">Phê duyệt</v-btn>
+              <v-btn color="grey" outlined @click="decline">Từ chối</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
       </v-toolbar>
     </template>
     <template v-slot:[`item.action`]="{ item }">
-      <v-icon small class="mr-2" @click.stop="viewItem(item)" color="blue"
-        >mdi-eye</v-icon
-      >
-      <v-icon small class="mr-2" @click.stop="editItem(item)" color="green"
+      <v-icon small class="mr-2" @click.stop="editItem(item)" color="blue"
         >mdi-pencil</v-icon
       >
       <v-icon small @click.stop="deleteItem(item)" color="red"
@@ -76,7 +94,7 @@
 
 <script>
 // import userService from "@/api/user";
-// import authService from "@/api/authentication";
+import volunteerService from "@/api/volunteer";
 
 export default {
   data: () => ({
@@ -99,31 +117,22 @@ export default {
       { text: "Email", value: "email", sortable: false, filterable: false },
       { text: "Phone", value: "phone", sortable: false, filterable: false },
       { text: "State", value: "isActive", sortable: false, filterable: false },
-      { text: "Actions", align: "center", value: "action", filterable: false }
-    ],
-    users: [
       {
-        id: "001",
-        userName: "Le Thanh",
-        email: "lethanh98@gmail.com",
-        phone: "0123456789",
-        isActive: "Từ chối"
-      },
-      {
-        id: "002",
-        userName: "Duong Thoa",
-        email: "duongthoa98@gmail.com",
-        phone: "0123445566",
-        isActive: "Đang xử lý"
-      },
-      {
-        id: "003",
-        userName: "Doan Dat",
-        email: "doandat98@gmail.com",
-        phone: "0336221717",
-        isActive: "Đang xử lý"
+        text: "Actions",
+        align: "center",
+        value: "action",
+        sortable: false,
+        filterable: false
       }
-    ]
+    ],
+    users: [],
+    editedIndex: -1,
+    editedItem: {
+      id: 0,
+      userName: "",
+      email: "",
+      phone: 0
+    }
   }),
 
   computed: {
@@ -142,20 +151,15 @@ export default {
   },
 
   methods: {
-    async getData() {
-      // await authService.reAuthenticate();
-      // const allUsers = await userService.find({
-      //   query: {
-      //     $sort: { createdAt: -1 },
-      //     $limit: 25
-      //   }
-      // });
-      // this.users = allUsers;
-    },
-    viewItem(item) {
-      this.viewItem = this.users.indexOf(item);
-      this.viewItem = Object.assign({}, item);
-      this.dialog = true;
+    getData() {
+      volunteerService
+        .getAllNewVolunteers()
+        .then(listVolunteers => {
+          this.users = listVolunteers;
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
     editItem(item) {
       this.editedIndex = this.users.indexOf(item);
@@ -178,6 +182,18 @@ export default {
     getColor(isActive) {
       if (isActive == "Từ chối") return "red";
       else return "orange";
+    },
+    accept() {
+      volunteerService
+        .accept(this.editedItem.id)
+        .then(volunteer => {
+          console.log(volunteer);
+          this.close();
+          this.getData();
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   }
 

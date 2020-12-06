@@ -25,33 +25,49 @@
         ></v-text-field>
         <v-dialog v-model="dialog" max-width="500px">
           <v-card>
-            <v-toolbar color="gg-red" dark flat>
-              <v-card-title class="flex-grow-1 justify-center">
-                <span class="headline">hi</span>
+            <v-toolbar color="blue" dark flat>
+              <v-card-title class="layout justify-center">
+                <span class="headline">Thông tin tài khoản chuyên gia</span>
               </v-card-title>
             </v-toolbar>
-
             <v-card-text>
               <v-container>
                 <v-row>
-                  <v-col cols="12" sm="6" md="12">
-                    <v-row align="center">
-                      <v-col cols="3">
-                        <v-subheader>
-                          <b>Role:</b>
-                        </v-subheader>
-                      </v-col>
-                      <v-col cols="9"> </v-col>
-                    </v-row>
+                  <v-col cols="12" sm="6" md="6">
+                    <v-text-field
+                      v-model="viewedItem.id"
+                      label="Id"
+                      disabled
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="6">
+                    <v-text-field
+                      v-model="viewedItem.userName"
+                      label="Username"
+                      disabled
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="6">
+                    <v-text-field
+                      v-model="viewedItem.email"
+                      label="Email"
+                      disabled
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="6">
+                    <v-text-field
+                      v-model="viewedItem.phone"
+                      label="Phone"
+                      disabled
+                    ></v-text-field>
                   </v-col>
                 </v-row>
               </v-container>
             </v-card-text>
-
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="it-blue-lighten" text @click="close">Cancel</v-btn>
-              <v-btn color="it-blue-lighten" text @click="save">Save</v-btn>
+              <v-btn color="blue" text @click="close">Cancel</v-btn>
+              <!-- <v-btn color="it-blue-lighten" text @click="save">Save</v-btn> -->
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -61,28 +77,31 @@
       <v-icon small class="mr-2" @click.stop="viewItem(item)" color="blue"
         >mdi-eye</v-icon
       >
-      <v-icon small class="mr-2" @click.stop="editItem(item)" color="green"
-        >mdi-pencil</v-icon
-      >
       <v-icon small @click.stop="deleteItem(item)" color="red"
         >mdi-trash-can-outline</v-icon
       >
     </template>
     <template v-slot:[`item.isActive`]="{ item }">
-      <v-chip :color="getColor(item.isActive)" dark>{{ item.isActive }}</v-chip>
+      <v-switch
+        v-model="item.isActive"
+        color="green"
+        inset
+        :label="getActiveLabel(item.isActive)"
+        @change="onSwitchChange"
+      ></v-switch>
     </template>
   </v-data-table>
 </template>
 
 <script>
 // import userService from "@/api/user";
-// import authService from "@/api/authentication";
+// import messageService from "@/api/message";
 
 export default {
   data: () => ({
     dialog: false,
     search: "",
-    isActive: ["Đang xử lý", "Từ chối"],
+    isActive: ["Active", "Inactive"],
     headers: [
       {
         text: "Id",
@@ -99,7 +118,13 @@ export default {
       { text: "Email", value: "email", sortable: false, filterable: false },
       { text: "Phone", value: "phone", sortable: false, filterable: false },
       { text: "State", value: "isActive", sortable: false, filterable: false },
-      { text: "Actions", align: "center", value: "action", filterable: false }
+      {
+        text: "Actions",
+        align: "center",
+        value: "action",
+        sortable: false,
+        filterable: false
+      }
     ],
     users: [
       {
@@ -107,23 +132,30 @@ export default {
         userName: "Le Thanh",
         email: "lethanh98@gmail.com",
         phone: "0123456789",
-        isActive: "Từ chối"
+        isActive: true
       },
       {
         id: "002",
         userName: "Duong Thoa",
         email: "duongthoa98@gmail.com",
         phone: "0123445566",
-        isActive: "Đang xử lý"
+        isActive: true
       },
       {
         id: "003",
         userName: "Doan Dat",
         email: "doandat98@gmail.com",
         phone: "0336221717",
-        isActive: "Đang xử lý"
+        isActive: false
       }
-    ]
+    ],
+    viewedIndex: -1,
+    viewedItem: {
+      id: 0,
+      userName: "",
+      email: "",
+      phone: 0
+    }
   }),
 
   computed: {
@@ -143,23 +175,19 @@ export default {
 
   methods: {
     async getData() {
-      // await authService.reAuthenticate();
-      // const allUsers = await userService.find({
+      // const allUsers = await messageService.get("5f9e28eb3d777911e3d78765", {
+      //   query: {}
+      // });
+      // const allUsers = await messageService.find({
       //   query: {
-      //     $sort: { createdAt: -1 },
-      //     $limit: 25
+      //     authorId: "5f9c36c9412dbc1f216dcfae"
       //   }
       // });
       // this.users = allUsers;
     },
     viewItem(item) {
-      this.viewItem = this.users.indexOf(item);
-      this.viewItem = Object.assign({}, item);
-      this.dialog = true;
-    },
-    editItem(item) {
-      this.editedIndex = this.users.indexOf(item);
-      this.editedItem = Object.assign({}, item);
+      this.viewedIndex = this.users.indexOf(item);
+      this.viewedItem = Object.assign({}, item);
       this.dialog = true;
     },
     deleteItem(item) {
@@ -167,17 +195,19 @@ export default {
       confirm("Are you sure you want to delete this user?") &&
         this.users.splice(index, 1);
     },
+    onSwitchChange() {
+      confirm("Are you sure you want to lock/unlock this user?");
+    },
     close() {
       this.dialog = false;
       setTimeout(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
+        this.viewedItem = Object.assign({}, this.defaultItem);
+        this.viewedIndex = -1;
       }, 300);
     },
-    save() {},
-    getColor(isActive) {
-      if (isActive == "Từ chối") return "red";
-      else return "orange";
+    getActiveLabel(isActive) {
+      if (isActive) return "Active";
+      else return "Inactive";
     }
   }
 
