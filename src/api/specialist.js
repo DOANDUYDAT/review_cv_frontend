@@ -35,8 +35,8 @@ const users = [
   }
 ];
 
-async function getSpecialist(id, params) {
-  const { user } = await specialistService.get(id, params);
+async function getSpecialist(userId) {
+  const user = await specialistService.get(userId);
   return user;
 }
 
@@ -61,8 +61,14 @@ async function getAllNewSpecialists() {
   return users.filter(e => e.isAccept == false);
 }
 
+async function updateSpecialistInfo(userId, data) {
+  const users = await specialistService.patch(userId, data);
+  return users;
+}
+
 export default {
   getSpecialist,
   getAllNewSpecialists,
-  accept
+  accept,
+  updateSpecialistInfo
 };

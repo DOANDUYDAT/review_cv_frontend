@@ -1,10 +1,7 @@
 <template>
-  <v-container class="d-flex flex-column justify-center screen--full bg">
+  <v-container class="d-flex flex-column justify-center screen--full bg" fluid>
     <ValidationObserver v-slot="{ invalid }">
-      <v-card
-        :width="$vuetify.breakpoint.xs ? '100%' : '50%'"
-        class="pa-10 mx-auto"
-      >
+      <v-card :width="widthCard" class="pa-10 mx-auto">
         <v-toolbar dark flat>
           <v-card-title class="layout justify-center">
             <span class="headline">Đăng ký làm chuyên gia</span>
@@ -78,7 +75,7 @@
           <ValidationProvider
             mode="aggressive"
             name="Confirm Password"
-            rules="required|alpha_dash|min:6|confirmed:password"
+            rules="required|alpha_dash|min:6|confirmed:@Password"
             v-slot="{ errors }"
             :bails="false"
           >
@@ -208,6 +205,24 @@ export default {
       fields: ""
     }
   }),
+  computed: {
+    widthCard() {
+      switch (this.$vuetify.breakpoint.name) {
+        case "xs":
+          return "100%";
+        case "sm":
+          return "100%";
+        case "md":
+          return "60%";
+        case "lg":
+          return 500;
+        case "xl":
+          return 500;
+        default:
+          return "100%";
+      }
+    }
+  },
   methods: {
     SignUpSpecialist() {
       const data = this.form;

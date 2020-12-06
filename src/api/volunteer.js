@@ -35,8 +35,8 @@ const users = [
   }
 ];
 
-async function getVolunteer(id, params) {
-  const { user } = await volunteerService.get(id, params);
+async function getVolunteer(userId) {
+  const user = await volunteerService.get(userId);
   return user;
 }
 
@@ -49,8 +49,22 @@ async function accept(id, data, params) {
 async function getAllNewVolunteers() {
   return users.filter(e => e.isAccept == false);
 }
+
+async function updateVolunteerInfo(userId, data) {
+  const users = await volunteerService.patch(userId, data);
+  return users;
+}
+
+async function createVolunteer(info) {
+  console.log(info);
+  const volun = await volunteerService.create(info);
+  return volun;
+}
+
 export default {
   getVolunteer,
   getAllNewVolunteers,
-  accept
+  accept,
+  updateVolunteerInfo,
+  createVolunteer
 };
