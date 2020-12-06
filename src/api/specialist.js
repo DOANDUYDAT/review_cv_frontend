@@ -2,38 +2,6 @@
 import feathers from "../services/restClient";
 
 const specialistService = feathers.service("specialists");
-const users = [
-  {
-    id: "001",
-    userName: "Le Thanh",
-    email: "lethanh98@gmail.com",
-    phone: "0123456789",
-    company: "Viettel",
-    website: "viettel.com.vn",
-    isActive: "Từ chối",
-    isAccept: false
-  },
-  {
-    id: "002",
-    userName: "Duong Thoa",
-    email: "duongthoa98@gmail.com",
-    phone: "0123445566",
-    company: "Viettel",
-    website: "viettel.com.vn",
-    isActive: "Đang xử lý",
-    isAccept: false
-  },
-  {
-    id: "003",
-    userName: "Doan Dat",
-    email: "doandat98@gmail.com",
-    phone: "0336221717",
-    company: "Viettel",
-    website: "viettel.com.vn",
-    isActive: "Đang xử lý",
-    isAccept: false
-  }
-];
 
 async function getSpecialist(userId) {
   const user = await specialistService.get(userId);
@@ -41,8 +9,6 @@ async function getSpecialist(userId) {
 }
 
 async function accept(id, data, params) {
-  let specialistIndex = users.findIndex(e => e.id == id);
-  users[specialistIndex].isAccept = true;
   // const newData = {
   //   isAccept: true
   // }
@@ -58,17 +24,23 @@ async function accept(id, data, params) {
 }
 
 async function getAllNewSpecialists() {
-  return users.filter(e => e.isAccept == false);
+  // return users.filter(e => e.isAccept == false);
 }
 
-async function updateSpecialistInfo(userId, data) {
+async function updateInfo(userId, data) {
   const users = await specialistService.patch(userId, data);
   return users;
+}
+
+async function createSpecialist(info) {
+  const specialist = await specialistService.create(info);
+  return specialist;
 }
 
 export default {
   getSpecialist,
   getAllNewSpecialists,
   accept,
-  updateSpecialistInfo
+  updateInfo,
+  createSpecialist
 };
