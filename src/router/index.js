@@ -21,7 +21,7 @@ const routes = [
       ),
     children: [
       {
-        path: "home",
+        path: "",
         name: "Home",
         component: Home,
         meta: {
@@ -254,7 +254,6 @@ const routes = [
   },
   {
     path: "/specialistHome",
-    name: "Specialist Home",
     component: () =>
       import(
         /* webpackChunkName: "specialistHome" */ "../views/Layout/SpecialistLayout.vue"
@@ -266,7 +265,7 @@ const routes = [
     children: [
       {
         path: "",
-        name: "Upload CV",
+        name: "Specilist Home",
         component: () =>
           import(
             /* webpackChunkName: "specialistHome" */ "../views/Member/UploadCV.vue"
@@ -290,7 +289,6 @@ const routes = [
   },
   {
     path: "/volunteerHome",
-    name: "Volunteer Home",
     component: () =>
       import(
         /* webpackChunkName: "volunteerHome" */ "../views/Layout/VolunteerLayout.vue"
@@ -302,7 +300,7 @@ const routes = [
     children: [
       {
         path: "",
-        name: "Upload CV",
+        name: "Volunteer Home",
         component: () =>
           import(
             /* webpackChunkName: "volunteerHome" */ "../views/Member/UploadCV.vue"

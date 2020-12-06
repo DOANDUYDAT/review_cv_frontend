@@ -17,9 +17,9 @@
             :bails="false"
           >
             <v-text-field
-              v-model="form.username"
+              v-model="form.userName"
               label="Username"
-              type="username"
+              type="text"
               prepend-icon="mdi-account"
             ></v-text-field>
             <span class="red--text text--lighten-1">{{ errors[0] }}</span>
@@ -173,7 +173,7 @@
   </v-container>
 </template>
 <script>
-import userService from "../api/user";
+import specialistService from "../api/specialist";
 export default {
   name: "SignUpSpecialist",
   components: {
@@ -193,7 +193,7 @@ export default {
       { name: "Quản lý điều hành" }
     ],
     form: {
-      username: "",
+      userName: "",
       email: "",
       phone: "",
       password: "",
@@ -225,9 +225,26 @@ export default {
   },
   methods: {
     SignUpSpecialist() {
-      const data = this.form;
-      userService
-        .create(data)
+      const {
+        userName,
+        password,
+        email,
+        phone,
+        fields,
+        company,
+        website
+      } = this.form;
+      const data = {
+        userName,
+        password,
+        email,
+        phone,
+        fields,
+        company,
+        websiteCompany: website
+      };
+      specialistService
+        .createSpecialist(data)
         .then(response => {
           // this.$router.push({ name: "About" });
           console.log(response);

@@ -17,9 +17,9 @@
             :bails="false"
           >
             <v-text-field
-              v-model="form.username"
+              v-model="form.userName"
               label="Username"
-              type="username"
+              type="text"
               prepend-icon="mdi-account"
             ></v-text-field>
             <span class="red--text text--lighten-1">{{ errors[0] }}</span>
@@ -161,7 +161,7 @@ export default {
       { name: "Quản lý điều hành" }
     ],
     form: {
-      username: "",
+      userName: "",
       email: "",
       phone: "",
       password: "",
@@ -191,9 +191,16 @@ export default {
   },
   methods: {
     SignUpVolunteer() {
-      const data = this.form;
+      const { userName, password, email, phone, fields } = this.form;
+      const data = {
+        userName,
+        password,
+        email,
+        phone,
+        fields
+      };
       volunteerService
-        .create(data)
+        .createVolunteer(data)
         .then(response => {
           // this.$router.push({ name: "About" });
           console.log(response);

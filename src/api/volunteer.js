@@ -56,7 +56,6 @@ async function updateVolunteerInfo(userId, data) {
 }
 
 async function createVolunteer(info) {
-  console.log(info);
   const volun = await volunteerService.create(info);
   return volun;
 }
