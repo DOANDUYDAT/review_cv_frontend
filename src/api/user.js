@@ -3,19 +3,17 @@ import feathers from "../services/restClient";
 
 const userService = feathers.service("users");
 
-async function get(id, params) {
-  const { user } = await userService.get(id, params);
+async function getUser(id) {
+  const user = await userService.get(id, {});
   return user;
 }
 
-async function create(data) {
-  const response = await userService.create(data);
-  return response;
+async function getAllUsers() {
+  const res = await userService.find({});
+  return res;
 }
 
-async function getAllUsers(params) {
-  const users = await userService.find(params);
-  return users;
-}
-
-export default userService;
+export default {
+  getUser,
+  getAllUsers
+};

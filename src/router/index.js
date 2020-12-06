@@ -254,7 +254,10 @@ const routes = [
         component: () =>
           import(
             /* webpackChunkName: "forums" */ "../views/Forums/Question.vue"
-          )
+          ),
+        meta: {
+          requiresAuth: true
+        }
       },
       {
         path: "questions/ask",
@@ -262,7 +265,10 @@ const routes = [
         component: () =>
           import(
             /* webpackChunkName: "forums" */ "../views/Forums/QuestionAsk.vue"
-          )
+          ),
+        meta: {
+          requiresAuth: true
+        }
       }
     ]
   },

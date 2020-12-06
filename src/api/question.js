@@ -2,7 +2,6 @@
 import feathers from "../services/restClient";
 
 const questionService = feathers.service("questions");
-const closeQuestionService = feathers.service("questions/:questionId/close");
 
 const LIMIT_NUMBER = 20;
 
@@ -30,13 +29,22 @@ async function getAllQuestions(pageNumber) {
   return res;
 }
 
-async function closeQuestion() {
-  const res = closeQuestionService.create();
+async function closeQuestion(questionId) {
+  const link = `questions/${questionId}/close`;
+  const res = feathers.service(link).create({});
+  return res;
+}
+
+async function likeQuestion(questionId) {
+  const link = `questions/${questionId}/like`;
+  const res = feathers.service(link).create({});
   return res;
 }
 
 export default {
   getQuestion,
   createQuestion,
-  getAllQuestions
+  getAllQuestions,
+  closeQuestion,
+  likeQuestion
 };

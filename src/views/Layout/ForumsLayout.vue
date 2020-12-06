@@ -7,7 +7,7 @@
         <!-- <v-btn v-for="link in links" :key="link" text>
           {{ link }}
         </v-btn> -->
-        <v-btn text>Forums</v-btn>
+        <v-btn @click="goToHomeForums" text>Forums</v-btn>
 
         <v-spacer></v-spacer>
 
@@ -40,6 +40,13 @@
 export default {
   data: () => ({
     links: ["Dashboard", "Messages", "Profile", "Updates"]
-  })
+  }),
+  methods: {
+    goToHomeForums() {
+      this.$router.push({
+        name: "Forums Home"
+      });
+    }
+  }
 };
 </script>

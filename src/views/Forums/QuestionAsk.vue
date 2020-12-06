@@ -44,24 +44,8 @@
 
       <editor-content class="editor__content" :editor="editor" />
     </div>
-    <!-- <div class="actions">
-      <button class="button" @click="clearContent">
-        Clear Content
-      </button>
-      <button class="button" @click="setContent">
-        Set Content
-      </button>
-    </div>
-
-    <div class="export">
-      <h3>JSON</h3>
-      <pre><code v-html="json"></code></pre>
-
-      <h3>HTML</h3>
-      <pre><code>{{ question.content }}</code></pre>
-    </div> -->
-    <pre><code v-html="question.content">{{ question.content }}</code></pre>
-    <v-btn x-small color="primary" class="my-4" @click="postQuestion">
+    <!-- <pre><code v-html="question.content">{{ question.content }}</code></pre> -->
+    <v-btn small color="primary" class="my-4" @click="postQuestion">
       Post your question
     </v-btn>
   </v-sheet>
