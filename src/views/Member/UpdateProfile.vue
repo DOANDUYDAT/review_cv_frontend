@@ -34,7 +34,7 @@
                     :bails="false"
                   >
                     <v-text-field
-                      v-model="form.username"
+                      v-model="currentUser.username"
                       label="Username"
                       type="username"
                       prepend-icon="mdi-account"
@@ -51,7 +51,7 @@
                     :bails="false"
                   >
                     <v-text-field
-                      v-model="form.email"
+                      v-model="currentUser.email"
                       label="Email"
                       type="email"
                       prepend-icon="mdi-email"
@@ -68,7 +68,7 @@
                     :bails="false"
                   >
                     <v-text-field
-                      v-model="form.phone"
+                      v-model="currentUser.phone"
                       label="Phone number"
                       type="phone"
                       prepend-icon="mdi-phone"
@@ -128,12 +128,14 @@
               <h5>Cài đặt thông báo qua email</h5>
             </v-card-title>
             <v-card-text>
+              <span>- Email thông báo từ hệ thống</span><br />
+              <span>- Email nhận kết quả review</span>
               <template>
                 <v-switch
-                  v-model="isActive"
+                  v-model="currentUser.getEmailNotification"
                   color="green"
                   inset
-                  :label="Bật"
+                  :label="getActiveLabel(currentUser.getEmailNotification)"
                   @change="onSwitchChange"
                 ></v-switch>
               </template>
@@ -155,16 +157,11 @@ import userService from "../../api/user";
 import authService from "../../api/authentication";
 export default {
   data: () => ({
-    isActive: [
-      "Trạng thái nhận thông báo đang bật",
-      "Trạng thái nhận thông báo đang tắt"
-    ],
-
-    form: {
-      username: "",
-      email: "",
-      phone: ""
-    },
+    // form: {
+    //   username: "",
+    //   email: "",
+    //   phone: ""
+    // },
     currentUser: null
   }),
   methods: {
@@ -185,15 +182,22 @@ export default {
       const userId = await authService.getCurrentUserId();
       const user = await userService.getUser(userId);
       this.currentUser = user;
-      this.form.email = user.email;
-      this.form.phone = user.phone;
-      this.form.username = user.username;
+      // this.form.email = user.email;
+      // this.form.phone = user.phone;
+      // this.form.username = user.username;
     },
     onSwitchChange() {
-      confirm("Are you sure you want to turn on/off this notification?");
+      this.$swal({
+        title: "Are you sure?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes"
+      });
     },
-    getActiveLabel(isActive) {
-      if (isActive) return "Trạng thái nhận thông báo đang bật";
+    getActiveLabel(status) {
+      if (status) return "Trạng thái nhận thông báo đang bật";
       else return "Trạng thái nhận thông báo đang tắt";
     }
   },

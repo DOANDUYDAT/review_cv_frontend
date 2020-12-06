@@ -192,11 +192,24 @@ export default {
     },
     deleteItem(item) {
       const index = this.users.indexOf(item);
-      confirm("Are you sure you want to delete this user?") &&
-        this.users.splice(index, 1);
+      this.$swal({
+        title: "Are you sure?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, , delete this user!"
+      }) && this.users.splice(index, 1);
     },
     onSwitchChange() {
-      confirm("Are you sure you want to lock/unlock this user?");
+      this.$swal({
+        title: "Are you sure?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes"
+      });
     },
     close() {
       this.dialog = false;

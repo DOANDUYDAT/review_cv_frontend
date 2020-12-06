@@ -55,9 +55,9 @@
     </v-app-bar>
 
     <v-main>
-      <v-container class="mx-auto">
-        <router-view></router-view>
-      </v-container>
+      <!-- <v-container> -->
+      <router-view></router-view>
+      <!-- </v-container> -->
     </v-main>
   </v-app>
 </template>
