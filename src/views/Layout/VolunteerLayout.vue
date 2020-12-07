@@ -20,11 +20,11 @@
             Điểm uy tín: 50
           </v-btn>
         </v-col>
-        <v-menu offset-y>
+        <v-menu offset-y v-if="currentUser">
           <template v-slot:activator="{ on }">
             <v-btn text dark v-on="on">
               <v-icon left>mdi-account-circle</v-icon>
-              {{ currentUser.userName }}Đoàn duy đần
+              {{ currentUser.user.userName }}
               <v-icon right>mdi-menu-down</v-icon>
             </v-btn>
           </template>
@@ -61,8 +61,8 @@
   </v-app>
 </template>
 <script>
-import userService from "../../api/user";
-import { userServiceRoot } from "../../api/user";
+import volunteerService from "../../api/volunteer";
+import { volunteerRoot } from "../../api/volunteer";
 import authService from "../../api/authentication";
 export default {
   data: () => ({
@@ -92,7 +92,7 @@ export default {
     },
     async getData() {
       const userId = await authService.getCurrentUserId();
-      const user = await userService.getVolunteer(userId);
+      const user = await volunteerService.getVolunteer(userId);
       this.currentUser = user;
       // this.user.username = user.username;
     },
@@ -113,7 +113,7 @@ export default {
     this.getData();
   },
   mounted() {
-    userServiceRoot.on("patched", () => this.getData());
+    volunteerRoot.on("patched", () => this.getData());
   }
 };
 </script>
