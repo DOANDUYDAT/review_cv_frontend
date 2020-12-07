@@ -23,11 +23,11 @@
             Điểm uy tín: 50
           </v-btn>
         </v-col>
-        <v-menu offset-y>
+        <v-menu offset-y v-if="currentUser">
           <template v-slot:activator="{ on }">
             <v-btn color="#007ddd" dark v-on="on">
               <v-icon left>mdi-account-circle</v-icon>
-              {{ user.username }}
+              {{ currentUser.userName }}
               <v-icon right>mdi-menu-down</v-icon>
             </v-btn>
           </template>
@@ -62,9 +62,9 @@ import userService from "../../api/user";
 import authService from "../../api/authentication";
 export default {
   data: () => ({
-    user: {
-      username: ""
-    },
+    // user: {
+    //   username: ""
+    // },
     currentUser: null
   }),
   methods: {
@@ -87,7 +87,7 @@ export default {
       const userId = await authService.getCurrentUserId();
       const user = await userService.getUser(userId);
       this.currentUser = user;
-      this.user.username = user.username;
+      // this.user.username = user.username;
     },
     LogOut() {
       authService.logout().finally(() => {

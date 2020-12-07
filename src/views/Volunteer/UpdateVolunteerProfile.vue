@@ -31,7 +31,7 @@
               :bails="false"
             >
               <v-text-field
-                v-model="form.username"
+                v-model="currentUser.user.userName"
                 label="Username"
                 type="username"
                 prepend-icon="mdi-account"
@@ -46,10 +46,11 @@
               :bails="false"
             >
               <v-text-field
-                v-model="form.email"
+                v-model="currentUser.user.email"
                 label="Email"
                 type="email"
                 prepend-icon="mdi-email"
+                readonly
               ></v-text-field>
               <span class="red--text text--lighten-1">{{ errors[0] }}</span>
             </ValidationProvider>
@@ -61,7 +62,7 @@
               :bails="false"
             >
               <v-text-field
-                v-model="form.phone"
+                v-model="currentUser.user.phone"
                 label="Phone number"
                 type="phone"
                 prepend-icon="mdi-phone"
@@ -121,18 +122,14 @@ import volunteerService from "../../api/volunteer";
 import authService from "../../api/authentication";
 export default {
   data: () => ({
-    form: {
-      username: "",
-      email: "",
-      phone: ""
-    },
+    // form: {},
     currentUser: null
   }),
   methods: {
     async UpdateVolunteerProfile() {
       await volunteerService.updateVolunteerInfo(
         this.currentUser._id,
-        this.form
+        this.currentUser
       );
       await authService.reAuthenticate();
       this.$swal({
@@ -147,11 +144,12 @@ export default {
     },
     async getData() {
       const userId = await authService.getCurrentUserId();
-      const user = await volunteerService.getVolunteer(userId);
-      this.currentUser = user;
-      this.form.email = user.email;
-      this.form.phone = user.phone;
-      this.form.username = user.username;
+      const data = await volunteerService.getVolunteer(userId);
+      this.currentUser = data;
+      // this.form = data.user;
+      // this.form.email = user.email;
+      // this.form.phone = user.phone;
+      // this.form.username = user.username;
     }
   },
   created() {

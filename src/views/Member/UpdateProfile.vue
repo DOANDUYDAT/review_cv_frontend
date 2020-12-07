@@ -34,7 +34,7 @@
                     :bails="false"
                   >
                     <v-text-field
-                      v-model="currentUser.username"
+                      v-model="currentUser.userName"
                       label="Username"
                       type="username"
                       prepend-icon="mdi-account"

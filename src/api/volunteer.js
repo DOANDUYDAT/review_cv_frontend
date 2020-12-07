@@ -36,8 +36,12 @@ const users = [
 ];
 
 async function getVolunteer(userId) {
-  const user = await volunteerService.get(userId);
-  return user;
+  const { data } = await volunteerService.find({
+    query: {
+      userId
+    }
+  });
+  return data[0];
 }
 
 async function accept(id, data, params) {
@@ -59,6 +63,8 @@ async function createVolunteer(info) {
   const volun = await volunteerService.create(info);
   return volun;
 }
+
+export { volunteerService as volunteerRoot };
 
 export default {
   getVolunteer,
