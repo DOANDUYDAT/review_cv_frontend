@@ -4,8 +4,12 @@ import feathers from "../services/restClient";
 const memberService = feathers.service("members");
 
 async function getMember(userId) {
-  const user = await memberService.get(userId);
-  return user;
+  const member = await memberService.find({
+    query: {
+      userId
+    }
+  });
+  return member;
 }
 
 async function updateInfo(userId, data) {

@@ -1,74 +1,75 @@
 <template>
-  <div v-if="currentUser" elevation="8">
-    <div>
-      <v-img
-        max-height="200"
-        max-width="100%"
-        src="../../assets/profile.png"
-      ></v-img>
-    </div>
-    <div style="position: relative; background-color:white">
-      <v-avatar
-        class="mr-10"
-        color="grey darken-1"
-        size="132"
-        style="position: absolute; top: -66px; left: 100px; z-index: 10"
-      >
-        <v-img src="../../assets/avatar.jpg"></v-img>
-      </v-avatar>
-      <ValidationObserver>
-        <v-card
-          :width="$vuetify.breakpoint.xs ? '100%' : '50%'"
-          class="pa-10 mx-auto"
-          flat
+  <v-container>
+    <div v-if="currentUser" elevation="8">
+      <div>
+        <v-img
+          max-height="200"
+          max-width="100%"
+          src="../../assets/profile.png"
+        ></v-img>
+      </div>
+      <div style="position: relative; background-color:white">
+        <v-avatar
+          class="mr-10"
+          color="grey darken-1"
+          size="132"
+          style="position: absolute; top: -66px; left: 100px; z-index: 10"
         >
-          <v-form>
-            <ValidationProvider
-              mode="aggressive"
-              name="Username"
-              rules="required"
-              v-slot="{ errors }"
-              :bails="false"
-            >
-              <v-text-field
-                v-model="form.username"
-                label="Username"
-                type="username"
-                prepend-icon="mdi-account"
-              ></v-text-field>
-              <span class="red--text text--lighten-1">{{ errors[0] }}</span>
-            </ValidationProvider>
-            <ValidationProvider
-              mode="aggressive"
-              name="Email"
-              rules="required|email"
-              v-slot="{ errors }"
-              :bails="false"
-            >
-              <v-text-field
-                v-model="form.email"
-                label="Email"
-                type="email"
-                prepend-icon="mdi-email"
-              ></v-text-field>
-              <span class="red--text text--lighten-1">{{ errors[0] }}</span>
-            </ValidationProvider>
-            <ValidationProvider
-              mode="aggressive"
-              name="Phone number"
-              :rules="{ required: true, regex: /^(0|\+84)[0-9]{9}$/ }"
-              v-slot="{ errors }"
-              :bails="false"
-            >
-              <v-text-field
-                v-model="form.phone"
-                label="Phone number"
-                type="phone"
-                prepend-icon="mdi-phone"
-              ></v-text-field>
-              <span class="red--text text--lighten-1">{{ errors[0] }}</span>
-            </ValidationProvider>
-            <!-- <ValidationProvider
+          <v-img src="../../assets/avatar.jpg"></v-img>
+        </v-avatar>
+        <ValidationObserver>
+          <v-card
+            :width="$vuetify.breakpoint.xs ? '100%' : '50%'"
+            class="pa-10 mx-auto"
+            flat
+          >
+            <v-form>
+              <ValidationProvider
+                mode="aggressive"
+                name="Username"
+                rules="required"
+                v-slot="{ errors }"
+                :bails="false"
+              >
+                <v-text-field
+                  v-model="form.username"
+                  label="Username"
+                  type="username"
+                  prepend-icon="mdi-account"
+                ></v-text-field>
+                <span class="red--text text--lighten-1">{{ errors[0] }}</span>
+              </ValidationProvider>
+              <ValidationProvider
+                mode="aggressive"
+                name="Email"
+                rules="required|email"
+                v-slot="{ errors }"
+                :bails="false"
+              >
+                <v-text-field
+                  v-model="form.email"
+                  label="Email"
+                  type="email"
+                  prepend-icon="mdi-email"
+                ></v-text-field>
+                <span class="red--text text--lighten-1">{{ errors[0] }}</span>
+              </ValidationProvider>
+              <ValidationProvider
+                mode="aggressive"
+                name="Phone number"
+                :rules="{ required: true, regex: /^(0|\+84)[0-9]{9}$/ }"
+                v-slot="{ errors }"
+                :bails="false"
+              >
+                <v-text-field
+                  v-model="form.phone"
+                  label="Phone number"
+                  type="phone"
+                  prepend-icon="mdi-phone"
+                ></v-text-field>
+                <span class="red--text text--lighten-1">{{ errors[0] }}</span>
+              </ValidationProvider>
+              <!-- <ValidationProvider
           mode="aggressive"
           name="Password"
           rules="required|alpha_dash|min:6"
@@ -104,17 +105,18 @@
           ></v-text-field>
           <span class="red--text text--lighten-1">{{ errors[0] }}</span>
         </ValidationProvider> -->
-          </v-form>
+            </v-form>
 
-          <v-card-actions class="d-flex justify-end">
-            <v-btn color="primary" @click="UpdateVolunteerProfile"
-              >Cập nhật</v-btn
-            >
-          </v-card-actions>
-        </v-card>
-      </ValidationObserver>
+            <v-card-actions class="d-flex justify-end">
+              <v-btn color="primary" @click="UpdateVolunteerProfile"
+                >Cập nhật</v-btn
+              >
+            </v-card-actions>
+          </v-card>
+        </ValidationObserver>
+      </div>
     </div>
-  </div>
+  </v-container>
 </template>
 <script>
 import volunteerService from "../../api/volunteer";

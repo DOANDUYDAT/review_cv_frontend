@@ -34,9 +34,9 @@
                     :bails="false"
                   >
                     <v-text-field
-                      v-model="currentUser.username"
+                      v-model="currentUser.userName"
                       label="Username"
-                      type="username"
+                      type="text"
                       prepend-icon="mdi-account"
                     ></v-text-field>
                     <span class="red--text text--lighten-1">{{
@@ -54,6 +54,7 @@
                       v-model="currentUser.email"
                       label="Email"
                       type="email"
+                      readonly
                       prepend-icon="mdi-email"
                     ></v-text-field>
                     <span class="red--text text--lighten-1">{{
@@ -153,7 +154,7 @@
   </v-container>
 </template>
 <script>
-import userService from "../../api/user";
+import memberService from "../../api/member";
 import authService from "../../api/authentication";
 export default {
   data: () => ({
@@ -166,8 +167,7 @@ export default {
   }),
   methods: {
     async UpdateProfile() {
-      await userService.updateInfo(this.currentUser._id, this.form);
-      await authService.reAuthenticate();
+      await memberService.updateInfo(this.currentUser._id, this.currentUser);
       this.$swal({
         toast: true,
         position: "top-end",
@@ -176,12 +176,11 @@ export default {
         showConfirmButton: false,
         timer: 1500
       });
-      await this.getData();
     },
     async getData() {
       const userId = await authService.getCurrentUserId();
-      const user = await userService.getUser(userId);
-      this.currentUser = user;
+      const member = await memberService.getMember(userId);
+      this.currentUser = member;
       // this.form.email = user.email;
       // this.form.phone = user.phone;
       // this.form.username = user.username;

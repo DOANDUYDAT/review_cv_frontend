@@ -16,13 +16,13 @@
           <v-btn text @click="GoToForumsPage" color="white">
             Diễn đàn
           </v-btn>
-          <v-btn rounded color="#007ddd" dark>
+          <v-btn text rounded dark>
             Điểm uy tín: 50
           </v-btn>
         </v-col>
         <v-menu offset-y>
           <template v-slot:activator="{ on }">
-            <v-btn color="#007ddd" dark v-on="on">
+            <v-btn text dark v-on="on">
               <v-icon left>mdi-account-circle</v-icon>
               {{ user.username }}Đoàn duy đần
               <v-icon right>mdi-menu-down</v-icon>
@@ -44,7 +44,6 @@
         <v-btn icon exact>
           <v-icon color="white">mdi-bell</v-icon>
         </v-btn>
-        <v-col cols="12" class=""><v-divider></v-divider></v-col>
       </v-row>
     </v-app-bar>
 
