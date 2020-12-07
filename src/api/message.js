@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import feathers from "../services/restClient";
+import feathers from "../services/socketClient";
 
 const messageService = feathers.service("messages");
 
@@ -13,9 +13,15 @@ async function create(data) {
   return response;
 }
 
-async function FindMessagesByUserId(params) {
-  const messages = await messageService.find(params);
+async function FindMessagesByUserId() {
+  const messages = await messageService.find({
+    query: {
+      isRead: true
+    }
+  });
+  console.log(messages);
   return messages;
 }
-
+console.log("data message");
+FindMessagesByUserId();
 export default messageService;

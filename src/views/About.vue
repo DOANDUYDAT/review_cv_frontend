@@ -5,7 +5,9 @@
   </div>
 </template>
 <script>
+/* eslint-disable no-unused-vars */
 import authService from "../api/authentication";
+import messageService from "../api/message";
 export default {
   name: "About",
   methods: {

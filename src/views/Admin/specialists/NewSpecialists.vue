@@ -179,7 +179,7 @@ export default {
       specialistService
         .getAllNewSpecialists()
         .then(listSepcialists => {
-          this.users = listSepcialists;
+          this.users = listSepcialists.data;
         })
         .catch(err => {
           console.log(err);

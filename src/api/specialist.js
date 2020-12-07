@@ -24,7 +24,12 @@ async function accept(id, data, params) {
 }
 
 async function getAllNewSpecialists() {
-  // return users.filter(e => e.isAccept == false);
+  const res = await specialistService.find({
+    query: {
+      isAccept: false
+    }
+  });
+  return res;
 }
 
 async function updateInfo(userId, data) {
