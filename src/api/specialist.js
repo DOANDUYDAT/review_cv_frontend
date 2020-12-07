@@ -4,8 +4,12 @@ import feathers from "../services/restClient";
 const specialistService = feathers.service("specialists");
 
 async function getSpecialist(userId) {
-  const user = await specialistService.get(userId);
-  return user;
+  const specialist = await specialistService.find({
+    query: {
+      userId
+    }
+  });
+  return specialist;
 }
 
 async function accept(id, data, params) {
@@ -32,9 +36,9 @@ async function getAllNewSpecialists() {
   return res;
 }
 
-async function updateInfo(userId, data) {
-  const users = await specialistService.patch(userId, data);
-  return users;
+async function updateSpecialistInfo(userId, data) {
+  const specialist = await specialistService.patch(userId, data);
+  return specialist;
 }
 
 async function createSpecialist(info) {
@@ -46,6 +50,6 @@ export default {
   getSpecialist,
   getAllNewSpecialists,
   accept,
-  updateInfo,
+  updateSpecialistInfo,
   createSpecialist
 };

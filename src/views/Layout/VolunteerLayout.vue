@@ -24,7 +24,7 @@
           <template v-slot:activator="{ on }">
             <v-btn text dark v-on="on">
               <v-icon left>mdi-account-circle</v-icon>
-              {{ user.username }}Đoàn duy đần
+              {{ currentUser.userName }}Đoàn duy đần
               <v-icon right>mdi-menu-down</v-icon>
             </v-btn>
           </template>
@@ -61,13 +61,14 @@
   </v-app>
 </template>
 <script>
-import volunteerService from "../../api/volunteer";
+import userService from "../../api/user";
+import { userServiceRoot } from "../../api/user";
 import authService from "../../api/authentication";
 export default {
   data: () => ({
-    user: {
-      username: ""
-    },
+    // user: {
+    //   username: ""
+    // },
     currentUser: null
   }),
   methods: {
@@ -91,9 +92,9 @@ export default {
     },
     async getData() {
       const userId = await authService.getCurrentUserId();
-      const user = await volunteerService.getVolunteer(userId);
+      const user = await userService.getVolunteer(userId);
       this.currentUser = user;
-      this.user.username = user.username;
+      // this.user.username = user.username;
     },
     LogOut() {
       authService.logout().finally(() => {
@@ -110,6 +111,9 @@ export default {
   },
   created() {
     this.getData();
+  },
+  mounted() {
+    userServiceRoot.on("patched", () => this.getData());
   }
 };
 </script>
