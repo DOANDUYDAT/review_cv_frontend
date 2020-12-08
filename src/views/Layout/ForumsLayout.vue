@@ -7,6 +7,14 @@
         <!-- <v-btn v-for="link in links" :key="link" text>
           {{ link }}
         </v-btn> -->
+        <v-avatar
+          size="50"
+          @click="GoToMemberHomePage"
+          class="mr-10"
+          color="#00bda0"
+        >
+          <v-img src="../../assets/logo.png"></v-img>
+        </v-avatar>
         <v-btn @click="goToHomeForums" text>Forums</v-btn>
 
         <v-spacer></v-spacer>
@@ -50,3 +58,8 @@ export default {
   }
 };
 </script>
+<style lang="scss" scoped>
+.v-app-bar {
+  background-image: linear-gradient(0.25turn, #00bda0 30%, #007ddd);
+}
+</style>

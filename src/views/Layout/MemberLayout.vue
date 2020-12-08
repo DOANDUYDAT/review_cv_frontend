@@ -59,7 +59,7 @@
 </template>
 <script>
 import memberService from "../../api/member";
-import { memberRoot } from "../../api/member";
+import { updateInfoService } from "../../api/member";
 import authService from "../../api/authentication";
 export default {
   data: () => ({
@@ -103,7 +103,7 @@ export default {
     this.getData();
   },
   mounted() {
-    memberRoot.on("patched", () => this.getData());
+    updateInfoService.on("created", () => this.getData());
   }
 };
 </script>

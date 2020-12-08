@@ -2,6 +2,7 @@
 import feathers from "../services/restClient";
 
 const memberService = feathers.service("members");
+const updateInfoService = feathers.service("members/update-info");
 
 async function getMember(userId) {
   const { data } = await memberService.find({
@@ -12,8 +13,9 @@ async function getMember(userId) {
   return data[0];
 }
 
-async function updateInfo(userId, data) {
-  const member = await memberService.patch(userId, data);
+async function updateInfo(data) {
+  console.log(data);
+  const member = await updateInfoService.create(data);
   return member;
 }
 
@@ -28,7 +30,7 @@ async function getAllMembers() {
   return data;
 }
 
-export { memberService as memberRoot };
+export { updateInfoService };
 
 export default {
   getMember,

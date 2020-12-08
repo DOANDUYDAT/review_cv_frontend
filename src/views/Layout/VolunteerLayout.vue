@@ -62,7 +62,7 @@
 </template>
 <script>
 import volunteerService from "../../api/volunteer";
-import { volunteerRoot } from "../../api/volunteer";
+import { updateInfoService } from "../../api/volunteer";
 import authService from "../../api/authentication";
 export default {
   data: () => ({
@@ -113,7 +113,7 @@ export default {
     this.getData();
   },
   mounted() {
-    volunteerRoot.on("patched", () => this.getData());
+    updateInfoService.on("created", () => this.getData());
   }
 };
 </script>

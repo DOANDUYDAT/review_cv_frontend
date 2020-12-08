@@ -2,6 +2,7 @@
 import feathers from "../services/restClient";
 
 const volunteerService = feathers.service("volunteers");
+const updateInfoService = feathers.service("volunteers/update-info");
 
 async function getVolunteer(userId) {
   const { data } = await volunteerService.find({
@@ -34,8 +35,8 @@ async function getAllVolunteers() {
   return data;
 }
 
-async function updateVolunteerInfo(userId, data) {
-  const volunteer = await volunteerService.patch(userId, data);
+async function updateVolunteerInfo(data) {
+  const volunteer = await updateInfoService.create(data);
   return volunteer;
 }
 
@@ -44,7 +45,7 @@ async function createVolunteer(info) {
   return volunteer;
 }
 
-export { volunteerService as volunteerRoot };
+export { updateInfoService };
 
 export default {
   getVolunteer,

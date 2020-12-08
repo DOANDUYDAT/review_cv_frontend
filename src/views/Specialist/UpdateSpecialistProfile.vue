@@ -54,6 +54,7 @@
                       v-model="currentUser.user.email"
                       label="Email"
                       type="email"
+                      readonly
                       prepend-icon="mdi-email"
                     ></v-text-field>
                     <span class="red--text text--lighten-1">{{
@@ -120,10 +121,24 @@ export default {
   }),
   methods: {
     async UpdateSpecialistProfile() {
-      await specialistService.updateSpecialistInfo(
-        this.currentUser._id,
-        this.currentUser
-      );
+      const {
+        _id,
+        userId,
+        user: { phone, userName, getEmailNotification },
+        fields,
+        company,
+        websiteCompany
+      } = this.currentUser;
+      await specialistService.updateSpecialistInfo({
+        _id,
+        userId,
+        phone,
+        userName,
+        getEmailNotification,
+        fields,
+        company,
+        websiteCompany
+      });
       await authService.reAuthenticate();
       this.$swal({
         toast: true,

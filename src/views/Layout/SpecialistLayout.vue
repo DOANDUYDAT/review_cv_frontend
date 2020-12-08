@@ -56,7 +56,7 @@
 </template>
 <script>
 import specialistService from "../../api/specialist";
-import { specialistRoot } from "../../api/specialist";
+import { updateInfoService } from "../../api/specialist";
 import authService from "../../api/authentication";
 export default {
   data: () => ({
@@ -97,7 +97,7 @@ export default {
     this.getData();
   },
   mounted() {
-    specialistRoot.on("patched", () => this.getData());
+    updateInfoService.on("created", () => this.getData());
   }
 };
 </script>

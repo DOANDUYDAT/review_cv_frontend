@@ -120,7 +120,18 @@ export default {
   }),
   methods: {
     async UpdateProfile() {
-      await memberService.updateInfo(this.currentUser._id, this.currentUser);
+      const {
+        _id,
+        userId,
+        user: { phone, userName, getEmailNotification }
+      } = this.currentUser;
+      await memberService.updateInfo({
+        _id,
+        userId,
+        phone,
+        userName,
+        getEmailNotification
+      });
       await authService.reAuthenticate();
       this.$swal({
         toast: true,

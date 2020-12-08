@@ -54,6 +54,7 @@
                       v-model="currentUser.user.email"
                       label="Email"
                       type="email"
+                      readonly
                       prepend-icon="mdi-email"
                     ></v-text-field>
                     <span class="red--text text--lighten-1">{{
@@ -121,10 +122,20 @@ export default {
   }),
   methods: {
     async UpdateVolunteerProfile() {
-      await volunteerService.updateVolunteerInfo(
-        this.currentUser._id,
-        this.currentUser
-      );
+      const {
+        _id,
+        userId,
+        user: { phone, userName, getEmailNotification },
+        fields
+      } = this.currentUser;
+      await volunteerService.updateVolunteerInfo({
+        _id,
+        userId,
+        phone,
+        userName,
+        getEmailNotification,
+        fields
+      });
       await authService.reAuthenticate();
       this.$swal({
         toast: true,
