@@ -34,9 +34,9 @@
                     :bails="false"
                   >
                     <v-text-field
-                      v-model="currentUser.userName"
+                      v-model="currentUser.user.userName"
                       label="Username"
-                      type="username"
+                      type="text"
                       prepend-icon="mdi-account"
                     ></v-text-field>
                     <span class="red--text text--lighten-1">{{
@@ -51,9 +51,10 @@
                     :bails="false"
                   >
                     <v-text-field
-                      v-model="currentUser.email"
+                      v-model="currentUser.user.email"
                       label="Email"
                       type="email"
+                      readonly
                       prepend-icon="mdi-email"
                     ></v-text-field>
                     <span class="red--text text--lighten-1">{{
@@ -68,51 +69,15 @@
                     :bails="false"
                   >
                     <v-text-field
-                      v-model="currentUser.phone"
+                      v-model="currentUser.user.phone"
                       label="Phone number"
-                      type="phone"
+                      type="text"
                       prepend-icon="mdi-phone"
                     ></v-text-field>
                     <span class="red--text text--lighten-1">{{
                       errors[0]
                     }}</span>
                   </ValidationProvider>
-                  <!-- <ValidationProvider
-          mode="aggressive"
-          name="Password"
-          rules="required|alpha_dash|min:6"
-          v-slot="{ errors }"
-          :bails="false"
-        >
-          <v-text-field
-            :type="form.showPassword ? 'text' : 'password'"
-            v-model="form.password"
-            label="Password"
-            counter="16"
-            prepend-icon="mdi-lock"
-            :append-icon="form.showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-            @click:append="form.showPassword = !form.showPassword"
-          ></v-text-field>
-          <span class="red--text text--lighten-1">{{ errors[0] }}</span>
-        </ValidationProvider>
-        <ValidationProvider
-          mode="aggressive"
-          name="Confirm Password"
-          rules="required|alpha_dash|min:6|confirmed:@Password"
-          v-slot="{ errors }"
-          :bails="false"
-        >
-          <v-text-field
-            :type="form.showConfirmPassword ? 'text' : 'password'"
-            label="Confirm Password"
-            v-model="form.confirmPassword"
-            counter="16"
-            prepend-icon="mdi-lock"
-            :append-icon="form.showConfirmPassword ? 'mdi-eye' : 'mdi-eye-off'"
-            @click:append="form.showConfirmPassword = !form.showConfirmPassword"
-          ></v-text-field>
-          <span class="red--text text--lighten-1">{{ errors[0] }}</span>
-        </ValidationProvider> -->
                 </v-form>
 
                 <v-card-actions class="d-flex justify-end">
@@ -132,19 +97,13 @@
               <span>- Email nhận kết quả review</span>
               <template>
                 <v-switch
-                  v-model="currentUser.getEmailNotification"
+                  v-model="currentUser.user.getEmailNotification"
                   color="green"
                   inset
-                  :label="getActiveLabel(currentUser.getEmailNotification)"
+                  :label="getActiveLabel(currentUser.user.getEmailNotification)"
                   @change="onSwitchChange"
                 ></v-switch>
               </template>
-
-              <!-- <v-switch
-              v-model="item.isActive"
-              inset
-              :label="getActiveLabel(item.isActive)"
-            ></v-switch> -->
             </v-card-text>
           </v-card>
         </v-col>
@@ -153,20 +112,15 @@
   </v-container>
 </template>
 <script>
-import userService from "../../api/user";
+import memberService from "../../api/member";
 import authService from "../../api/authentication";
 export default {
   data: () => ({
-    // form: {
-    //   username: "",
-    //   email: "",
-    //   phone: ""
-    // },
     currentUser: null
   }),
   methods: {
     async UpdateProfile() {
-      await userService.updateInfo(this.currentUser._id, this.form);
+      await memberService.updateInfo(this.currentUser._id, this.currentUser);
       await authService.reAuthenticate();
       this.$swal({
         toast: true,
@@ -180,8 +134,8 @@ export default {
     },
     async getData() {
       const userId = await authService.getCurrentUserId();
-      const user = await userService.getUser(userId);
-      this.currentUser = user;
+      const member = await memberService.getMember(userId);
+      this.currentUser = member;
       // this.form.email = user.email;
       // this.form.phone = user.phone;
       // this.form.username = user.username;

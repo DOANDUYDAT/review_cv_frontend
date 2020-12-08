@@ -19,15 +19,15 @@
           <v-btn text @click="GoToQuanLyCVPage" color="white">
             Quản lý CV
           </v-btn>
-          <v-btn rounded color="#007ddd" dark>
+          <v-btn text rounded dark>
             Điểm uy tín: 50
           </v-btn>
         </v-col>
         <v-menu offset-y v-if="currentUser">
           <template v-slot:activator="{ on }">
-            <v-btn color="#007ddd" dark v-on="on">
+            <v-btn text dark v-on="on">
               <v-icon left>mdi-account-circle</v-icon>
-              {{ currentUser.userName }}
+              {{ currentUser.user.userName }}
               <v-icon right>mdi-menu-down</v-icon>
             </v-btn>
           </template>
@@ -58,13 +58,11 @@
   </v-app>
 </template>
 <script>
-import userService from "../../api/user";
+import memberService from "../../api/member";
+import { memberRoot } from "../../api/member";
 import authService from "../../api/authentication";
 export default {
   data: () => ({
-    // user: {
-    //   username: ""
-    // },
     currentUser: null
   }),
   methods: {
@@ -85,9 +83,8 @@ export default {
     },
     async getData() {
       const userId = await authService.getCurrentUserId();
-      const user = await userService.getUser(userId);
+      const user = await memberService.getMember(userId);
       this.currentUser = user;
-      // this.user.username = user.username;
     },
     LogOut() {
       authService.logout().finally(() => {
@@ -104,6 +101,9 @@ export default {
   },
   created() {
     this.getData();
+  },
+  mounted() {
+    memberRoot.on("patched", () => this.getData());
   }
 };
 </script>

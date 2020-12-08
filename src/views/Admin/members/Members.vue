@@ -2,10 +2,11 @@
   <v-data-table
     :headers="headers"
     :items="users"
-    :sort-by="['id']"
-    user-key="id"
+    :sort-by="['_id']"
+    user-key="_id"
     :sort-asc="[true]"
     :search="search"
+    v-if="users"
   >
     <template v-slot:top>
       <v-toolbar flat color="white">
@@ -23,7 +24,7 @@
           single-line
           hide-details
         ></v-text-field>
-        <v-dialog v-model="dialog" max-width="500px">
+        <v-dialog v-model="dialog" max-width="500px" v-if="viewedItem">
           <v-card>
             <v-toolbar color="blue" dark flat>
               <v-card-title class="layout justify-center">
@@ -35,28 +36,28 @@
                 <v-row>
                   <v-col cols="12" sm="6" md="6">
                     <v-text-field
-                      v-model="viewedItem.id"
+                      v-model="viewedItem._id"
                       label="Id"
                       disabled
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="6">
                     <v-text-field
-                      v-model="viewedItem.userName"
+                      v-model="viewedItem.user.userName"
                       label="Username"
                       disabled
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="6">
                     <v-text-field
-                      v-model="viewedItem.email"
+                      v-model="viewedItem.user.email"
                       label="Email"
                       disabled
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="6">
                     <v-text-field
-                      v-model="viewedItem.phone"
+                      v-model="viewedItem.user.phone"
                       label="Phone"
                       disabled
                     ></v-text-field>
@@ -81,12 +82,12 @@
         >mdi-trash-can-outline</v-icon
       >
     </template>
-    <template v-slot:[`item.isActive`]="{ item }">
+    <template v-slot:[`item.user.isActive`]="{ item }">
       <v-switch
-        v-model="item.isActive"
+        v-model="item.user.isActive"
         color="green"
         inset
-        :label="getActiveLabel(item.isActive)"
+        :label="getActiveLabel(item.user.isActive)"
         @change="onSwitchChange"
       ></v-switch>
     </template>
@@ -95,7 +96,7 @@
 
 <script>
 // import userService from "@/api/user";
-// import messageService from "@/api/message";
+import memberService from "@/api/member";
 
 export default {
   data: () => ({
@@ -105,19 +106,34 @@ export default {
     headers: [
       {
         text: "Id",
-        value: "id",
+        value: "_id",
         sortable: false,
         filterable: true
       },
       {
         text: "Username",
-        value: "userName",
+        value: "user.userName",
         sortable: true,
         filterable: false
       },
-      { text: "Email", value: "email", sortable: false, filterable: false },
-      { text: "Phone", value: "phone", sortable: false, filterable: false },
-      { text: "State", value: "isActive", sortable: false, filterable: false },
+      {
+        text: "Email",
+        value: "user.email",
+        sortable: false,
+        filterable: false
+      },
+      {
+        text: "Phone",
+        value: "user.phone",
+        sortable: false,
+        filterable: false
+      },
+      {
+        text: "State",
+        value: "user.isActive",
+        sortable: false,
+        filterable: false
+      },
       {
         text: "Actions",
         align: "center",
@@ -126,36 +142,9 @@ export default {
         filterable: false
       }
     ],
-    users: [
-      {
-        id: "001",
-        userName: "Le Thanh",
-        email: "lethanh98@gmail.com",
-        phone: "0123456789",
-        isActive: true
-      },
-      {
-        id: "002",
-        userName: "Duong Thoa",
-        email: "duongthoa98@gmail.com",
-        phone: "0123445566",
-        isActive: true
-      },
-      {
-        id: "003",
-        userName: "Doan Dat",
-        email: "doandat98@gmail.com",
-        phone: "0336221717",
-        isActive: false
-      }
-    ],
+    users: null,
     viewedIndex: -1,
-    viewedItem: {
-      id: 0,
-      userName: "",
-      email: "",
-      phone: 0
-    }
+    viewedItem: null
   }),
 
   computed: {
@@ -175,15 +164,8 @@ export default {
 
   methods: {
     async getData() {
-      // const allUsers = await messageService.get("5f9e28eb3d777911e3d78765", {
-      //   query: {}
-      // });
-      // const allUsers = await messageService.find({
-      //   query: {
-      //     authorId: "5f9c36c9412dbc1f216dcfae"
-      //   }
-      // });
-      // this.users = allUsers;
+      const allUsers = await memberService.getAllMembers();
+      this.users = allUsers;
     },
     viewItem(item) {
       this.viewedIndex = this.users.indexOf(item);

@@ -2,38 +2,6 @@
 import feathers from "../services/restClient";
 
 const volunteerService = feathers.service("volunteers");
-const users = [
-  {
-    id: "001",
-    userName: "Le Thanh",
-    email: "lethanh98@gmail.com",
-    phone: "0123456789",
-    company: "Viettel",
-    website: "viettel.com.vn",
-    isActive: "Từ chối",
-    isAccept: false
-  },
-  {
-    id: "002",
-    userName: "Duong Thoa",
-    email: "duongthoa98@gmail.com",
-    phone: "0123445566",
-    company: "Viettel",
-    website: "viettel.com.vn",
-    isActive: "Đang xử lý",
-    isAccept: false
-  },
-  {
-    id: "003",
-    userName: "Doan Dat",
-    email: "doandat98@gmail.com",
-    phone: "0336221717",
-    company: "Viettel",
-    website: "viettel.com.vn",
-    isActive: "Đang xử lý",
-    isAccept: false
-  }
-];
 
 async function getVolunteer(userId) {
   const { data } = await volunteerService.find({
@@ -45,23 +13,35 @@ async function getVolunteer(userId) {
 }
 
 async function accept(id, data, params) {
-  let volunteerIndex = users.findIndex(e => e.id == id);
-  users[volunteerIndex].isAccept = true;
+  // let volunteerIndex = users.findIndex(e => e.id == id);
+  // users[volunteerIndex].isAccept = true;
   return true;
 }
 
 async function getAllNewVolunteers() {
-  return users.filter(e => e.isAccept == false);
+  // return users.filter(e => e.isAccept == false);
+  const { data } = await volunteerService.find({
+    query: {
+      isAccept: false
+    }
+  });
+  return data;
+}
+
+async function getAllVolunteers() {
+  // const skipNumber = pageNumber * 20;
+  const { data } = await volunteerService.find({});
+  return data;
 }
 
 async function updateVolunteerInfo(userId, data) {
-  const users = await volunteerService.patch(userId, data);
-  return users;
+  const volunteer = await volunteerService.patch(userId, data);
+  return volunteer;
 }
 
 async function createVolunteer(info) {
-  const volun = await volunteerService.create(info);
-  return volun;
+  const volunteer = await volunteerService.create(info);
+  return volunteer;
 }
 
 export { volunteerService as volunteerRoot };
@@ -71,5 +51,6 @@ export default {
   getAllNewVolunteers,
   accept,
   updateVolunteerInfo,
-  createVolunteer
+  createVolunteer,
+  getAllVolunteers
 };
