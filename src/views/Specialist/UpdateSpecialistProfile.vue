@@ -34,9 +34,9 @@
                     :bails="false"
                   >
                     <v-text-field
-                      v-model="currentUser.username"
+                      v-model="currentUser.user.userName"
                       label="Username"
-                      type="username"
+                      type="text"
                       prepend-icon="mdi-account"
                     ></v-text-field>
                     <span class="red--text text--lighten-1">{{
@@ -51,7 +51,7 @@
                     :bails="false"
                   >
                     <v-text-field
-                      v-model="currentUser.email"
+                      v-model="currentUser.user.email"
                       label="Email"
                       type="email"
                       prepend-icon="mdi-email"
@@ -68,51 +68,15 @@
                     :bails="false"
                   >
                     <v-text-field
-                      v-model="currentUser.phone"
+                      v-model="currentUser.user.phone"
                       label="Phone number"
-                      type="phone"
+                      type="text"
                       prepend-icon="mdi-phone"
                     ></v-text-field>
                     <span class="red--text text--lighten-1">{{
                       errors[0]
                     }}</span>
                   </ValidationProvider>
-                  <!-- <ValidationProvider
-          mode="aggressive"
-          name="Password"
-          rules="required|alpha_dash|min:6"
-          v-slot="{ errors }"
-          :bails="false"
-        >
-          <v-text-field
-            :type="form.showPassword ? 'text' : 'password'"
-            v-model="form.password"
-            label="Password"
-            counter="16"
-            prepend-icon="mdi-lock"
-            :append-icon="form.showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-            @click:append="form.showPassword = !form.showPassword"
-          ></v-text-field>
-          <span class="red--text text--lighten-1">{{ errors[0] }}</span>
-        </ValidationProvider>
-        <ValidationProvider
-          mode="aggressive"
-          name="Confirm Password"
-          rules="required|alpha_dash|min:6|confirmed:@Password"
-          v-slot="{ errors }"
-          :bails="false"
-        >
-          <v-text-field
-            :type="form.showConfirmPassword ? 'text' : 'password'"
-            label="Confirm Password"
-            v-model="form.confirmPassword"
-            counter="16"
-            prepend-icon="mdi-lock"
-            :append-icon="form.showConfirmPassword ? 'mdi-eye' : 'mdi-eye-off'"
-            @click:append="form.showConfirmPassword = !form.showConfirmPassword"
-          ></v-text-field>
-          <span class="red--text text--lighten-1">{{ errors[0] }}</span>
-        </ValidationProvider> -->
                 </v-form>
 
                 <v-card-actions class="d-flex justify-end">
@@ -133,19 +97,13 @@
               <span>- Email thông báo từ hệ thống</span><br />
               <template>
                 <v-switch
-                  v-model="currentUser.getEmailNotification"
+                  v-model="currentUser.user.getEmailNotification"
                   color="green"
                   inset
-                  :label="getActiveLabel(currentUser.getEmailNotification)"
+                  :label="getActiveLabel(currentUser.user.getEmailNotification)"
                   @change="onSwitchChange"
                 ></v-switch>
               </template>
-
-              <!-- <v-switch
-              v-model="item.isActive"
-              inset
-              :label="getActiveLabel(item.isActive)"
-            ></v-switch> -->
             </v-card-text>
           </v-card>
         </v-col>
@@ -158,11 +116,6 @@ import specialistService from "../../api/specialist";
 import authService from "../../api/authentication";
 export default {
   data: () => ({
-    // form: {
-    //   username: "",
-    //   email: "",
-    //   phone: ""
-    // },
     currentUser: null
   }),
   methods: {
@@ -180,6 +133,7 @@ export default {
         showConfirmButton: false,
         timer: 1500
       });
+      await this.getData();
     },
     async getData() {
       const userId = await authService.getCurrentUserId();

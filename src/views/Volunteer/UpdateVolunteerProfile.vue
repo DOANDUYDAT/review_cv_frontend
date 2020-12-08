@@ -36,7 +36,7 @@
                     <v-text-field
                       v-model="currentUser.user.userName"
                       label="Username"
-                      type="username"
+                      type="text"
                       prepend-icon="mdi-account"
                     ></v-text-field>
                     <span class="red--text text--lighten-1">{{
@@ -70,7 +70,7 @@
                     <v-text-field
                       v-model="currentUser.user.phone"
                       label="Phone number"
-                      type="phone"
+                      type="text"
                       prepend-icon="mdi-phone"
                     ></v-text-field>
                     <span class="red--text text--lighten-1">{{
@@ -104,12 +104,6 @@
                   @change="onSwitchChange"
                 ></v-switch>
               </template>
-
-              <!-- <v-switch
-              v-model="item.isActive"
-              inset
-              :label="getActiveLabel(item.isActive)"
-            ></v-switch> -->
             </v-card-text>
           </v-card>
         </v-col>

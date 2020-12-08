@@ -20,16 +20,21 @@ async function accept(id, data, params) {
 
 async function getAllNewVolunteers() {
   // return users.filter(e => e.isAccept == false);
-  const res = await volunteerService.find({
+  const { data } = await volunteerService.find({
     query: {
       isAccept: false
     }
   });
-  return res;
+  return data;
+}
+
+async function getAllVolunteers() {
+  // const skipNumber = pageNumber * 20;
+  const { data } = await volunteerService.find({});
+  return data;
 }
 
 async function updateVolunteerInfo(userId, data) {
-  console.log(data);
   const volunteer = await volunteerService.patch(userId, data);
   return volunteer;
 }
@@ -46,5 +51,6 @@ export default {
   getAllNewVolunteers,
   accept,
   updateVolunteerInfo,
-  createVolunteer
+  createVolunteer,
+  getAllVolunteers
 };

@@ -4,12 +4,12 @@ import feathers from "../services/restClient";
 const memberService = feathers.service("members");
 
 async function getMember(userId) {
-  const member = await memberService.find({
+  const { data } = await memberService.find({
     query: {
       userId
     }
   });
-  return member;
+  return data[0];
 }
 
 async function updateInfo(userId, data) {
@@ -22,8 +22,17 @@ async function createMember(info) {
   return member;
 }
 
+async function getAllMembers() {
+  // const skipNumber = pageNumber * 20;
+  const { data } = await memberService.find({});
+  return data;
+}
+
+export { memberService as memberRoot };
+
 export default {
   getMember,
   updateInfo,
-  createMember
+  createMember,
+  getAllMembers
 };
