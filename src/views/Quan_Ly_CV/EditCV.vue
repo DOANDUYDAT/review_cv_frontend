@@ -1,6 +1,6 @@
 <template>
   <v-container v-if="!save">
-    <v-tabs class="service__list">
+    <v-tabs class="service__list sticky-top sticky-top__head">
       <v-tab
         class="service__item large_padding"
         @click="currentTabComponent(0)"
@@ -38,13 +38,13 @@
       <v-tab class="service__item">
         <h3 class="service__title">Co chu</h3>
         <div class="service__option">
-          <button class="btn btn__font">
+          <button class="btn btn__font" @click="fontDecrease()">
             <span>A</span>
           </button>
-          <button class="btn btn__font active">
+          <button class="btn btn__font active" @click="fontDefault()">
             <span class="mid_size">A</span>
           </button>
-          <button class="btn btn__font large_size">
+          <button class="btn btn__font large_size" @click="fontIncrease()">
             <span class="large_size">A</span>
           </button>
         </div>
@@ -52,13 +52,13 @@
       <v-tab class="service__item">
         <h3 class="service__title">Cach dong</h3>
         <div class="service__option">
-          <button class="btn btn__font">
+          <button class="btn btn__font" @click="heightDecrease()">
             <v-icon class="smallSize">mdi-arrow-up</v-icon>
           </button>
-          <button class="btn btn__font active">
+          <button class="btn btn__font active" @click="heightDefault()">
             <v-icon class="mediumSize">mdi-arrow-up</v-icon>
           </button>
-          <button class="btn btn__font large_size">
+          <button class="btn btn__font large_size" @click="heightIncrease()">
             <v-icon class="largeSize">mdi-arrow-up</v-icon>
           </button>
         </div>
@@ -94,7 +94,35 @@
         </div>
       </v-tab>
     </v-tabs>
-    <component v-bind:is="currentTab"></component>
+    <div class="mx-5 my-3 d-flex justify-content-center sticky-top">
+      <div
+        v-for="(item, index) in commands"
+        :key="index"
+        class="btn-group"
+        :class="{ 'border-right': borderRight(index) }"
+      >
+        <button
+          type="button"
+          class="btn btn-sm btn-outline-secondary border-0 editor__btn"
+          data-toggle="tooltip"
+          data-placement="bottom"
+          :title="item.title"
+          @click="activeCommand(item.command)"
+        >
+          <i :class="'fa ' + item.icon"></i>
+        </button>
+      </div>
+    </div>
+    <component
+      v-bind:is="currentTab"
+      @finished="finished"
+      :bigfont="bigFont"
+      :smallfont="smallFont"
+      :lineHeight="activeLineHeight"
+      :fontFamily="select_size"
+      :command="command"
+      class="editor border mt-2"
+    ></component>
   </v-container>
   <v-container v-else>
     <v-row class="spaceColumn">
@@ -182,6 +210,24 @@ const CV1 = {
       isShow: true,
       name: "so thich",
       content: ["doc sach", "xem phim"]
+    },
+    {
+      order: 4,
+      name: "kiNang",
+      isShow: true,
+      type: "Skills",
+      content: [
+        {
+          name: "tin hoc van phong",
+          value: "- Sử dụng thành thạo các công cụ Word, Excel, Power Point",
+          id: "1"
+        },
+        {
+          name: "lap trinh web",
+          value: "vue",
+          id: "2"
+        }
+      ]
     }
   ]
 };
@@ -191,7 +237,11 @@ import { mapActions } from "vuex";
 export default {
   name: "EditCV",
   data: () => ({
-    options: ["14px", "16px", "20px"],
+    bigFont: 24,
+    smallFont: 16,
+    fontSize: [24, 16],
+    lineHeight: 6,
+    activeLineHeight: 6,
     fonts: ["Times New Roman", "Arial", "Sans-serief", "Tahoma"],
     select_size: "Times New Roman",
     currentTab: "ContentCV",
@@ -200,10 +250,113 @@ export default {
     saveMessage: "",
     jobCount: 0,
     keyCV: "https://i.topcv.vn/ledinhduc?ref=3525428",
-    Cv: {}
+    Cv: {},
+    commands: [
+      { name: "Bold", title: "Bold", command: "bold", icon: "fa-bold" },
+
+      { name: "Italic", title: "Italic", command: "italic", icon: "fa-italic" },
+
+      {
+        name: "Underline",
+        title: "Underline",
+        command: "underline",
+        icon: "fa-underline"
+      },
+
+      {
+        name: "AlignLeft",
+        title: "Align Left",
+        command: "justifyLeft",
+        icon: "fa-align-left"
+      },
+
+      {
+        name: "AlignJustify",
+        title: "Align Justify",
+        command: "justifyFull",
+        icon: "fa-align-justify"
+      },
+
+      {
+        name: "AlignCenter",
+        title: "Align Center",
+        command: "justifyCenter",
+        icon: "fa-align-center"
+      },
+
+      {
+        name: "AlignRight",
+        title: "Align Right",
+        command: "justifyRight",
+        icon: "fa-align-right"
+      }
+    ],
+    currentTagName: "",
+    command: ""
   }),
+  // watch: {
+  //   currentTagName() {
+  //     debugger;
+  //     console.log(this.currentTagName);
+  //     this.getCurrentTagName();
+  //   }
+  // },
   methods: {
+    // exec(command, arg) {
+    //   document.execCommand(command, false, arg);
+    // },
+    activeCommand(item) {
+      this.command = item;
+    },
+    // clear() {
+    //   document.getElementById("editor").innerHTML = "";
+    // },
+
+    borderRight(index) {
+      var clubs = [5, 9, 13, 15, 18, 20, 22, 24, 26];
+
+      return !!clubs.includes(index + 1);
+    },
+
+    // getCurrentTagName() {
+    //   console.log(window.getSelection().baseNode);
+    //   if (window.getSelection().baseNode) {
+    //     this.currentTagName = window.getSelection().baseNode.parentNode.tagName;
+    //     console.log(this.currentTagName);
+    //   }
+    // },
     currentTabComponent: function(id) {
+      this.currentTab = this.subComponents[id];
+    },
+    fontIncrease: function() {
+      if (this.currentTab == "ContentCV") {
+        this.bigFont += 4;
+        this.smallFont += 4;
+      }
+    },
+    fontDecrease: function() {
+      if (this.currentTab == "ContentCV") {
+        this.bigFont -= 4;
+        this.smallFont -= 4;
+      }
+    },
+    fontDefault: function() {
+      if (this.currentTab == "ContentCV") {
+        this.bigFont = this.fontSize[0];
+        this.smallFont = this.fontSize[1];
+      }
+    },
+    heightDecrease: function() {
+      this.activeLineHeight = this.lineHeight - 4;
+    },
+    heightDefault: function() {
+      this.activeLineHeight = this.lineHeight;
+    },
+    heightIncrease: function() {
+      this.activeLineHeight = this.lineHeight + 4;
+    },
+    finished: function(id) {
+      console.log(id);
       this.currentTab = this.subComponents[id];
     },
     saveCV: function() {
@@ -359,5 +512,47 @@ export default {
 }
 .col-6:last-child {
   margin-right: 0;
+}
+.editor__btn {
+  padding: 15px;
+  background: white;
+  border: 1px solid lightgray;
+  /* margin-right: 10px; */
+  border-radius: 10px;
+}
+.editor {
+  min-height: 20em;
+  padding: 1em;
+}
+
+// .btn:hover {
+//   background: lighten(black, 90%);
+
+//   color: lighten(black, 10%);
+// }
+
+[contenteditable]:focus {
+  outline: none;
+}
+
+[contenteditable] {
+  font-size: 120%;
+}
+
+.justify-content-center {
+  justify-content: center;
+}
+.sticky-top {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 84px;
+  z-index: 1000;
+  &__head {
+    top: 0;
+  }
+}
+.v-application .mt-2.editor {
+  margin-top: 145px !important;
 }
 </style>

@@ -2,18 +2,43 @@
   <div class="cv__study item__cv">
     <div class="cv__infor--content ">
       <div class="cv__study--title item__cv--title">
-        <input type="text" :value="data.name" />
+        <!-- <input
+          type="text"
+          @mouseup="getCurrentTagName"
+          contenteditable="true"
+          :value="contentDetails.name"
+          :style="{ fontSize: bigfont + 'px', fontFamily: fontfamily }"
+          id="titleEdu"
+        /> -->
+        <p
+          @mouseup="getCurrentTagName"
+          contenteditable="true"
+          :style="{ fontSize: bigfont + 'px', fontFamily: fontfamily }"
+          id="titleEdu"
+        >
+          {{ contentDetails.name }}
+        </p>
       </div>
       <v-divider></v-divider>
-      <div v-for="item in data.content" :key="item.id">
+      <div v-for="(item, id) in contentDetails.content" :key="id">
         <div class="cv__study--content content__cv">
-          <input type="text" :value="item.value" />
+          <p
+            @mouseup="getCurrentTagName"
+            contenteditable="true"
+            :style="{
+              fontSize: smallFont + 'px',
+              marginTop: lineheight + 'px',
+              fontFamily: fontfamily
+            }"
+          >
+            {{ item.value }}
+          </p>
           <div class="option__content">
-            <v-btn color="success" small>
+            <v-btn color="success" small @click="addContent(id)">
               <v-icon>mdi-plus</v-icon>
               Them
             </v-btn>
-            <v-btn color="error" small>
+            <v-btn color="error" small @click="deleteContent(id)">
               <v-icon>mdi-minus</v-icon>
               Xoa
             </v-btn>
@@ -22,10 +47,14 @@
       </div>
     </div>
     <div class="option">
-      <v-icon> mdi-menu</v-icon>
-      <v-icon @click="incrementOrder(data.order)"> mdi-menu-down</v-icon>
-      <v-icon @click="decrementOrder(data.order)"> mdi-menu-up </v-icon>
-      <v-btn color="error" small @click="hiddenCategory(data.order)">
+      <v-icon @click="$emit('finished')"> mdi-menu</v-icon>
+      <v-icon @click="incrementOrder(contentDetails.order)">
+        mdi-menu-down</v-icon
+      >
+      <v-icon @click="decrementOrder(contentDetails.order)">
+        mdi-menu-up
+      </v-icon>
+      <v-btn color="error" small @click="hiddenCategory(contentDetails.order)">
         <v-icon>mdi-minus</v-icon>
         An muc
       </v-btn>
@@ -36,10 +65,78 @@
 import { mapActions } from "vuex";
 export default {
   name: "Education",
+  data() {
+    return {
+      contentDetails: {},
+      defaultSize: "",
+      currentTagName: "",
+      idItem: ""
+    };
+  },
+  watch: {
+    currentTagName() {
+      debugger;
+      console.log(this.command);
+      this.getCurrentTagName();
+    },
+    command: function(newVal, oldVal) {
+      // watch it
+      console.log("Prop changed: ", newVal, " | was: ", oldVal);
+      console.log(this);
+      this.exec(this.command);
+    }
+  },
   methods: {
+    exec(command, arg) {
+      debugger;
+      document.execCommand(command, false, arg);
+    },
+    getCurrentTagName() {
+      if (window.getSelection().baseNode) {
+        this.currentTagName = window.getSelection().baseNode.parentNode.tagName;
+        console.log(this.currentTagName);
+      }
+    },
+    addContent(id) {
+      // const idItem = parseInt(id);
+      const elementArray = [...this.contentDetails.content];
+      const element = {
+        id: id,
+        ...elementArray[id]
+      };
+      this.contentDetails.content.splice(id + 1, 0, element);
+      console.log(this.bigfont);
+    },
+    deleteContent(id) {
+      // const elementArray = [...this.contentDetails.content];
+      // const element = {
+      //   id: id,
+      //   ...elementArray[id]
+      // };
+      const length = this.contentDetails
+        ? this.contentDetails.content
+          ? this.contentDetails.content.length
+          : 0
+        : 0;
+      if (id <= length - 1 && length != 1) {
+        this.contentDetails.content.splice(id, 1);
+      }
+    },
     ...mapActions("Cv", ["incrementOrder", "decrementOrder", "hiddenCategory"])
   },
-  props: ["data"]
+  props: [
+    "data",
+    "bigfont",
+    "smallFont",
+    "lineheight",
+    "fontfamily",
+    "command"
+  ],
+  created() {
+    this.contentDetails = JSON.parse(JSON.stringify(this.data));
+    console.log(this.content);
+    // console.log(this.bigFont);
+  }
 };
 </script>
 
