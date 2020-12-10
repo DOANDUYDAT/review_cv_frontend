@@ -186,7 +186,7 @@ export default {
 
   methods: {
     decline() {
-      console.log("tu choi");
+      this.close();
     },
     getData() {
       specialistService
@@ -217,7 +217,7 @@ export default {
     close() {
       this.dialog = false;
       setTimeout(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedItem = null;
         this.editedIndex = -1;
       }, 300);
     },
@@ -227,7 +227,7 @@ export default {
     },
     accept() {
       specialistService
-        .accept(this.editedItem.id)
+        .accept(this.editedItem._id)
         .then(specialist => {
           console.log(specialist);
           this.close();

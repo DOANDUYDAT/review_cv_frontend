@@ -24,7 +24,7 @@
           single-line
           hide-details
         ></v-text-field>
-        <v-dialog v-model="dialog" max-width="500px" v-if="viewedItem">
+        <v-dialog v-model="dialog" max-width="500px" v-if="userSelected">
           <v-card>
             <v-toolbar color="blue" dark flat>
               <v-card-title class="layout justify-center">
@@ -36,28 +36,28 @@
                 <v-row>
                   <v-col cols="12" sm="6" md="6">
                     <v-text-field
-                      v-model="viewedItem._id"
+                      v-model="userSelected._id"
                       label="Id"
                       disabled
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="6">
                     <v-text-field
-                      v-model="viewedItem.user.userName"
+                      v-model="userSelected.user.userName"
                       label="Username"
                       disabled
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="6">
                     <v-text-field
-                      v-model="viewedItem.user.email"
+                      v-model="userSelected.user.email"
                       label="Email"
                       disabled
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="6">
                     <v-text-field
-                      v-model="viewedItem.user.phone"
+                      v-model="userSelected.user.phone"
                       label="Phone"
                       disabled
                     ></v-text-field>
@@ -88,15 +88,16 @@
         color="green"
         inset
         :label="getActiveLabel(item.user.isActive)"
-        @change="onSwitchChange"
+        @change="onSwitchChange(item)"
       ></v-switch>
     </template>
   </v-data-table>
 </template>
 
 <script>
-// import userService from "@/api/user";
+/* eslint-disable no-unused-vars */
 import memberService from "@/api/member";
+import userService from "@/api/user";
 
 export default {
   data: () => ({
@@ -144,7 +145,7 @@ export default {
     ],
     users: null,
     viewedIndex: -1,
-    viewedItem: null
+    userSelected: null
   }),
 
   computed: {
@@ -169,22 +170,25 @@ export default {
     },
     viewItem(item) {
       this.viewedIndex = this.users.indexOf(item);
-      this.viewedItem = Object.assign({}, item);
+      this.userSelected = Object.assign({}, item);
       this.dialog = true;
     },
-    deleteItem(item) {
-      const index = this.users.indexOf(item);
-      this.$swal({
+    async deleteItem(member) {
+      // const index = this.users.indexOf();
+      const result = await this.$swal({
         title: "Are you sure?",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
         confirmButtonText: "Yes, , delete this user!"
-      }) && this.users.splice(index, 1);
+      });
+      if (result.isConfirmed) {
+        console.log("delete");
+      }
     },
-    onSwitchChange() {
-      this.$swal({
+    async onSwitchChange(member) {
+      const result = await this.$swal({
         title: "Are you sure?",
         icon: "warning",
         showCancelButton: true,
@@ -192,11 +196,47 @@ export default {
         cancelButtonColor: "#d33",
         confirmButtonText: "Yes"
       });
+      if (result.isConfirmed) {
+        if (member.user.isActive) {
+          userService
+            .activeUser(member.user._id)
+            .then(res => {
+              this.$swal({
+                title: "Active successfull!",
+                icon: "success"
+              });
+            })
+            .catch(err => {
+              this.$swal({
+                title: "Active failed!",
+                text: err,
+                icon: "error"
+              });
+            });
+        } else {
+          userService
+            .deactiveUser(member.user._id)
+            .then(res => {
+              this.$swal({
+                title: "Inactive successfull!",
+                icon: "success"
+              });
+            })
+            .catch(err => {
+              this.$swal({
+                title: "Inactive failed!",
+                text: err,
+                icon: "error"
+              });
+            });
+        }
+      }
+      await this.getData();
     },
     close() {
       this.dialog = false;
       setTimeout(() => {
-        this.viewedItem = Object.assign({}, this.defaultItem);
+        this.userSelected = null;
         this.viewedIndex = -1;
       }, 300);
     },
@@ -205,24 +245,5 @@ export default {
       else return "Inactive";
     }
   }
-
-  // async save() {
-  //   const user = this.editedItem;
-  //   try {
-  //     const isSuccess = await staffService.updateStaff(user);
-  //     console.log(isSuccess);
-  //     if (isSuccess) {
-  //       await this.getData();
-  //       this.$store.dispatch("alert/success", {
-  //         message: "Update Successfully!"
-  //       });
-  //       this.close();
-  //     }
-  //   } catch (error) {
-  //     this.$store.dispatch("alert/error", {
-  //       message: error
-  //     });
-  //   }
-  // }
 };
 </script>

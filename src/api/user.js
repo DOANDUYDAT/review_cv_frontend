@@ -20,13 +20,13 @@ async function updateInfo(userId, data) {
 }
 
 async function activeUser(userId) {
-  const user = activeService.create({
+  const user = await activeService.create({
     userId
   });
   return user;
 }
 async function deactiveUser(userId) {
-  const user = deactiveService.create({
+  const user = await deactiveService.create({
     userId
   });
   return user;
@@ -37,5 +37,7 @@ export { userService as userServiceRoot };
 export default {
   getUser,
   getAllUsers,
-  updateInfo
+  updateInfo,
+  activeUser,
+  deactiveUser
 };

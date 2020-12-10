@@ -42,9 +42,9 @@
 </template>
 
 <script>
+/* eslint-disable no-unused-vars */
 import questionService from "@/api/question.js";
-import authService from "@/api/authentication.js";
-import userService from "@/api/user.js";
+
 export default {
   name: "QuestionDetail",
   data: () => ({
@@ -92,24 +92,13 @@ export default {
       questionService
         .likeQuestion(this.question._id)
         .then(res => {
-          console.log(res);
           this.getData();
         })
         .catch(err => console.log(err));
     }
   },
   created() {
-    authService.getCurrentUser().then(user => {
-      console.log(user);
-      userService.getUser(user._id).then(res => console.log(res));
-    });
     this.getData();
-    authService
-      .getCurrentUser()
-      .then(user => {
-        this.currentUser = user;
-      })
-      .catch(err => console.log(err));
   }
 };
 </script>

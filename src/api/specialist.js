@@ -3,6 +3,7 @@ import feathers from "../services/restClient";
 
 const specialistService = feathers.service("specialists");
 const updateInfoService = feathers.service("specialists/update-info");
+const acceptService = feathers.service("specialists/accept");
 
 async function getSpecialist(userId) {
   const { data } = await specialistService.find({
@@ -13,19 +14,11 @@ async function getSpecialist(userId) {
   return data[0];
 }
 
-async function accept(id, data, params) {
-  // const newData = {
-  //   isAccept: true
-  // }
-  // const newParams = {
-  //   query: {
-  //     age: {
-  //       $lte: 18
-  //     }
-  //   }
-  // }
-  // const response = await specialistService.patch(id, data, params);
-  return true;
+async function accept(_id) {
+  const res = await acceptService.create({
+    _id
+  });
+  return res;
 }
 
 async function getAllNewSpecialists() {
