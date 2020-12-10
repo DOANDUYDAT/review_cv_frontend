@@ -2,6 +2,8 @@
 import feathers from "../services/restClient";
 
 const questionService = feathers.service("questions");
+const closeService = feathers.service("questions/close");
+const likeService = feathers.service("questions/like");
 
 const LIMIT_NUMBER = 20;
 
@@ -16,28 +18,37 @@ async function createQuestion(data, params) {
 }
 
 async function getAllQuestions(pageNumber) {
-  const skipNumber = (pageNumber - 1) * LIMIT_NUMBER;
+  // const skipNumber = (pageNumber - 1) * LIMIT_NUMBER;
+  // const res = questionService.find({
+  //   query: {
+  //     $limit: LIMIT_NUMBER,
+  //     $sort: {
+  //       createdAt: -1
+  //     },
+  //     $skip: skipNumber
+  //   }
+  // });
   const res = questionService.find({
     query: {
-      $limit: LIMIT_NUMBER,
       $sort: {
         createdAt: -1
-      },
-      $skip: skipNumber
+      }
     }
   });
   return res;
 }
 
 async function closeQuestion(questionId) {
-  const link = `questions/${questionId}/close`;
-  const res = feathers.service(link).create({});
+  const res = closeService.create({
+    _id: questionId
+  });
   return res;
 }
 
 async function likeQuestion(questionId) {
-  const link = `questions/${questionId}/like`;
-  const res = feathers.service(link).create({});
+  const res = likeService.create({
+    _id: questionId
+  });
   return res;
 }
 
