@@ -7,9 +7,15 @@ const state = () => ({
   // createdAt: null,
   // updatedAt: null,
   // name: ""
-  cv: {}
+  cv: {},
+  loading: false,
+  error: null
 });
-const getters = {};
+const getters = {
+  data: state => state.cv,
+  loading: state => state.loading,
+  error: state => state.error
+};
 const mutations = {
   setState(state, cv) {
     const { cvId, userId, content, name, link, createdAt, updatedAt } = cv;
@@ -23,8 +29,10 @@ const mutations = {
     // state.updatedAt = updatedAt;
     state.cv = cv;
   },
+  setError(state, error) {
+    state.error = error;
+  },
   incrementOrder(state, order) {
-    debugger;
     const length = state.cv.content.length;
     if (order != length) {
       // const nextItem = state.cv.content.filter(e => e.order === nextOrder);
@@ -54,13 +62,26 @@ const mutations = {
     }
   },
   hiddenCategory(state, order) {
-    debugger;
     const categoryItem = state.cv.content.filter(
       item => item.order == order
     )[0];
     categoryItem.isShow = !categoryItem.isShow;
   }
 };
+/*eslint no-useless-catch: "error"*/
+async function http(url, method = "GET", data) {
+  try {
+    const response = await fetch(url, {
+      method,
+      data
+    });
+    return await response.json();
+  } catch (error) {
+    console.log("Error ");
+    throw error;
+  }
+}
+
 const actions = {
   initState({ state, commit }, cv) {
     commit("setState", cv);
@@ -73,6 +94,21 @@ const actions = {
   },
   hiddenCategory({ state, commit }, order) {
     commit("hiddenCategory", order);
+  },
+  getListCV({ state, commit }) {
+    return new Promise((resolve, reject) => {
+      http("https://google.com")
+        .then(({ data }) => {
+          commit("setState", data);
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  exec(command, arg) {
+    document.execCommand(command, false, arg);
   }
 };
 

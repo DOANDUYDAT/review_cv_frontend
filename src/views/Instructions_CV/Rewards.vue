@@ -8,7 +8,7 @@
     <div class="learning__info">
       <v-list rounded>
         <v-subheader>NÊN :</v-subheader>
-        <v-list-item-group v-model="selectedItem" color="primary">
+        <v-list-item-group color="primary">
           <v-list-item v-for="(item, i) in items_need" :key="i">
             <v-list-item-icon>
               <v-icon v-text="item.icon"></v-icon>

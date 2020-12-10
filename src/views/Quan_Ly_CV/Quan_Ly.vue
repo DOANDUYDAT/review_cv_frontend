@@ -19,6 +19,7 @@
 
 <script>
 import InforCV from "./InforCV";
+import { mapGetters, mapActions } from "vuex";
 export default {
   name: "QuanLy",
   data() {
@@ -34,7 +35,28 @@ export default {
       ]
     };
   },
-  methods: {},
+  computed: {
+    ...mapGetters({
+      dataList: "data",
+      loading: "loading",
+      error: "error"
+    })
+  },
+  methods: {
+    ...mapActions("Cv", {
+      getCV: "getListCV"
+    })
+  },
+  mounted() {
+    this.getCV()
+      .then(response => {
+        console.log(response);
+        this.listCV = response;
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  },
   components: {
     InforCV
   }

@@ -88,11 +88,13 @@ export default {
     },
     updateCateory() {
       this.initState(this.catalogs);
+      this.$emit("finished", 0);
     },
     ...mapActions("Cv", ["initState"])
   },
   created() {
     this.catalogs = JSON.parse(JSON.stringify(this.currentCv));
+    console.log(this.catalogs);
   }
 };
 </script>
