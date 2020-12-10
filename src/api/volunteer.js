@@ -3,6 +3,7 @@ import feathers from "../services/restClient";
 
 const volunteerService = feathers.service("volunteers");
 const updateInfoService = feathers.service("volunteers/update-info");
+const acceptService = feathers.service("volunteers/accept");
 
 async function getVolunteer(userId) {
   const { data } = await volunteerService.find({
@@ -13,14 +14,14 @@ async function getVolunteer(userId) {
   return data[0];
 }
 
-async function accept(id, data, params) {
-  // let volunteerIndex = users.findIndex(e => e.id == id);
-  // users[volunteerIndex].isAccept = true;
-  return true;
+async function accept(_id) {
+  const res = await acceptService.create({
+    _id
+  });
+  return res;
 }
 
-async function getAllNewVolunteers() {
-  // return users.filter(e => e.isAccept == false);
+async function getListNewVolunteers() {
   const { data } = await volunteerService.find({
     query: {
       isAccept: false
@@ -29,9 +30,13 @@ async function getAllNewVolunteers() {
   return data;
 }
 
-async function getAllVolunteers() {
+async function getListAcceptedVolunteers() {
   // const skipNumber = pageNumber * 20;
-  const { data } = await volunteerService.find({});
+  const { data } = await volunteerService.find({
+    query: {
+      isAccept: true
+    }
+  });
   return data;
 }
 
@@ -49,9 +54,9 @@ export { updateInfoService };
 
 export default {
   getVolunteer,
-  getAllNewVolunteers,
+  getListNewVolunteers,
   accept,
   updateVolunteerInfo,
   createVolunteer,
-  getAllVolunteers
+  getListAcceptedVolunteers
 };

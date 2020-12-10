@@ -31,9 +31,6 @@
         <v-icon small class="mr-2" @click.stop="editItem(item)" color="blue"
           >mdi-pencil</v-icon
         >
-        <v-icon small @click.stop="deleteItem(item)" color="red"
-          >mdi-trash-can-outline</v-icon
-        >
       </template>
       <template v-slot:[`item.isAccept`]="{ item }">
         <v-chip :color="getColor(item.isAccept)" dark>Đang xử lý</v-chip>
@@ -96,6 +93,7 @@
 </template>
 
 <script>
+/* eslint-disable no-unused-vars */
 // import userService from "@/api/user";
 import volunteerService from "@/api/volunteer";
 
@@ -103,7 +101,6 @@ export default {
   data: () => ({
     dialog: false,
     search: "",
-    isActive: ["Đang xử lý", "Từ chối"],
     headers: [
       {
         text: "Id",
@@ -165,11 +162,11 @@ export default {
 
   methods: {
     decline() {
-      console.log("tu choi");
+      this.close();
     },
     getData() {
       volunteerService
-        .getAllNewVolunteers()
+        .getListNewVolunteers()
         .then(listVolunteers => {
           this.users = listVolunteers;
         })
@@ -182,22 +179,10 @@ export default {
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
     },
-    deleteItem(item) {
-      // const index = this.users.indexOf(item);
-      console.log(item);
-      this.$swal({
-        title: "Are you sure?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, , delete this user!"
-      });
-    },
     close() {
       this.dialog = false;
       setTimeout(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedItem = null;
         this.editedIndex = -1;
       }, 300);
     },
@@ -207,9 +192,8 @@ export default {
     },
     accept() {
       volunteerService
-        .accept(this.editedItem.id)
+        .accept(this.editedItem._id)
         .then(volunteer => {
-          console.log(volunteer);
           this.close();
           this.getData();
         })
@@ -218,24 +202,5 @@ export default {
         });
     }
   }
-
-  // async save() {
-  //   const user = this.editedItem;
-  //   try {
-  //     const isSuccess = await staffService.updateStaff(user);
-  //     console.log(isSuccess);
-  //     if (isSuccess) {
-  //       await this.getData();
-  //       this.$store.dispatch("alert/success", {
-  //         message: "Update Successfully!"
-  //       });
-  //       this.close();
-  //     }
-  //   } catch (error) {
-  //     this.$store.dispatch("alert/error", {
-  //       message: error
-  //     });
-  //   }
-  // }
 };
 </script>

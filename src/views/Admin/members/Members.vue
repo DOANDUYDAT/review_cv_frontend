@@ -78,9 +78,6 @@
       <v-icon small class="mr-2" @click.stop="viewItem(item)" color="blue"
         >mdi-eye</v-icon
       >
-      <v-icon small @click.stop="deleteItem(item)" color="red"
-        >mdi-trash-can-outline</v-icon
-      >
     </template>
     <template v-slot:[`item.user.isActive`]="{ item }">
       <v-switch
@@ -173,20 +170,6 @@ export default {
       this.userSelected = Object.assign({}, item);
       this.dialog = true;
     },
-    async deleteItem(member) {
-      // const index = this.users.indexOf();
-      const result = await this.$swal({
-        title: "Are you sure?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, , delete this user!"
-      });
-      if (result.isConfirmed) {
-        console.log("delete");
-      }
-    },
     async onSwitchChange(member) {
       const result = await this.$swal({
         title: "Are you sure?",
@@ -198,37 +181,35 @@ export default {
       });
       if (result.isConfirmed) {
         if (member.user.isActive) {
-          userService
-            .activeUser(member.user._id)
-            .then(res => {
-              this.$swal({
-                title: "Active successfull!",
-                icon: "success"
-              });
-            })
-            .catch(err => {
-              this.$swal({
-                title: "Active failed!",
-                text: err,
-                icon: "error"
-              });
+          try {
+            await userService.activeUser(member.user._id);
+            await this.$swal({
+              title: "Active successfull!",
+              icon: "success"
             });
+          } catch (err) {
+            await this.$swal({
+              title: "Active failed!",
+              text: err,
+              icon: "error"
+            });
+          }
+          await this.getData();
         } else {
-          userService
-            .deactiveUser(member.user._id)
-            .then(res => {
-              this.$swal({
-                title: "Inactive successfull!",
-                icon: "success"
-              });
-            })
-            .catch(err => {
-              this.$swal({
-                title: "Inactive failed!",
-                text: err,
-                icon: "error"
-              });
+          try {
+            await userService.deactiveUser(member.user._id);
+            await this.$swal({
+              title: "Inactive successfull!",
+              icon: "success"
             });
+          } catch (err) {
+            await this.$swal({
+              title: "Inactive failed!",
+              text: err,
+              icon: "error"
+            });
+          }
+          await this.getData();
         }
       }
       await this.getData();

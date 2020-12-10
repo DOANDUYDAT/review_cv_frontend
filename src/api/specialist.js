@@ -21,7 +21,12 @@ async function accept(_id) {
   return res;
 }
 
-async function getAllNewSpecialists() {
+async function decline(_id) {
+  const res = await specialistService.remove(_id);
+  return res;
+}
+
+async function getListNewSpecialists() {
   const { data } = await specialistService.find({
     query: {
       isAccept: false
@@ -30,9 +35,13 @@ async function getAllNewSpecialists() {
   return data;
 }
 
-async function getAllSpecialists() {
+async function getListAcceptedSpecialists() {
   // const skipNumber = pageNumber * 20;
-  const { data } = await specialistService.find({});
+  const { data } = await specialistService.find({
+    query: {
+      isAccept: true
+    }
+  });
   return data;
 }
 
@@ -50,9 +59,10 @@ export { updateInfoService };
 
 export default {
   getSpecialist,
-  getAllNewSpecialists,
+  getListNewSpecialists,
   accept,
   updateSpecialistInfo,
   createSpecialist,
-  getAllSpecialists
+  getListAcceptedSpecialists,
+  decline
 };

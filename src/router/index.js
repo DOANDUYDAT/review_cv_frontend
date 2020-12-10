@@ -268,7 +268,7 @@ const routes = [
         name: "Specilist Home",
         component: () =>
           import(
-            /* webpackChunkName: "specialistHome" */ "../views/Member/UploadCV.vue"
+            /* webpackChunkName: "specialistHome" */ "../views/Specialist/Home.vue"
           ),
         meta: {
           requiresAuth: false

@@ -31,9 +31,6 @@
         <v-icon small class="mr-2" @click.stop="editItem(item)" color="blue"
           >mdi-pencil</v-icon
         >
-        <v-icon small @click.stop="deleteItem(item)" color="red"
-          >mdi-trash-can-outline</v-icon
-        >
       </template>
       <template v-slot:[`item.isAccept`]="{ item }">
         <v-chip :color="getColor(item.isAccept)" dark>Đang xử lý</v-chip>
@@ -118,7 +115,7 @@
 </template>
 
 <script>
-// import userService from "@/api/user";
+/* eslint-disable no-unused-vars */
 import specialistService from "@/api/specialist";
 
 export default {
@@ -186,11 +183,23 @@ export default {
 
   methods: {
     decline() {
-      this.close();
+      specialistService
+        .decline(this.editedItem._id)
+        .then(specialist => {
+          this.close();
+          this.getData();
+        })
+        .catch(err => {
+          this.$swal({
+            title: "Decline failed!",
+            text: err,
+            icon: "error"
+          });
+        });
     },
     getData() {
       specialistService
-        .getAllNewSpecialists()
+        .getListNewSpecialists()
         .then(listSepcialists => {
           this.users = listSepcialists;
         })
@@ -202,17 +211,6 @@ export default {
       this.editedIndex = this.users.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
-    },
-    deleteItem(item) {
-      const index = this.users.indexOf(item);
-      this.$swal({
-        title: "Are you sure?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, , delete this user!"
-      }) && this.users.splice(index, 1);
     },
     close() {
       this.dialog = false;
@@ -229,33 +227,17 @@ export default {
       specialistService
         .accept(this.editedItem._id)
         .then(specialist => {
-          console.log(specialist);
           this.close();
           this.getData();
         })
         .catch(err => {
-          console.log(err);
+          this.$swal({
+            title: "Accept failed!",
+            text: err,
+            icon: "error"
+          });
         });
     }
   }
-
-  // async save() {
-  //   const user = this.editedItem;
-  //   try {
-  //     const isSuccess = await staffService.updateStaff(user);
-  //     console.log(isSuccess);
-  //     if (isSuccess) {
-  //       await this.getData();
-  //       this.$store.dispatch("alert/success", {
-  //         message: "Update Successfully!"
-  //       });
-  //       this.close();
-  //     }
-  //   } catch (error) {
-  //     this.$store.dispatch("alert/error", {
-  //       message: error
-  //     });
-  //   }
-  // }
 };
 </script>
