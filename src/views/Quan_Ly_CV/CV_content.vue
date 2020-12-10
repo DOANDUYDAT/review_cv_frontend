@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container v-bind:class="{ 'font-size': this.option + '!important' }">
     <v-row>
       <v-col cols="8">
         <div class="cv_title">
@@ -33,8 +33,19 @@
               <v-icon> mdi-menu</v-icon>
             </div>
           </div>
-          <div v-for="item in contentOrdered" :key="item.id">
-            <component :is="item.isShow ? item.type : ''" :data="item" />
+          <div v-for="item in contentOrdered" :key="item.order">
+            <component
+              :is="item.isShow ? item.type : ''"
+              :data="item"
+              :bigfont="bigfont"
+              :smallFont="smallfont"
+              :lineheight="lineHeight"
+              :fontfamily="fontFamily"
+              :command="command"
+              @finished="finished"
+              @editor="editor"
+              @click.native="changeSideTab(item.order)"
+            />
           </div>
           <!-- <GoalJob></GoalJob>
           <Education></Education>
@@ -43,14 +54,22 @@
           <Hobbies></Hobbies> -->
         </div>
       </v-col>
-      <v-col cols="4">
-        <Personal></Personal>
+      <v-col cols="4" class="sideBarTab">
+        <!-- <div v-for="item in contentOrdered" :key="item.id"> -->
+        <component :is="sideTab" />
+        <!-- </div> -->
       </v-col>
     </v-row>
   </v-container>
 </template>
 <script>
-import Personal from "@/views/Instructions_CV/Personal_Info";
+import Personal_Info from "@/views/Instructions_CV/Personal_Info";
+import Goal_Job from "@/views/Instructions_CV/Goal_Job";
+import Hobby from "@/views/Instructions_CV/Hobby";
+import Learning_skill from "@/views/Instructions_CV/Learning_skill";
+import Skill from "@/views/Instructions_CV/Skill";
+// import Personal_Info from "@/views/Instructions_CV/Personal_Info";
+// import Personal_Info from "@/views/Instructions_CV/Personal_Info";
 import Education from "@/views/Quan_Ly_CV/BaseComponent/Education";
 import GoalJob from "@/views/Quan_Ly_CV/BaseComponent/GoalJob";
 import Skills from "@/views/Quan_Ly_CV/BaseComponent/Skills";
@@ -64,9 +83,25 @@ export default {
   data() {
     return {
       title_cv: "Untitled CV",
-      cv: {}
+      cv: {},
+      sideTab: "Skill",
+      sideTabList: [
+        "Personal_Info",
+        "Goal_Job",
+        "Hobby",
+        "Learning_skill",
+        "Skill"
+      ]
     };
   },
+  props: [
+    "option",
+    "bigfont",
+    "smallfont",
+    "lineHeight",
+    "fontFamily",
+    "command"
+  ],
   computed: {
     ...mapState({
       currentCv: state => state.Cv.cv
@@ -78,7 +113,11 @@ export default {
     }
   },
   components: {
-    Personal,
+    Personal_Info,
+    Goal_Job,
+    Hobby,
+    Skill,
+    Learning_skill,
     Education,
     GoalJob,
     Skills,
@@ -103,13 +142,27 @@ export default {
     },
     deleteContent(event) {
       event.target.parentNode.parentNode.parentNode.parentNode.remove();
+    },
+    finished() {
+      this.$emit("finished", 1);
+    },
+    editor() {
+      this.$emit("editor");
+    },
+    changeSideTab(id) {
+      this.sideTab = this.sideTabList[id];
     }
   },
   created() {
     this.cv = this.currentCv;
+    console.log(this.option);
   }
 };
 </script>
 <style lang="scss">
 @import "@/styles/styleComponentCV.scss";
+.sideBarTab {
+  position: fixed;
+  right: 0;
+}
 </style>
