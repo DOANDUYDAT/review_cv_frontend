@@ -114,7 +114,7 @@
 
 <script>
 /* eslint-disable no-unused-vars */
-// import AnswerList from "./AnswerList";
+import authService from "../../api/authentication";
 import questionService from "@/api/question.js";
 import answerService from "@/api/answer.js";
 import { Editor, EditorContent, EditorMenuBar } from "tiptap";
@@ -181,8 +181,8 @@ export default {
   },
   computed: {
     isOwner() {
-      if (!this.question.user || !this.currentUser) return false;
-      return this.currentUser._id == this.question.user._id;
+      if (!this.question || !this.currentUser) return false;
+      return this.currentUser.userId == this.question.userId;
     }
   },
   methods: {
@@ -199,14 +199,18 @@ export default {
         })
         .catch(err => console.log(err));
     },
-    getData() {
-      const questionId = this.$route.params.questionId;
-      questionService
-        .getQuestion(questionId)
-        .then(res => {
-          this.question = JSON.parse(JSON.stringify(res));
-        })
-        .catch(err => console.log(err));
+    async getData() {
+      const id = this.$route.params.questionId;
+      try {
+        const question = await questionService.getQuestion(id);
+        if (question) {
+          this.question = JSON.parse(JSON.stringify(question));
+        }
+        const user = await authService.getUserByRole();
+        this.currentUser = user;
+      } catch (err) {
+        console.log(err);
+      }
     },
     goToQuestionAsk() {
       this.$router.push({

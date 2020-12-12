@@ -36,7 +36,7 @@
           <span>Đần Thúi</span>
           <v-icon right>mdi-account-circle</v-icon>
         </v-btn> -->
-        <v-menu offset-y>
+        <v-menu offset-y v-if="currentUser">
           <template v-slot:activator="{ on }">
             <v-btn text dark v-on="on">
               <v-icon left>mdi-account-circle</v-icon>
@@ -80,9 +80,7 @@ export default {
       });
     },
     async getData() {
-      const userId = await authService.getCurrentUserId();
-      const role = await authService.getRole();
-      const user = await authService.getUserByRole(role, userId);
+      const user = await authService.getUserByRole();
       this.currentUser = user;
     },
     LogOut() {
@@ -118,6 +116,6 @@ export default {
   outline: none;
 }
 .qa-editor .editor__content .ProseMirror:focus {
-  outline: 2px solid #2196F3;
+  outline: 2px solid #2196f3;
 }
 </style>

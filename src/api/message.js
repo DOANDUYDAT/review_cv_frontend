@@ -22,6 +22,5 @@ async function FindMessagesByUserId() {
   console.log(messages);
   return messages;
 }
-console.log("data message");
-FindMessagesByUserId();
+
 export default messageService;
