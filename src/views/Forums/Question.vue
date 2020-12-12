@@ -1,7 +1,7 @@
 <template>
   <v-sheet min-height="70vh" rounded="lg" v-if="question">
     <v-row>
-      <v-col cols="12" sm="6">
+      <v-col cols="12" sm="6" class="pb-0">
         <h2>{{ question.title }}</h2>
       </v-col>
       <!-- <v-spacer></v-spacer> -->
@@ -13,6 +13,9 @@
           @click="goToQuestionAsk"
           >Ask Question</v-btn
         >
+      </v-col>
+      <v-col cols="12" sm="6" class="py-0">
+        {{ shortDate(question.createdAt) }}
       </v-col>
     </v-row>
     <v-divider></v-divider>
@@ -34,18 +37,13 @@
             icon
             @click="likeQuestion"
           >
-            <v-icon>mdi-thumb-up</v-icon>
+            <v-icon color="primary">mdi-thumb-up</v-icon>
           </v-btn>
           <span :class="$vuetify.breakpoint.mobile ? 'mr-5' : 'mr-8'">
             {{ question.likes.length }} likes
           </span>
         </v-col>
-        <v-col md="1" class="py-0">
-          <!-- 12/12/2020 -->
-          {{ shortDate(question.createdAt) }}
-        </v-col>
-        <v-col class="text-right py-0" md="2">
-          <!-- asked by Đần thúi -->
+        <v-col class="text-right py-0" md="3">
           asked by {{ question.user.userName }}
         </v-col>
       </v-col>
@@ -54,12 +52,91 @@
       <v-col cols="12">
         <h3>4 Answers</h3>
       </v-col>
-      <v-col cols="2">
-        <h3>2 likes</h3>
+    </v-row>
+    <v-row>
+      <v-col cols="1" class="align-center flex-column d-flex py-0">
+        <v-btn small outlined fab color="teal" v-if="!question.isClose">
+          <v-icon>mdi-check-bold</v-icon>
+        </v-btn>
+        <v-icon v-if="answer.isAccept" color="teal" large
+          >mdi-check-bold</v-icon
+        >
+        <v-btn
+          :small="$vuetify.breakpoint.mobile"
+          icon
+          large
+          @click="likeQuestion"
+        >
+          <v-icon color="primary">mdi-thumb-up</v-icon>
+        </v-btn>
+        <span> {{ question.likes.length }} likes </span>
       </v-col>
-      <v-col cols="10">
-        <span>ABC</span>
+      <v-col cols="11" class="py-0">
+        <span
+          >“Hôm nay ăn gì?” hay “tối nay ăn gì?” là câu hỏi kinh điển khiến các
+          chị em không khỏi đau đầu. Nhưng với danh sách thực đơn hàng ngày
+          phong phú của một tài khoản trên Facebook có tên Nguyễn Thị Phương
+          Thanh trong suốt 31 ngày dưới đây sẽ giúp chị em giải quyết được vấn
+          đề này. Trong thực đơn hàng ngày này đều là những món ăn đơn giản, dễ
+          làm nhưng vẫn ngon, đảm bảo chất dinh dưỡng cho mọi người. Mời các bạn
+          tham khảo. “Hôm nay ăn gì?” hay “tối nay ăn gì?” là câu hỏi kinh điển
+          khiến các chị em không khỏi đau đầu. Nhưng với danh sách thực đơn hàng
+          ngày phong phú của một tài khoản trên Facebook có tên Nguyễn Thị
+          Phương Thanh trong suốt 31 ngày dưới đây sẽ giúp chị em giải quyết
+          được vấn đề này. Trong thực đơn hàng ngày này đều là những món ăn đơn
+          giản, dễ làm nhưng vẫn ngon, đảm bảo chất dinh dưỡng cho mọi người.
+          Mời các bạn tham khảo.</span
+        >
+
         <!-- <answer-list></answer-list> -->
+      </v-col>
+      <v-col cols="1" class="pb-0"></v-col>
+      <v-col cols="8" class="pb-0">
+        <v-btn text color="grey" class="pl-0">
+          <v-icon dark>
+            mdi-pencil
+          </v-icon>
+          Chỉnh sửa
+        </v-btn>
+        <!-- <v-btn text color="grey">
+          <v-icon dark>
+            mdi-delete
+          </v-icon>
+          Xóa
+        </v-btn> -->
+      </v-col>
+      <v-col cols="3" class="text-right pb-0">
+        asked by {{ question.user.userName }}
+      </v-col>
+      <v-col cols="1" class=""></v-col>
+      <v-col cols="11" v-if="!isAllowComment" @click="checkPoint">
+        <v-btn color="primary" text>add a comment</v-btn>
+        <v-tooltip v-model="tooltipComment" bottom>
+          <span>You must have 50 reputation to comment</span>
+        </v-tooltip>
+      </v-col>
+      <v-col cols="11" class="" v-else>
+        <ValidationObserver v-slot="{ invalid }">
+          <ValidationProvider
+            name="comment"
+            rules="required|max:300"
+            v-slot="{ errors }"
+            :bails="false"
+          >
+            <v-textarea
+              outlined
+              rows="2"
+              counter="300"
+              label="Thêm bình luận"
+            ></v-textarea>
+            <span class="red--text">{{ errors[0] }}</span>
+          </ValidationProvider>
+          <div class="mb-1">
+            <v-btn color="primary" @click="submit" :disabled="invalid"
+              >Bình luận</v-btn
+            >
+          </div>
+        </ValidationObserver>
       </v-col>
     </v-row>
     <v-divider></v-divider>
@@ -173,16 +250,21 @@ export default {
         }
       }),
       answer: {
-        content: ""
+        content: "",
+        isAccept: false
       },
       question: null,
-      currentUser: null
+      currentUser: null,
+      tooltipComment: false
     };
   },
   computed: {
     isOwner() {
       if (!this.question.user || !this.currentUser) return false;
       return this.currentUser._id == this.question.user._id;
+    },
+    isAllowComment() {
+      return this.currentUser ? this.currentUser.reputationPoint > 100 : false;
     }
   },
   methods: {
@@ -258,6 +340,13 @@ export default {
         .catch(err => {
           console.log(err);
         });
+    },
+    checkPoint() {
+      if (this.currentUser.reputationPoint > 100) {
+        this.isAllowComment = true;
+      } else {
+        this.tooltipComment = true;
+      }
     }
   },
   beforeDestroy() {

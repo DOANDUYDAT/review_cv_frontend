@@ -23,6 +23,7 @@
       >
         <v-col md="4">
           <v-icon
+            color="primary"
             :small="$vuetify.breakpoint.mobile"
             :class="$vuetify.breakpoint.mobile ? 'mr-2' : 'mr-4'"
             >mdi-thumb-up</v-icon
@@ -31,6 +32,7 @@
             {{ item.likes.length }} likes
           </span>
           <v-icon
+            color="green"
             :small="$vuetify.breakpoint.mobile"
             :class="$vuetify.breakpoint.mobile ? 'mr-2' : 'mr-4'"
             >mdi-reply</v-icon

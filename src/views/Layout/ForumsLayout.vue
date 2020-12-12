@@ -118,6 +118,6 @@ export default {
   outline: none;
 }
 .qa-editor .editor__content .ProseMirror:focus {
-  outline: 2px solid #2196F3;
+  outline: 2px solid #2196f3;
 }
 </style>
