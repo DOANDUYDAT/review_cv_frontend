@@ -22,123 +22,37 @@
     <v-row>
       <v-col cols="12">
         <div v-html="question.content"></div>
-        <v-btn
-          color="warning"
-          v-if="isOwner && !question.isClose"
-          @click="closeQuestion"
-          >Close</v-btn
-        >
-      </v-col>
-      <v-col class="d-flex justify-end py-0">
-        <v-col md="9" class="text-left py-0">
-          <v-btn
-            :small="$vuetify.breakpoint.mobile"
-            :class="$vuetify.breakpoint.mobile ? 'mr-2' : 'mr-4'"
-            icon
-            @click="likeQuestion"
-          >
-            <v-icon color="primary">mdi-thumb-up</v-icon>
-          </v-btn>
-          <span :class="$vuetify.breakpoint.mobile ? 'mr-5' : 'mr-8'">
-            {{ question.likes.length }} likes
-          </span>
-        </v-col>
-        <v-col class="text-right py-0" md="3">
-          asked by {{ question.user.userName }}
-        </v-col>
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="12">
-        <h3>4 Answers</h3>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col cols="1" class="align-center flex-column d-flex py-0">
-        <v-btn small outlined fab color="teal" v-if="!question.isClose">
-          <v-icon>mdi-check-bold</v-icon>
-        </v-btn>
-        <v-icon v-if="answer.isAccept" color="teal" large
-          >mdi-check-bold</v-icon
-        >
+      <v-col md="9" class="text-left py-0">
         <v-btn
           :small="$vuetify.breakpoint.mobile"
+          :class="$vuetify.breakpoint.mobile ? 'mr-2' : 'mr-4'"
           icon
-          large
           @click="likeQuestion"
         >
           <v-icon color="primary">mdi-thumb-up</v-icon>
         </v-btn>
-        <span> {{ question.likes.length }} likes </span>
+        <span :class="$vuetify.breakpoint.mobile ? 'mr-5' : 'mr-8'">
+          {{ question.likes.length }} likes
+        </span>
       </v-col>
-      <v-col cols="11" class="py-0">
-        <span
-          >“Hôm nay ăn gì?” hay “tối nay ăn gì?” là câu hỏi kinh điển khiến các
-          chị em không khỏi đau đầu. Nhưng với danh sách thực đơn hàng ngày
-          phong phú của một tài khoản trên Facebook có tên Nguyễn Thị Phương
-          Thanh trong suốt 31 ngày dưới đây sẽ giúp chị em giải quyết được vấn
-          đề này. Trong thực đơn hàng ngày này đều là những món ăn đơn giản, dễ
-          làm nhưng vẫn ngon, đảm bảo chất dinh dưỡng cho mọi người. Mời các bạn
-          tham khảo. “Hôm nay ăn gì?” hay “tối nay ăn gì?” là câu hỏi kinh điển
-          khiến các chị em không khỏi đau đầu. Nhưng với danh sách thực đơn hàng
-          ngày phong phú của một tài khoản trên Facebook có tên Nguyễn Thị
-          Phương Thanh trong suốt 31 ngày dưới đây sẽ giúp chị em giải quyết
-          được vấn đề này. Trong thực đơn hàng ngày này đều là những món ăn đơn
-          giản, dễ làm nhưng vẫn ngon, đảm bảo chất dinh dưỡng cho mọi người.
-          Mời các bạn tham khảo.</span
-        >
-
-        <!-- <answer-list></answer-list> -->
-      </v-col>
-      <v-col cols="1" class="pb-0"></v-col>
-      <v-col cols="8" class="pb-0">
-        <v-btn text color="grey" class="pl-0">
-          <v-icon dark>
-            mdi-pencil
-          </v-icon>
-          Chỉnh sửa
-        </v-btn>
-        <!-- <v-btn text color="grey">
-          <v-icon dark>
-            mdi-delete
-          </v-icon>
-          Xóa
-        </v-btn> -->
-      </v-col>
-      <v-col cols="3" class="text-right pb-0">
+      <v-col class="text-right py-0" md="3">
         asked by {{ question.user.userName }}
       </v-col>
-      <v-col cols="1" class=""></v-col>
-      <v-col cols="11" v-if="!isAllowComment" @click="checkPoint">
-        <v-btn color="primary" text>add a comment</v-btn>
-        <v-tooltip v-model="tooltipComment" bottom>
-          <span>You must have 50 reputation to comment</span>
-        </v-tooltip>
-      </v-col>
-      <v-col cols="11" class="" v-else>
-        <ValidationObserver v-slot="{ invalid }">
-          <ValidationProvider
-            name="comment"
-            rules="required|max:300"
-            v-slot="{ errors }"
-            :bails="false"
-          >
-            <v-textarea
-              outlined
-              rows="2"
-              counter="300"
-              label="Thêm bình luận"
-            ></v-textarea>
-            <span class="red--text">{{ errors[0] }}</span>
-          </ValidationProvider>
-          <div class="mb-1">
-            <v-btn color="primary" @click="submit" :disabled="invalid"
-              >Bình luận</v-btn
-            >
-          </div>
-        </ValidationObserver>
+    </v-row>
+    <v-row>
+      <v-col cols="12" class="text-right">
+        <v-btn small v-if="isOwner" color="warning">close</v-btn>
       </v-col>
     </v-row>
+    <v-row>
+      <v-col cols="12">
+        <h3>{{ question.listAnswers.length }} Answers</h3>
+      </v-col>
+    </v-row>
+    <answer-list v-if="listAnswers" :data="listAnswers"></answer-list>
     <v-divider></v-divider>
     <v-row>
       <v-col cols="12">
@@ -191,6 +105,7 @@
 
 <script>
 /* eslint-disable no-unused-vars */
+import AnswerList from "./components/AnswerList";
 import authService from "../../api/authentication";
 import questionService from "@/api/question.js";
 import answerService from "@/api/answer.js";
@@ -219,7 +134,8 @@ export default {
   name: "QuestionDetail",
   components: {
     EditorContent,
-    EditorMenuBar
+    EditorMenuBar,
+    AnswerList
     // Icon
   },
   data() {
@@ -255,7 +171,9 @@ export default {
       },
       question: null,
       currentUser: null,
-      tooltipComment: false
+      isAllowComment: false,
+      snackbar: false,
+      listAnswers: null
     };
   },
   computed: {
@@ -265,6 +183,9 @@ export default {
     }
   },
   methods: {
+    getAttach() {
+      return document.querySelector(".add-comment-btn");
+    },
     shortDate: timeStamp => {
       let d = new Date(timeStamp);
       return d.toLocaleDateString();
@@ -279,14 +200,16 @@ export default {
         .catch(err => console.log(err));
     },
     async getData() {
-      const id = this.$route.params.questionId;
+      const questionId = this.$route.params.questionId;
       try {
-        const question = await questionService.getQuestion(id);
+        const question = await questionService.getQuestion(questionId);
         if (question) {
           this.question = JSON.parse(JSON.stringify(question));
         }
-        const user = await authService.getUserByRole();
-        this.currentUser = user;
+        this.currentUser = await authService.getUserByRole();
+        this.listAnswers = await answerService.getListAnswersByQuestionId(
+          questionId
+        );
       } catch (err) {
         console.log(err);
       }
@@ -341,13 +264,6 @@ export default {
         .catch(err => {
           console.log(err);
         });
-    },
-    checkPoint() {
-      if (this.currentUser.reputationPoint > 100) {
-        this.isAllowComment = true;
-      } else {
-        this.tooltipComment = true;
-      }
     }
   },
   beforeDestroy() {
