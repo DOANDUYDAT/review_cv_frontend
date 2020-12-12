@@ -3,6 +3,7 @@ import feathers from "../services/restClient";
 import memberService from "./member";
 import specialistService from "./specialist";
 import volunteerService from "./volunteer";
+import userService from "./user";
 
 const ADMIN_ROLE = "admin";
 const MEMBER_ROLE = "member";
@@ -37,14 +38,26 @@ async function getRole() {
   return user.role;
 }
 
-async function getUserByRole(role, id) {
-  console.log(role, id);
+async function getUserByRole() {
+  const id = await getCurrentUserId();
+  const role = await getRole();
   if (role === MEMBER_ROLE) {
     return memberService.getMember(id);
   } else if (role === SPECIALIST_ROLE) {
     return specialistService.getSpecialist(id);
   } else if (role === VOLUNTEER_ROLE) {
     return volunteerService.getVolunteer(id);
+  } else if (role === ADMIN_ROLE) {
+    const user = await userService.getUser(id);
+    return {
+      user: {
+        userName: "ADMIN",
+        _id: id,
+        role: role,
+        email: user.email,
+        phone: user.phone
+      }
+    };
   } else {
     return null;
   }
