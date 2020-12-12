@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div v-if="answer">
     <v-row>
       <v-col cols="1" class="align-center flex-column d-flex py-0">
-        <v-btn small outlined fab color="teal" v-if="!question.isClose">
+        <v-btn small outlined fab color="teal" v-if="!questionData.isClose">
           <v-icon>mdi-check-bold</v-icon>
         </v-btn>
         <v-icon v-if="answer.isAccept" color="teal" large
@@ -12,48 +12,25 @@
           :small="$vuetify.breakpoint.mobile"
           icon
           large
-          @click="likeQuestion"
+          @click="likeAnswer"
         >
           <v-icon color="primary">mdi-thumb-up</v-icon>
         </v-btn>
-        <span> {{ question.likes.length }} likes </span>
+        <span> {{ answer.likes.length }} likes </span>
       </v-col>
       <v-col cols="11" class="py-0">
-        <span
-          >“Hôm nay ăn gì?” hay “tối nay ăn gì?” là câu hỏi kinh điển khiến các
-          chị em không khỏi đau đầu. Nhưng với danh sách thực đơn hàng ngày
-          phong phú của một tài khoản trên Facebook có tên Nguyễn Thị Phương
-          Thanh trong suốt 31 ngày dưới đây sẽ giúp chị em giải quyết được vấn
-          đề này. Trong thực đơn hàng ngày này đều là những món ăn đơn giản, dễ
-          làm nhưng vẫn ngon, đảm bảo chất dinh dưỡng cho mọi người. Mời các bạn
-          tham khảo. “Hôm nay ăn gì?” hay “tối nay ăn gì?” là câu hỏi kinh điển
-          khiến các chị em không khỏi đau đầu. Nhưng với danh sách thực đơn hàng
-          ngày phong phú của một tài khoản trên Facebook có tên Nguyễn Thị
-          Phương Thanh trong suốt 31 ngày dưới đây sẽ giúp chị em giải quyết
-          được vấn đề này. Trong thực đơn hàng ngày này đều là những món ăn đơn
-          giản, dễ làm nhưng vẫn ngon, đảm bảo chất dinh dưỡng cho mọi người.
-          Mời các bạn tham khảo.</span
-        >
-
-        <!-- <answer-list></answer-list> -->
+        <span>{{ answer.content }}</span>
       </v-col>
-      <v-col cols="1" class="pb-0"></v-col>
-      <v-col cols="8" class="pb-0">
-        <v-btn text color="grey" class="pl-0">
+      <v-col offset="1" cols="8" class="pb-0">
+        <v-btn text color="grey" class="pl-0" x-small>
           <v-icon dark>
             mdi-pencil
           </v-icon>
           Chỉnh sửa
         </v-btn>
-        <!-- <v-btn text color="grey">
-          <v-icon dark>
-            mdi-delete
-          </v-icon>
-          Xóa
-        </v-btn> -->
       </v-col>
       <v-col cols="3" class="text-right pb-0">
-        asked by {{ question.user.userName }}
+        asked by {{ answer.user.userName }}
       </v-col>
       <v-col cols="11" offset="1">
         <v-btn color="primary" text @click.stop="checkPoint"
@@ -61,7 +38,6 @@
         >
         <v-snackbar v-model="snackbar" top>
           You must have 50 reputation to comment
-
           <template v-slot:action="{ attrs }">
             <v-btn color="pink" text v-bind="attrs" @click="snackbar = false">
               Close
@@ -98,8 +74,6 @@
   </div>
 </template>
 <script>
-import questionService from "@/api/question.js";
-import authService from "@/api/authentication.js";
 export default {
   data() {
     return {
@@ -109,28 +83,31 @@ export default {
     };
   },
   props: {
-    data: {
+    answerData: {
       type: Object,
-      required: true
+      required: true,
+      default: function() {
+        return null;
+      }
+    },
+    questionData: {
+      type: Object,
+      required: true,
+      default: function() {
+        return null;
+      }
     }
   },
   computed: {},
   methods: {
     async getData() {
-      const id = this.$route.params.questionId;
-      try {
-        const question = await questionService.getQuestion(id);
-        if (question) {
-          this.question = JSON.parse(JSON.stringify(question));
-        }
-        const user = await authService.getUserByRole();
-        this.currentUser = user;
-      } catch (err) {
-        console.log(err);
-      }
+      this.answer = JSON.parse(JSON.stringify(this.answerData));
     },
     postComment() {
       console.log("post comment");
+    },
+    likeAnswer() {
+      console.log("like answer");
     },
     checkPoint() {
       if (this.isAllowComment) {

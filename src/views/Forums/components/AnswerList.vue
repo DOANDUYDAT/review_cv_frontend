@@ -1,72 +1,55 @@
 <template>
   <div>
-    <template v-if="answerShow.length > 0">
+    <div v-if="listAnswers">
       <answer-item
-        v-for="answer in answerShow"
+        v-for="answer in listAnswers"
         :key="answer.id"
-        :answer="answer"
+        :answer-data="answer"
+        :question-data="questionData"
       ></answer-item>
-      <v-row>
-        <v-btn
-          class="mx-auto my-2"
-          color="primary"
-          text
-          v-if="showButtonMore"
-          @click="getMoreAnswer"
-          >Xem thêm 5 câu trả lời</v-btn
-        >
-      </v-row>
-    </template>
-    <template v-else>
+      <div class="text-center">
+        <v-pagination v-model="page" :length="5"></v-pagination>
+      </div>
+    </div>
+    <div v-else>
       <div class="headline">Chưa có câu trả lời</div>
-    </template>
+    </div>
   </div>
 </template>
 
 <script>
 import AnswerItem from "./AnswerItem";
+import answerService from "@/api/answer";
 
 export default {
   data() {
     return {
-      allAnswers: [],
-      answerShow: []
+      listAnswers: null,
+      page: 1
     };
   },
   components: {
     AnswerItem
   },
-  computed: {
-    showButtonMore() {
-      return this.answerShow.length < this.allAnswers.length ? true : false;
-    },
-    productId() {
-      return this.$route.params.productId;
+  props: {
+    questionData: {
+      type: Object,
+      required: true
+    }
+  },
+  computed: {},
+  watch: {
+    page: function() {
+      this.getData();
     }
   },
   methods: {
-    getMoreAnswer() {
-      let offsetAnswer = this.answerShow.length;
-
-      for (let i = 0; i < 5; i++) {
-        if (offsetAnswer < this.allAnswers.length) {
-          this.answerShow.push(this.allAnswers[offsetAnswer]);
-          offsetAnswer++;
-        }
-      }
-    },
-    initAnswer() {
-      let answerList = [];
-      const allAnswers = this.allAnswers;
-      for (let i = 0; i < 5; i++) {
-        if (i < allAnswers.length) {
-          answerList.push(allAnswers[i]);
-        }
-      }
-      return answerList;
-    },
     async getData() {
-      this.answerShow = this.initAnswer();
+      const questionId = this.$route.params.questionId;
+      this.listAnswers = await answerService.getListAnswersByQuestionId(
+        questionId,
+        this.page
+      );
     }
   },
   created() {

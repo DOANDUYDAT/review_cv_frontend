@@ -49,10 +49,10 @@
     </v-row>
     <v-row>
       <v-col cols="12">
-        <h3>{{ question.listAnswers.length }} Answers</h3>
+        <h3>{{ totalAnswer }} Answers</h3>
       </v-col>
     </v-row>
-    <answer-list v-if="listAnswers" :data="listAnswers"></answer-list>
+    <answer-list :question-data="question"></answer-list>
     <v-divider></v-divider>
     <v-row>
       <v-col cols="12">
@@ -166,14 +166,11 @@ export default {
         }
       }),
       answer: {
-        content: "",
-        isAccept: false
+        content: ""
       },
       question: null,
       currentUser: null,
-      isAllowComment: false,
-      snackbar: false,
-      listAnswers: null
+      totalAnswer: 0
     };
   },
   computed: {
@@ -183,9 +180,6 @@ export default {
     }
   },
   methods: {
-    getAttach() {
-      return document.querySelector(".add-comment-btn");
-    },
     shortDate: timeStamp => {
       let d = new Date(timeStamp);
       return d.toLocaleDateString();
@@ -207,9 +201,7 @@ export default {
           this.question = JSON.parse(JSON.stringify(question));
         }
         this.currentUser = await authService.getUserByRole();
-        this.listAnswers = await answerService.getListAnswersByQuestionId(
-          questionId
-        );
+        this.totalAnswer = await answerService.getTotalAnswer(questionId);
       } catch (err) {
         console.log(err);
       }
@@ -232,17 +224,7 @@ export default {
       this.editor.setContent(
         {
           type: "doc",
-          content: [
-            {
-              type: "paragraph",
-              content: [
-                {
-                  type: "text",
-                  text: "This is some inserted text. "
-                }
-              ]
-            }
-          ]
+          content: `<p>your answer</p>`
         },
         true
       );
