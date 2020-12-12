@@ -46,7 +46,7 @@
           {{ shortDate(item.createdAt) }}
         </v-col>
         <v-col class="text-right" md="2">
-          {{ item.user.userName }}
+          asked by {{ item.user.userName }}
         </v-col>
       </v-row>
       <v-divider></v-divider>

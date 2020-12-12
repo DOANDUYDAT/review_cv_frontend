@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container class="mt-4">
     <div v-if="currentUser">
       <v-row>
         <v-col cols="8" class="mx-0">

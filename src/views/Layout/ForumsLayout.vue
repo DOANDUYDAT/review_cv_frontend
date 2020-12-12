@@ -40,8 +40,8 @@
           <template v-slot:activator="{ on }">
             <v-btn text dark v-on="on">
               <v-icon left>mdi-account-circle</v-icon>
-              <!-- {{ currentUser.user.userName }} -->
-              Đần Thúi
+              {{ currentUser.user.userName }}
+              <!-- Đần Thúi -->
               <v-icon right>mdi-menu-down</v-icon>
             </v-btn>
           </template>
@@ -56,7 +56,7 @@
     </v-app-bar>
 
     <v-main class="grey lighten-3">
-      <v-container>
+      <v-container class="mt-4">
         <router-view></router-view>
       </v-container>
     </v-main>
@@ -68,7 +68,7 @@
 import authService from "../../api/authentication";
 export default {
   data: () => ({
-    // currentUser: null,
+    currentUser: null
   }),
   methods: {
     GoToMemberHomePage() {
@@ -79,11 +79,12 @@ export default {
         name: "Forums Home"
       });
     },
-    // async getData() {
-    //   const userId = await authService.getCurrentUserId();
-    //   const user = await memberService.getMember(userId);
-    //   this.currentUser = user;
-    // },
+    async getData() {
+      const userId = await authService.getCurrentUserId();
+      const role = await authService.getRole();
+      const user = await authService.getUserByRole(role, userId);
+      this.currentUser = user;
+    },
     LogOut() {
       authService.logout().finally(() => {
         this.$router.push({ name: "Home" });
@@ -96,11 +97,27 @@ export default {
         });
       });
     }
+  },
+  created() {
+    this.getData();
   }
 };
 </script>
 <style lang="scss" scoped>
 .v-app-bar {
   background-image: linear-gradient(0.25turn, #00bda0 30%, #007ddd);
+}
+.container {
+  background-color: white;
+}
+</style>
+<style lang="scss">
+.qa-editor .editor__content .ProseMirror {
+  height: 200px;
+  overflow: auto;
+  outline: none;
+}
+.qa-editor .editor__content .ProseMirror:focus {
+  outline: 2px solid #2196F3;
 }
 </style>

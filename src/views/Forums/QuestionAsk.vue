@@ -170,9 +170,3 @@ export default {
   }
 }
 </style>
-<style lang="scss">
-.qa-editor .editor__content .ProseMirror {
-  min-height: 200px;
-  // overflow: auto;
-}
-</style>
