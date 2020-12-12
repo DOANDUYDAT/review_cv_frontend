@@ -3,7 +3,7 @@
     <div v-if="listAnswers">
       <answer-item
         v-for="answer in listAnswers"
-        :key="answer.id"
+        :key="answer._id"
         :answer-data="answer"
         :question-data="questionData"
         :current-user-data="currentUserData"

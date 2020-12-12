@@ -113,6 +113,7 @@ import AnswerList from "./components/AnswerList";
 import authService from "../../api/authentication";
 import questionService from "@/api/question.js";
 import answerService from "@/api/answer.js";
+import { acceptService } from "@/api/answer.js";
 import { Editor, EditorContent, EditorMenuBar } from "tiptap";
 import {
   Blockquote,
@@ -268,6 +269,7 @@ export default {
   },
   created() {
     this.getData();
+    acceptService.on("created", () => this.getData());
   }
 };
 </script>

@@ -2,7 +2,14 @@
   <div v-if="answer">
     <v-row>
       <v-col cols="1" class="align-center flex-column d-flex py-0">
-        <v-btn small outlined fab color="teal" v-if="!questionData.isClose">
+        <v-btn
+          small
+          outlined
+          fab
+          color="teal"
+          v-if="!questionData.isClose"
+          @click="acceptAnswer"
+        >
           <v-icon>mdi-check-bold</v-icon>
         </v-btn>
         <v-icon v-if="answer.isAccept" color="teal" large
@@ -134,6 +141,16 @@ export default {
       } else {
         this.snackbar = true;
       }
+    },
+    acceptAnswer() {
+      answerService
+        .acceptAnswer(this.answer._id)
+        .then(res => {
+          console.log(res);
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   },
   created() {

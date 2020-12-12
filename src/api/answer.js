@@ -4,6 +4,7 @@ import feathers from "../services/restClient";
 const answerService = feathers.service("answers");
 const dislikeService = feathers.service("answers/dislike");
 const likeService = feathers.service("answers/like");
+const acceptService = feathers.service("answers/accept");
 
 const LIMIT_NUMBER = 20;
 
@@ -43,18 +44,27 @@ async function getTotalAnswer(questionId) {
 }
 
 async function likeAnswer(id) {
-  const res = likeService.create({
+  const res = await likeService.create({
     _id: id
   });
   return res;
 }
 
 async function dislikeAnswer(id) {
-  const res = likeService.create({
+  const res = await likeService.create({
     _id: id
   });
   return res;
 }
+
+async function acceptAnswer(_id) {
+  const res = await acceptService.create({
+    _id
+  });
+  return res;
+}
+
+export { acceptService };
 
 export default {
   getAnswer,
@@ -62,5 +72,6 @@ export default {
   likeAnswer,
   createAnswer,
   dislikeAnswer,
-  getTotalAnswer
+  getTotalAnswer,
+  acceptAnswer
 };
