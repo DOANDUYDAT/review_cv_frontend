@@ -52,7 +52,11 @@
         <h3>{{ totalAnswer }} Answers</h3>
       </v-col>
     </v-row>
-    <answer-list :question-data="question"></answer-list>
+    <answer-list
+      :question-data="question"
+      :current-user-data="currentUser"
+      v-if="question && currentUser"
+    ></answer-list>
     <v-divider></v-divider>
     <v-row>
       <v-col cols="12">
@@ -184,6 +188,29 @@ export default {
       let d = new Date(timeStamp);
       return d.toLocaleDateString();
     },
+    setContent() {
+      // you can pass a json document
+      this.editor.setContent(
+        {
+          type: "doc",
+          content: [
+            {
+              type: "paragraph",
+              content: [
+                {
+                  type: "text",
+                  text: "enter your answer"
+                }
+              ]
+            }
+          ]
+        },
+        true
+      );
+      // HTML string is also supported
+      // this.editor.setContent('<p>This is some inserted text. 👋</p>')
+      this.editor.focus();
+    },
     closeQuestion: function() {
       questionService
         .closeQuestion(this.question._id)
@@ -219,19 +246,6 @@ export default {
         })
         .catch(err => console.log(err));
     },
-    setContent() {
-      // you can pass a json document
-      this.editor.setContent(
-        {
-          type: "doc",
-          content: `<p>your answer</p>`
-        },
-        true
-      );
-      // HTML string is also supported
-      // this.editor.setContent('<p>This is some inserted text. </p>')
-      this.editor.focus();
-    },
     postAnswer() {
       let answerData = {
         ...this.answer,
@@ -240,7 +254,8 @@ export default {
       answerService
         .createAnswer(answerData)
         .then(answer => {
-          console.log(answer);
+          this.answer.content = "";
+          this.setContent();
           this.getData();
         })
         .catch(err => {

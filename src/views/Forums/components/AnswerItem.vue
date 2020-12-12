@@ -19,7 +19,7 @@
         <span> {{ answer.likes.length }} likes </span>
       </v-col>
       <v-col cols="11" class="py-0">
-        <span>{{ answer.content }}</span>
+        <div v-html="answer.content"></div>
       </v-col>
       <v-col offset="1" cols="8" class="pb-0">
         <v-btn text color="grey" class="pl-0" x-small>
@@ -74,12 +74,14 @@
   </div>
 </template>
 <script>
+import answerService from "@/api/answer.js";
 export default {
   data() {
     return {
       answer: null,
       isAllowComment: false,
-      snackbar: false
+      snackbar: false,
+      edit: false
     };
   },
   props: {
@@ -96,25 +98,38 @@ export default {
       default: function() {
         return null;
       }
+    },
+    currentUserData: {
+      type: Object,
+      required: true,
+      default: function() {
+        return null;
+      }
     }
   },
   computed: {},
   methods: {
-    async getData() {
+    getData() {
       this.answer = JSON.parse(JSON.stringify(this.answerData));
     },
     postComment() {
       console.log("post comment");
     },
-    likeAnswer() {
-      console.log("like answer");
+    async likeAnswer() {
+      try {
+        await answerService.likeAnswer(this.answer._id);
+        const updatedAnswer = await answerService.getAnswer(this.answer._id);
+        this.answer = updatedAnswer;
+      } catch (err) {
+        console.log(err);
+      }
     },
     checkPoint() {
       if (this.isAllowComment) {
         this.isAllowComment = false;
         return;
       }
-      if (this.currentUser.reputationPoint > 10) {
+      if (this.currentUserData && this.currentUserData.reputationPoint > 10) {
         this.isAllowComment = true;
       } else {
         this.snackbar = true;

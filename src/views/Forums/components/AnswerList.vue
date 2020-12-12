@@ -6,6 +6,7 @@
         :key="answer.id"
         :answer-data="answer"
         :question-data="questionData"
+        :current-user-data="currentUserData"
       ></answer-item>
       <div class="text-center">
         <v-pagination v-model="page" :length="5"></v-pagination>
@@ -34,14 +35,25 @@ export default {
   props: {
     questionData: {
       type: Object,
-      required: true
+      required: true,
+      default: function() {
+        return null;
+      }
+    },
+    currentUserData: {
+      type: Object,
+      required: true,
+      default: function() {
+        return null;
+      }
     }
   },
   computed: {},
   watch: {
     page: function() {
       this.getData();
-    }
+    },
+    "questionData.listAnswers": "getData"
   },
   methods: {
     async getData() {
