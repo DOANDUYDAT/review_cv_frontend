@@ -2,22 +2,23 @@
   <div class="cv__study item__cv">
     <div class="cv__infor--content ">
       <div class="cv__study--title item__cv--title">
-        <!-- <input
+        <input
           type="text"
           @mouseup="getCurrentTagName"
           contenteditable="true"
-          :value="contentDetails.name"
+          v-model.lazy="command"
           :style="{ fontSize: bigfont + 'px', fontFamily: fontfamily }"
-          id="titleEdu"
-        /> -->
-        <p
+          id="titleEduCate"
+        />
+        <div
           @mouseup="getCurrentTagName"
           contenteditable="true"
+          ref="titleEduca"
+          @blur="goodJob"
           :style="{ fontSize: bigfont + 'px', fontFamily: fontfamily }"
-          id="titleEdu"
+          v-html="contentDetails.name"
         >
-          {{ contentDetails.name }}
-        </p>
+        </div>
       </div>
       <v-divider></v-divider>
       <div v-for="(item, id) in contentDetails.content" :key="id">
@@ -36,11 +37,11 @@
           <div class="option__content">
             <v-btn color="success" small @click="addContent(id)">
               <v-icon>mdi-plus</v-icon>
-              Them
+              Thêm
             </v-btn>
             <v-btn color="error" small @click="deleteContent(id)">
               <v-icon>mdi-minus</v-icon>
-              Xoa
+              Xóa
             </v-btn>
           </div>
         </div>
@@ -56,13 +57,13 @@
       </v-icon>
       <v-btn color="error" small @click="hiddenCategory(contentDetails.order)">
         <v-icon>mdi-minus</v-icon>
-        An muc
+        Ẩn mục
       </v-btn>
     </div>
   </div>
 </template>
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 export default {
   name: "Education",
   data() {
@@ -82,13 +83,28 @@ export default {
     command: function(newVal, oldVal) {
       // watch it
       console.log("Prop changed: ", newVal, " | was: ", oldVal);
-      console.log(this);
-      this.exec(this.command);
+      // console.log(this);
+      this.exec(newVal);
     }
   },
+  computed: {
+    ...mapGetters("Cv", {
+      command: "command",
+      loading: "loading",
+      error: "error"
+    })
+  },
   methods: {
+    goodJob() {
+      debugger;
+      const title = this.$refs.titleEduca.textContent;
+      console.log(this.$refs.titleEduca.textContent);
+      // this.$refs.titleEduca;
+      this.contentDetails.name = title;
+    },
     exec(command, arg) {
       debugger;
+      console.log(this.command);
       document.execCommand(command, false, arg);
     },
     getCurrentTagName() {
@@ -105,7 +121,6 @@ export default {
         ...elementArray[id]
       };
       this.contentDetails.content.splice(id + 1, 0, element);
-      console.log(this.bigfont);
     },
     deleteContent(id) {
       // const elementArray = [...this.contentDetails.content];
@@ -124,14 +139,7 @@ export default {
     },
     ...mapActions("Cv", ["incrementOrder", "decrementOrder", "hiddenCategory"])
   },
-  props: [
-    "data",
-    "bigfont",
-    "smallFont",
-    "lineheight",
-    "fontfamily",
-    "command"
-  ],
+  props: ["data", "bigfont", "smallFont", "lineheight", "fontfamily"],
   created() {
     this.contentDetails = JSON.parse(JSON.stringify(this.data));
     console.log(this.content);

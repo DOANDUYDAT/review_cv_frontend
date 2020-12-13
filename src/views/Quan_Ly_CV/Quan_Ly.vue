@@ -2,12 +2,12 @@
   <v-container>
     <v-row>
       <v-col cols="10">
-        <span> Danh sach CV</span>
+        <span> Danh sách CV</span>
       </v-col>
       <v-col cols="2">
         <v-btn color="success" href="/CV/mau-cv" target="_blank">
           <v-icon>mdi-plus</v-icon>
-          Tao moi
+          Tạo mới
         </v-btn>
       </v-col>
     </v-row>

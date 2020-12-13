@@ -25,11 +25,11 @@
           <div class="option__content">
             <v-btn color="success" small @click="addContent(id)">
               <v-icon>mdi-plus</v-icon>
-              Them
+              Thêm
             </v-btn>
             <v-btn color="error" small @click="deleteContent(id)">
               <v-icon>mdi-minus</v-icon>
-              Xoa
+              Xóa
             </v-btn>
           </div>
         </div>
@@ -45,7 +45,7 @@
       </v-icon>
       <v-btn color="error" small @click="hiddenCategory(contentDetails.order)">
         <v-icon>mdi-minus</v-icon>
-        An muc
+        Ẩn mục
       </v-btn>
     </div>
   </div>
@@ -93,7 +93,6 @@ export default {
         ...elementArray[id]
       };
       this.contentDetails.content.splice(id + 1, 0, element);
-      console.log(this.bigfont);
     },
     deleteContent(id) {
       // const elementArray = [...this.contentDetails.content];
@@ -112,14 +111,7 @@ export default {
     },
     ...mapActions("Cv", ["incrementOrder", "decrementOrder", "hiddenCategory"])
   },
-  props: [
-    "data",
-    "bigfont",
-    "smallFont",
-    "lineheight",
-    "fontfamily",
-    "command"
-  ],
+  props: ["data", "bigfont", "smallFont", "lineheight", "fontfamily"],
   created() {
     this.contentDetails = JSON.parse(JSON.stringify(this.data));
     console.log(this.content);

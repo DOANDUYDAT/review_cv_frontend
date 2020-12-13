@@ -49,11 +49,11 @@
             <div class="option__content">
               <v-btn color="success" small @click="addContent(id)">
                 <v-icon>mdi-plus</v-icon>
-                Them
+                Thêm
               </v-btn>
               <v-btn color="error" small @click="deleteContent(id)">
                 <v-icon>mdi-minus</v-icon>
-                Xoa
+                Xóa
               </v-btn>
             </div>
           </v-container>
@@ -70,7 +70,7 @@
       </v-icon>
       <v-btn color="error" small @click="hiddenCategory(skillDetails.order)">
         <v-icon>mdi-minus</v-icon>
-        An muc
+        Ẩn mục
       </v-btn>
     </div>
   </div>
@@ -109,13 +109,13 @@ export default {
     // },
     addContent(id) {
       // const idItem = parseInt(id);
-      const elementArray = [...this.contentDetails.content];
+      debugger;
+      const elementArray = [...this.skillDetails.content];
       const element = {
         id: id,
         ...elementArray[id]
       };
-      this.contentDetails.content.splice(id + 1, 0, element);
-      console.log(this.bigfont);
+      this.skillDetails.content.splice(id + 1, 0, element);
     },
     deleteContent(id) {
       // const elementArray = [...this.contentDetails.content];
@@ -123,25 +123,18 @@ export default {
       //   id: id,
       //   ...elementArray[id]
       // };
-      const length = this.contentDetails
-        ? this.contentDetails.content
-          ? this.contentDetails.content.length
+      const length = this.skillDetails
+        ? this.skillDetails.content
+          ? this.skillDetails.content.length
           : 0
         : 0;
       if (id <= length - 1 && length != 1) {
-        this.contentDetails.content.splice(id, 1);
+        this.skillDetails.content.splice(id, 1);
       }
     },
     ...mapActions("Cv", ["incrementOrder", "decrementOrder", "hiddenCategory"])
   },
-  props: [
-    "data",
-    "bigfont",
-    "smallFont",
-    "lineheight",
-    "fontfamily",
-    "command"
-  ],
+  props: ["data", "bigfont", "smallFont", "lineheight", "fontfamily"],
   created() {
     this.skillDetails = JSON.parse(JSON.stringify(this.data));
     console.log(this.skillDetails);

@@ -9,12 +9,14 @@ const state = () => ({
   // name: ""
   cv: {},
   loading: false,
-  error: null
+  error: null,
+  command: ""
 });
 const getters = {
   data: state => state.cv,
   loading: state => state.loading,
-  error: state => state.error
+  error: state => state.error,
+  command: state => state.command
 };
 const mutations = {
   setState(state, cv) {
@@ -31,6 +33,9 @@ const mutations = {
   },
   setError(state, error) {
     state.error = error;
+  },
+  setCommand(state, command) {
+    state.command = command;
   },
   incrementOrder(state, order) {
     const length = state.cv.content.length;
@@ -86,6 +91,9 @@ const actions = {
   initState({ state, commit }, cv) {
     commit("setState", cv);
   },
+  createCommand({ state, commit }, command) {
+    commit("setCommand", command);
+  },
   incrementOrder({ state, commit }, order) {
     commit("incrementOrder", order);
   },
@@ -106,10 +114,10 @@ const actions = {
           reject(error);
         });
     });
-  },
-  exec(command, arg) {
-    document.execCommand(command, false, arg);
   }
+  // exec(command, arg) {
+  //   document.execCommand(command, false, arg);
+  // }
 };
 
 export default {
