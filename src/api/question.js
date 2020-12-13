@@ -28,7 +28,7 @@ async function getAllQuestions(pageNumber) {
   //     $skip: skipNumber
   //   }
   // });
-  const res = questionService.find({
+  const res = await questionService.find({
     query: {
       $sort: {
         createdAt: -1
@@ -39,14 +39,14 @@ async function getAllQuestions(pageNumber) {
 }
 
 async function closeQuestion(questionId) {
-  const res = closeService.create({
+  const res = await closeService.create({
     _id: questionId
   });
   return res;
 }
 
 async function likeQuestion(questionId) {
-  const res = likeService.create({
+  const res = await likeService.create({
     _id: questionId
   });
   return res;

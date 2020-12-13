@@ -2,7 +2,14 @@
   <div v-if="answer">
     <v-row>
       <v-col cols="1" class="align-center flex-column d-flex py-0">
-        <v-btn small outlined fab color="teal" v-if="!questionData.isClose">
+        <v-btn
+          small
+          outlined
+          fab
+          color="teal"
+          v-if="!questionData.isClose"
+          @click="acceptAnswer"
+        >
           <v-icon>mdi-check-bold</v-icon>
         </v-btn>
         <v-icon v-if="answer.isAccept" color="teal" large
@@ -19,7 +26,7 @@
         <span> {{ answer.likes.length }} likes </span>
       </v-col>
       <v-col cols="11" class="py-0">
-        <span>{{ answer.content }}</span>
+        <div v-html="answer.content"></div>
       </v-col>
       <v-col offset="1" cols="8" class="pb-0">
         <v-btn text color="grey" class="pl-0" x-small>
@@ -60,6 +67,7 @@
               rows="2"
               counter="300"
               label="Thêm bình luận"
+              v-model="comment.content"
             ></v-textarea>
             <span class="red--text">{{ errors[0] }}</span>
           </ValidationProvider>
@@ -74,12 +82,18 @@
   </div>
 </template>
 <script>
+import answerService from "@/api/answer.js";
+import commentService from "@/api/comment.js";
 export default {
   data() {
     return {
       answer: null,
       isAllowComment: false,
-      snackbar: false
+      snackbar: false,
+      edit: false,
+      comment: {
+        content: ""
+      }
     };
   },
   props: {
@@ -96,29 +110,59 @@ export default {
       default: function() {
         return null;
       }
+    },
+    currentUserData: {
+      type: Object,
+      required: true,
+      default: function() {
+        return null;
+      }
     }
   },
   computed: {},
   methods: {
-    async getData() {
+    getData() {
       this.answer = JSON.parse(JSON.stringify(this.answerData));
     },
-    postComment() {
-      console.log("post comment");
+    async postComment() {
+      const data = {
+        ...this.comment,
+        answerId: this.answer._id
+      };
+      try {
+        await commentService.createComment(data);
+        this.comment.content = "";
+        const updatedAnswer = await answerService.getAnswer(this.answer._id);
+        this.answer = updatedAnswer;
+      } catch (err) {
+        console.log(err);
+      }
     },
-    likeAnswer() {
-      console.log("like answer");
+    async likeAnswer() {
+      try {
+        await answerService.likeAnswer(this.answer._id);
+        const updatedAnswer = await answerService.getAnswer(this.answer._id);
+        this.answer = updatedAnswer;
+      } catch (err) {
+        console.log(err);
+      }
     },
     checkPoint() {
-      if (this.isAllowComment) {
-        this.isAllowComment = false;
-        return;
-      }
-      if (this.currentUser.reputationPoint > 10) {
+      if (this.currentUserData && this.currentUserData.reputationPoint > 10) {
         this.isAllowComment = true;
       } else {
         this.snackbar = true;
       }
+    },
+    acceptAnswer() {
+      answerService
+        .acceptAnswer(this.answer._id)
+        .then(res => {
+          console.log(res);
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   },
   created() {
