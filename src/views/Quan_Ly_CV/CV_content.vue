@@ -41,7 +41,6 @@
               :smallFont="smallfont"
               :lineheight="lineHeight"
               :fontfamily="fontFamily"
-              :command="command"
               @finished="finished"
               @editor="editor"
               @click.native="changeSideTab(item.order)"
@@ -94,14 +93,7 @@ export default {
       ]
     };
   },
-  props: [
-    "option",
-    "bigfont",
-    "smallfont",
-    "lineHeight",
-    "fontFamily",
-    "command"
-  ],
+  props: ["option", "bigfont", "smallfont", "lineHeight", "fontFamily"],
   computed: {
     ...mapState({
       currentCv: state => state.Cv.cv

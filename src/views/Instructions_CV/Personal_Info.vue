@@ -2,7 +2,7 @@
   <div class="personal">
     <div class="personal__title">
       <v-icon>mdi-information</v-icon>
-      THONG TIN CA NHAN
+      THÔNG TIN CÁ NHÂN
     </div>
     <v-divider></v-divider>
     <div class="personal__info">

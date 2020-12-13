@@ -12,8 +12,8 @@
                 Dùng mẫu này
               </v-btn>
               <p>
-                Mau thiet ke nay thiet ke dac trung cho nhung ung vien nhieu
-                kinh nghiem
+                Mẫu thiết kế này thiết kế đặc trưng cho những ứng viên nhiều
+                kinh nghiệm
               </p>
             </div>
           </div>

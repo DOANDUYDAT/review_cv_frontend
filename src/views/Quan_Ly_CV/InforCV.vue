@@ -26,11 +26,11 @@
         <v-row class="optionButton">
           <v-btn>
             <v-icon> mdi-debug-step-out</v-icon>
-            Day top
+            Đẩy top
           </v-btn>
           <v-btn>
             <v-icon>mdi-star</v-icon>
-            Dat CV chinh
+            Đặt CV chính
           </v-btn>
           <v-btn>
             <v-icon>mdi-eye</v-icon>
@@ -38,15 +38,15 @@
           </v-btn>
           <v-btn>
             <v-icon>mdi-download</v-icon>
-            Tai xuong
+            Tải xuống
           </v-btn>
           <v-btn href="/CV/edit">
             <v-icon>mdi-pencil</v-icon>
-            Sua
+            Sửa
           </v-btn>
           <v-btn @click="deleteCV(inforCV.id)">
             <v-icon>mdi-delete</v-icon>
-            Xoa
+            Xóa
           </v-btn>
         </v-row>
       </v-col>
