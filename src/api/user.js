@@ -25,7 +25,22 @@ async function activeUser(userId) {
   });
   return user;
 }
+
 async function deactiveUser(userId) {
+  const user = await deactiveService.create({
+    userId
+  });
+  return user;
+}
+
+async function turnOnNotify(userId) {
+  const user = await activeService.create({
+    userId
+  });
+  return user;
+}
+
+async function turnOffNotify(userId) {
   const user = await deactiveService.create({
     userId
   });
@@ -39,5 +54,7 @@ export default {
   getAllUsers,
   updateInfo,
   activeUser,
-  deactiveUser
+  deactiveUser,
+  turnOnNotify,
+  turnOffNotify
 };

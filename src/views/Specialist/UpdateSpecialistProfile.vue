@@ -102,7 +102,7 @@
                   color="green"
                   inset
                   :label="getActiveLabel(currentUser.user.getEmailNotification)"
-                  @change="onSwitchChange"
+                  @change="onSwitchChange(currentUser)"
                 ></v-switch>
               </template>
             </v-card-text>
@@ -115,6 +115,7 @@
 <script>
 import specialistService from "../../api/specialist";
 import authService from "../../api/authentication";
+import userService from "@/api/user";
 export default {
   data: () => ({
     currentUser: null
@@ -158,8 +159,8 @@ export default {
       // this.form.phone = user.phone;
       // this.form.username = user.username;
     },
-    onSwitchChange() {
-      this.$swal({
+    async onSwitchChange(specialist) {
+      const result = await this.$swal({
         title: "Are you sure?",
         icon: "warning",
         showCancelButton: true,
@@ -167,6 +168,40 @@ export default {
         cancelButtonColor: "#d33",
         confirmButtonText: "Yes"
       });
+      if (result.isConfirmed) {
+        if (specialist.user.getEmailNotification) {
+          try {
+            await userService.turnOnNotify(specialist.user._id);
+            await this.$swal({
+              title: "Turn on notification successfull!",
+              icon: "success"
+            });
+          } catch (err) {
+            await this.$swal({
+              title: "Turn on notification failed!",
+              text: err,
+              icon: "error"
+            });
+          }
+          await this.getData();
+        } else {
+          try {
+            await userService.turnOffNotify(specialist.user._id);
+            await this.$swal({
+              title: "Turn off notification successfull!",
+              icon: "success"
+            });
+          } catch (err) {
+            await this.$swal({
+              title: "Turn off notification failed!",
+              text: err,
+              icon: "error"
+            });
+          }
+          await this.getData();
+        }
+      }
+      await this.getData();
     },
     getActiveLabel(status) {
       if (status) return "Trạng thái nhận thông báo đang bật";
