@@ -17,8 +17,7 @@
           @blur="goodJob"
           :style="{ fontSize: bigfont + 'px', fontFamily: fontfamily }"
           v-html="contentDetails.name"
-        >
-        </div>
+        ></div>
       </div>
       <v-divider></v-divider>
       <div v-for="(item, id) in contentDetails.content" :key="id">
@@ -31,9 +30,9 @@
               marginTop: lineheight + 'px',
               fontFamily: fontfamily
             }"
-          >
-            {{ item.value }}
-          </p>
+            @blur="editItem($event, item.id)"
+            v-html="item.value"
+          ></p>
           <div class="option__content">
             <v-btn color="success" small @click="addContent(id)">
               <v-icon>mdi-plus</v-icon>
@@ -95,11 +94,13 @@ export default {
     })
   },
   methods: {
+    editItem(e, id) {
+      const item = e.srcElement;
+      this.contentDetails.content[id - 1].value = item.innerHTML;
+    },
     goodJob() {
       debugger;
-      const title = this.$refs.titleEduca.textContent;
-      console.log(this.$refs.titleEduca.textContent);
-      // this.$refs.titleEduca;
+      const title = this.$refs.titleEduca.innerHTML;
       this.contentDetails.name = title;
     },
     exec(command, arg) {
@@ -114,13 +115,15 @@ export default {
       }
     },
     addContent(id) {
-      // const idItem = parseInt(id);
+      // const idItem = parseInt(id)
+      debugger;
       const elementArray = [...this.contentDetails.content];
-      const element = {
-        id: id,
-        ...elementArray[id]
-      };
-      this.contentDetails.content.splice(id + 1, 0, element);
+      const currentElement = elementArray[id]
+      // const element = {
+      //   id: id,
+      //   ...elementArray[id]
+      // };
+      this.contentDetails.content.splice(id + 1, 0, currentElement);
     },
     deleteContent(id) {
       // const elementArray = [...this.contentDetails.content];
