@@ -105,6 +105,9 @@
       </v-col>
     </v-row>
   </v-sheet>
+  <div v-else-if="error">
+    {{ error.message }}
+  </div>
 </template>
 
 <script>
@@ -175,7 +178,8 @@ export default {
       },
       question: null,
       currentUser: null,
-      totalAnswer: 0
+      totalAnswer: 0,
+      error: null
     };
   },
   computed: {
@@ -231,7 +235,7 @@ export default {
         this.currentUser = await authService.getUserByRole();
         this.totalAnswer = await answerService.getTotalAnswer(questionId);
       } catch (err) {
-        console.log(err);
+        this.error = err;
       }
     },
     goToQuestionAsk() {

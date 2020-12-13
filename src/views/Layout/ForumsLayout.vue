@@ -72,7 +72,16 @@ export default {
   }),
   methods: {
     GoToMemberHomePage() {
-      this.$router.push({ name: "Upload CV" });
+      const { role } = this.currentUser.user;
+      if (role === "member") {
+        this.$router.push({ path: "/memberHome" });
+      } else if (role === "specialist") {
+        this.$router.push({ path: "/specialistHome" });
+      } else if (role === "volunteer") {
+        this.$router.push({ path: "/volunteerHome" });
+      } else {
+        this.$router.push({ path: "/about" });
+      }
     },
     goToHomeForums() {
       this.$router.push({

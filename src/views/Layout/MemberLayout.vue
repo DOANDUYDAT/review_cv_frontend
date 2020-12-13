@@ -67,7 +67,21 @@ export default {
   }),
   methods: {
     GoToMemberHomePage() {
-      this.$router.push({ name: "Upload CV" });
+      const { role } = this.currentUser.user;
+      let newPath = "";
+      if (role === "member") {
+        newPath = "/memberHome";
+      } else if (role === "specialist") {
+        newPath = "/specialistHome";
+      } else if (role === "volunteer") {
+        newPath = "/volunteerHome";
+      } else {
+        newPath = "/about";
+      }
+      const currentPath = this.$route.path;
+      if (newPath !== currentPath) {
+        this.$router.push({ path: newPath });
+      }
     },
     GoToUpdateProfilePage() {
       this.$router.push({ name: "Update Profile" });

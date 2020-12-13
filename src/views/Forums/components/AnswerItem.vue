@@ -67,6 +67,7 @@
               rows="2"
               counter="300"
               label="Thêm bình luận"
+              v-model="comment.content"
             ></v-textarea>
             <span class="red--text">{{ errors[0] }}</span>
           </ValidationProvider>
@@ -82,13 +83,17 @@
 </template>
 <script>
 import answerService from "@/api/answer.js";
+import commentService from "@/api/comment.js";
 export default {
   data() {
     return {
       answer: null,
       isAllowComment: false,
       snackbar: false,
-      edit: false
+      edit: false,
+      comment: {
+        content: ""
+      }
     };
   },
   props: {
@@ -119,8 +124,19 @@ export default {
     getData() {
       this.answer = JSON.parse(JSON.stringify(this.answerData));
     },
-    postComment() {
-      console.log("post comment");
+    async postComment() {
+      const data = {
+        ...this.comment,
+        answerId: this.answer._id
+      };
+      try {
+        await commentService.createComment(data);
+        this.comment.content = "";
+        const updatedAnswer = await answerService.getAnswer(this.answer._id);
+        this.answer = updatedAnswer;
+      } catch (err) {
+        console.log(err);
+      }
     },
     async likeAnswer() {
       try {
@@ -132,10 +148,6 @@ export default {
       }
     },
     checkPoint() {
-      if (this.isAllowComment) {
-        this.isAllowComment = false;
-        return;
-      }
       if (this.currentUserData && this.currentUserData.reputationPoint > 10) {
         this.isAllowComment = true;
       } else {
