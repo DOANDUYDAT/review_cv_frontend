@@ -2,7 +2,7 @@
   <div class="goal">
     <div class="goal__title">
       <v-icon>mdi-check</v-icon>
-      MUC TIEU NGHE NGHIEP
+      MỤC TIÊU NGHỀ NGHIỆP
     </div>
     <v-divider></v-divider>
     <div class="goal__info">

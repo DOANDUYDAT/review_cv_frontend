@@ -2,11 +2,11 @@
   <div class="showCV">
     <header>
       <div class="titleCV">
-        Xem CV Online cua <span>{{ nameUser }}</span>
+        Xem CV Online của <span>{{ nameUser }}</span>
       </div>
       <a href="#" btn btn-default>
         <i class="fa fa-download"></i>
-        Tai CV PDF
+        Tải CV PDF
       </a>
       <a href="#" class="btn btn-default">
         <i class="fa fa-copy"></i>

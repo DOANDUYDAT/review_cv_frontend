@@ -9,7 +9,7 @@
         :current-user-data="currentUserData"
       ></answer-item>
       <div class="text-center">
-        <v-pagination v-model="page" :length="5"></v-pagination>
+        <v-pagination v-model="page" :length="lengthPage"></v-pagination>
       </div>
     </div>
     <div v-else>
@@ -48,7 +48,11 @@ export default {
       }
     }
   },
-  computed: {},
+  computed: {
+    lengthPage() {
+      return Math.floor(this.listAnswers.length / 20) + 1;
+    }
+  },
   watch: {
     page: function() {
       this.getData();

@@ -9,12 +9,14 @@ const state = () => ({
   // name: ""
   cv: {},
   loading: false,
-  error: null
+  error: null,
+  command: ""
 });
 const getters = {
   data: state => state.cv,
   loading: state => state.loading,
-  error: state => state.error
+  error: state => state.error,
+  command: state => state.command
 };
 const mutations = {
   setState(state, cv) {
@@ -31,6 +33,9 @@ const mutations = {
   },
   setError(state, error) {
     state.error = error;
+  },
+  setCommand(state, command) {
+    state.command = command;
   },
   incrementOrder(state, order) {
     const length = state.cv.content.length;
@@ -66,6 +71,11 @@ const mutations = {
       item => item.order == order
     )[0];
     categoryItem.isShow = !categoryItem.isShow;
+  },
+  updateCategoryItem(state, data) {
+    const { type } = data;
+    let categoryItem = state.cv.content.find(item => item.type == type);
+    categoryItem = JSON.parse(JSON.stringify(data));
   }
 };
 /*eslint no-useless-catch: "error"*/
@@ -85,6 +95,9 @@ async function http(url, method = "GET", data) {
 const actions = {
   initState({ state, commit }, cv) {
     commit("setState", cv);
+  },
+  createCommand({ state, commit }, command) {
+    commit("setCommand", command);
   },
   incrementOrder({ state, commit }, order) {
     commit("incrementOrder", order);
@@ -107,9 +120,12 @@ const actions = {
         });
     });
   },
-  exec(command, arg) {
-    document.execCommand(command, false, arg);
+  updateCategoryData({ state, commit }, data) {
+    commit("updateCategoryItem", data);
   }
+  // exec(command, arg) {
+  //   document.execCommand(command, false, arg);
+  // }
 };
 
 export default {

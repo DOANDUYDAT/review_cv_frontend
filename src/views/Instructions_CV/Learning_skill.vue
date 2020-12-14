@@ -2,7 +2,7 @@
   <div class="learning">
     <div class="learning__title">
       <v-icon>mdi-layers</v-icon>
-      HOC VAN
+      HỌC VẤN
     </div>
     <v-divider></v-divider>
     <div class="learning__info">

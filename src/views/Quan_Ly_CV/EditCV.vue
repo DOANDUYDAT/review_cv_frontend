@@ -13,7 +13,7 @@
         </div>
       </v-tab>
       <v-tab class="service__item">
-        <h3 class="service__title">Co chu</h3>
+        <h3 class="service__title">Font chữ</h3>
         <!-- <div class="service__option">
                 <button class="btn btn__font">
                     <span>A</span>
@@ -36,7 +36,7 @@
         <v-select :items="fonts" v-model="select_size" dense></v-select>
       </v-tab>
       <v-tab class="service__item">
-        <h3 class="service__title">Co chu</h3>
+        <h3 class="service__title">Cỡ chữ</h3>
         <div class="service__option">
           <button class="btn btn__font" @click="fontDecrease()">
             <span>A</span>
@@ -50,7 +50,7 @@
         </div>
       </v-tab>
       <v-tab class="service__item">
-        <h3 class="service__title">Cach dong</h3>
+        <h3 class="service__title">Cách dòng</h3>
         <div class="service__option">
           <button class="btn btn__font" @click="heightDecrease()">
             <v-icon class="smallSize">mdi-arrow-up</v-icon>
@@ -94,7 +94,9 @@
         </div>
       </v-tab>
     </v-tabs>
-    <div class="mx-5 my-3 d-flex justify-content-center sticky-top">
+    <div
+      class="mx-5 my-3 d-flex justify-content-center sticky-top editor__list"
+    >
       <div
         v-for="(item, index) in commands"
         :key="index"
@@ -107,7 +109,7 @@
           data-toggle="tooltip"
           data-placement="bottom"
           :title="item.title"
-          @click="activeCommand(item.command)"
+          @click="createCommand(item.command)"
         >
           <i :class="'fa ' + item.icon"></i>
         </button>
@@ -120,7 +122,6 @@
       :smallfont="smallFont"
       :lineHeight="activeLineHeight"
       :fontFamily="select_size"
-      :command="command"
       class="editor border mt-2"
     ></component>
   </v-container>
@@ -163,24 +164,24 @@ import MauCV from "./MauCV";
 const CV1 = {
   cvId: "1",
   userId: "12a",
-  name: "cv thuc tap",
+  name: "CV thực tập",
   link: "",
   createAt: "22/10/2020",
   updatedAt: "22/11/2020",
   content: [
     {
       order: 1,
-      name: "mucTieu",
+      name: "Mục Tiêu",
       isShow: true,
       type: "GoalJob",
       content: [
         {
-          name: "cty 1",
+          name: "Côngty 1",
           value: "react",
           id: "1"
         },
         {
-          name: "cty 2",
+          name: "Côngty 2",
           value: "vue",
           id: "2"
         }
@@ -190,15 +191,15 @@ const CV1 = {
       order: 3,
       type: "Education",
       isShow: true,
-      name: "hoc van",
+      name: "Học vấn",
       content: [
         {
-          name: "bang 1",
+          name: "Bằng 1",
           value: "ktqd",
           id: "1"
         },
         {
-          name: "bang 2",
+          name: "Bằng 2",
           value: "bk",
           id: "2"
         }
@@ -208,22 +209,22 @@ const CV1 = {
       order: 2,
       type: "Hobbies",
       isShow: true,
-      name: "so thich",
-      content: ["doc sach", "xem phim"]
+      name: "Sở thích",
+      content: ["Đọc sách", "Xem phim"]
     },
     {
       order: 4,
-      name: "kiNang",
+      name: "Kĩ năng",
       isShow: true,
       type: "Skills",
       content: [
         {
-          name: "tin hoc van phong",
+          name: "Tin học văn phòng",
           value: "- Sử dụng thành thạo các công cụ Word, Excel, Power Point",
           id: "1"
         },
         {
-          name: "lap trinh web",
+          name: "Lập trình web",
           value: "vue",
           id: "2"
         }
@@ -305,13 +306,9 @@ export default {
     // exec(command, arg) {
     //   document.execCommand(command, false, arg);
     // },
-    activeCommand(item) {
-      this.command = item;
-    },
     // clear() {
     //   document.getElementById("editor").innerHTML = "";
     // },
-
     borderRight(index) {
       var clubs = [5, 9, 13, 15, 18, 20, 22, 24, 26];
 
@@ -362,7 +359,7 @@ export default {
     saveCV: function() {
       this.save = !this.save;
     },
-    ...mapActions("Cv", ["initState"])
+    ...mapActions("Cv", ["initState", "createCommand"])
   },
   components: {
     AddCV,
@@ -379,6 +376,8 @@ export default {
 <style lang="scss">
 .service__list {
   margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
 }
 .service__item {
   padding: 10px;
@@ -517,8 +516,17 @@ export default {
   padding: 15px;
   background: white;
   border: 1px solid lightgray;
+  border-right: 0;
   /* margin-right: 10px; */
-  border-radius: 10px;
+}
+.editor__list .btn-group:first-of-type .editor__btn {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+.editor__list .btn-group:last-of-type .editor__btn {
+  border-right: 1px solid lightgray;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 .editor {
   min-height: 20em;

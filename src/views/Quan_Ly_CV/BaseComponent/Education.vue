@@ -2,27 +2,26 @@
   <div class="cv__study item__cv">
     <div class="cv__infor--content ">
       <div class="cv__study--title item__cv--title">
-        <!-- <input
+        <input
           type="text"
           @mouseup="getCurrentTagName"
           contenteditable="true"
-          :value="contentDetails.name"
+          v-model.lazy="command"
           :style="{ fontSize: bigfont + 'px', fontFamily: fontfamily }"
-          id="titleEdu"
-        /> -->
-        <p
+          id="titleEduCate"
+        />
+        <div
           @mouseup="getCurrentTagName"
           contenteditable="true"
+          @blur="goodJob"
           :style="{ fontSize: bigfont + 'px', fontFamily: fontfamily }"
-          id="titleEdu"
-        >
-          {{ contentDetails.name }}
-        </p>
+          v-html="contentDetails.name"
+        ></div>
       </div>
       <v-divider></v-divider>
-      <div v-for="(item, id) in contentDetails.content" :key="id">
+      <div v-for="(item, i) in contentDetails.content" :key="i">
         <div class="cv__study--content content__cv">
-          <p
+          <div
             @mouseup="getCurrentTagName"
             contenteditable="true"
             :style="{
@@ -30,17 +29,17 @@
               marginTop: lineheight + 'px',
               fontFamily: fontfamily
             }"
-          >
-            {{ item.value }}
-          </p>
+            @blur="editItem($event, i)"
+            v-html="item.value"
+          ></div>
           <div class="option__content">
-            <v-btn color="success" small @click="addContent(id)">
+            <v-btn color="success" small @click="addContent(i)">
               <v-icon>mdi-plus</v-icon>
-              Them
+              Thêm
             </v-btn>
-            <v-btn color="error" small @click="deleteContent(id)">
+            <v-btn color="error" small @click="deleteContent(i)">
               <v-icon>mdi-minus</v-icon>
-              Xoa
+              Xóa
             </v-btn>
           </div>
         </div>
@@ -56,13 +55,14 @@
       </v-icon>
       <v-btn color="error" small @click="hiddenCategory(contentDetails.order)">
         <v-icon>mdi-minus</v-icon>
-        An muc
+        Ẩn mục
       </v-btn>
     </div>
   </div>
 </template>
 <script>
-import { mapActions } from "vuex";
+/* eslint-disable no-unused-vars */
+import { mapActions, mapGetters } from "vuex";
 export default {
   name: "Education",
   data() {
@@ -75,20 +75,42 @@ export default {
   },
   watch: {
     currentTagName() {
-      debugger;
       console.log(this.command);
       this.getCurrentTagName();
     },
     command: function(newVal, oldVal) {
       // watch it
       console.log("Prop changed: ", newVal, " | was: ", oldVal);
-      console.log(this);
-      this.exec(this.command);
+      // console.log(this);
+      this.exec(newVal);
+    },
+    contentDetails: {
+      handler: function(val, oldVal) {
+        this.updateCategoryData(val);
+      },
+      deep: true
     }
   },
+  computed: {
+    ...mapGetters("Cv", {
+      command: "command",
+      loading: "loading",
+      error: "error"
+    })
+  },
   methods: {
+    editItem(e, i) {
+      const item = e.srcElement;
+      this.contentDetails.content[i].value = item.innerHTML;
+    },
+    goodJob() {
+      debugger;
+      const title = this.$refs.titleEduca.innerHTML;
+      this.contentDetails.name = title;
+    },
     exec(command, arg) {
       debugger;
+      console.log(this.command);
       document.execCommand(command, false, arg);
     },
     getCurrentTagName() {
@@ -97,44 +119,32 @@ export default {
         console.log(this.currentTagName);
       }
     },
-    addContent(id) {
-      // const idItem = parseInt(id);
+    addContent(i) {
       const elementArray = [...this.contentDetails.content];
-      const element = {
-        id: id,
-        ...elementArray[id]
-      };
-      this.contentDetails.content.splice(id + 1, 0, element);
-      console.log(this.bigfont);
+      const newElement = { ...elementArray[i] };
+      this.contentDetails.content.splice(i + 1, 0, newElement);
     },
-    deleteContent(id) {
-      // const elementArray = [...this.contentDetails.content];
-      // const element = {
-      //   id: id,
-      //   ...elementArray[id]
-      // };
+    deleteContent(i) {
       const length = this.contentDetails
         ? this.contentDetails.content
           ? this.contentDetails.content.length
           : 0
         : 0;
-      if (id <= length - 1 && length != 1) {
-        this.contentDetails.content.splice(id, 1);
+      if (i <= length - 1 && length > 1) {
+        this.contentDetails.content.splice(i, 1);
       }
     },
-    ...mapActions("Cv", ["incrementOrder", "decrementOrder", "hiddenCategory"])
+    ...mapActions("Cv", [
+      "incrementOrder",
+      "decrementOrder",
+      "hiddenCategory",
+      "updateCategoryData"
+    ])
   },
-  props: [
-    "data",
-    "bigfont",
-    "smallFont",
-    "lineheight",
-    "fontfamily",
-    "command"
-  ],
+  props: ["data", "bigfont", "smallFont", "lineheight", "fontfamily"],
   created() {
     this.contentDetails = JSON.parse(JSON.stringify(this.data));
-    console.log(this.content);
+    // console.log(this.content);
     // console.log(this.bigFont);
   }
 };
