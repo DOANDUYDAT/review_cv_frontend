@@ -28,33 +28,38 @@
       <v-col cols="11" class="py-0">
         <div v-html="answer.content"></div>
       </v-col>
-      <v-col offset="1" cols="8" class="pb-0">
+      <!-- <v-col offset="1" cols="8" class="pb-0">
         <v-btn text color="grey" class="pl-0" x-small>
           <v-icon dark>
             mdi-pencil
           </v-icon>
           Chỉnh sửa
         </v-btn>
+      </v-col> -->
+      <v-col offset="9" cols="3" class="text-right pb-0">
+        answed by {{ answer.user.userName }}
       </v-col>
-      <v-col cols="3" class="text-right pb-0">
-        asked by {{ answer.user.userName }}
-      </v-col>
-      <v-col cols="10" offset="2" v-if="listComments">
+      <v-col cols="11" class="pl-4" offset="1" v-if="answerData.comments">
+        <v-row>
+          <v-col cols="12" class="py-0">
+            <h4>{{ answerData.comments.length }} Bình luận</h4>
+          </v-col>
+        </v-row>
         <div
-          v-for="comment in listComments"
+          v-for="comment in answerData.comments"
           :key="comment._id"
           :comment-data="comment"
-          :answer-data="answerData"
           :current-user-data="currentUserData"
         >
           <v-row>
-            <v-col cols="12" class="py-0">
+            <v-col cols="9" class="pl-8">
               <div v-html="comment.content"></div>
             </v-col>
-            <v-col cols="3" class="text-right pb-0">
-              asked by {{ comment.user.userName }}
+            <v-col cols="3" class="text-right">
+              by {{ comment.user.userName }}
             </v-col>
           </v-row>
+          <v-divider></v-divider>
         </div>
       </v-col>
       <v-col cols="11" offset="1">
@@ -109,7 +114,6 @@ export default {
       isAllowComment: false,
       snackbar: false,
       edit: false,
-      listComments: null,
       comment: {
         content: ""
       }
