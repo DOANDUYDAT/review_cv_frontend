@@ -13,16 +13,15 @@
         <div
           @mouseup="getCurrentTagName"
           contenteditable="true"
-          ref="titleEduca"
           @blur="goodJob"
           :style="{ fontSize: bigfont + 'px', fontFamily: fontfamily }"
           v-html="contentDetails.name"
         ></div>
       </div>
       <v-divider></v-divider>
-      <div v-for="(item, id) in contentDetails.content" :key="id">
+      <div v-for="(item, i) in contentDetails.content" :key="i">
         <div class="cv__study--content content__cv">
-          <p
+          <div
             @mouseup="getCurrentTagName"
             contenteditable="true"
             :style="{
@@ -30,15 +29,15 @@
               marginTop: lineheight + 'px',
               fontFamily: fontfamily
             }"
-            @blur="editItem($event, item.id)"
+            @blur="editItem($event, i)"
             v-html="item.value"
-          ></p>
+          ></div>
           <div class="option__content">
-            <v-btn color="success" small @click="addContent(id)">
+            <v-btn color="success" small @click="addContent(i)">
               <v-icon>mdi-plus</v-icon>
               Thêm
             </v-btn>
-            <v-btn color="error" small @click="deleteContent(id)">
+            <v-btn color="error" small @click="deleteContent(i)">
               <v-icon>mdi-minus</v-icon>
               Xóa
             </v-btn>
@@ -62,6 +61,7 @@
   </div>
 </template>
 <script>
+/* eslint-disable no-unused-vars */
 import { mapActions, mapGetters } from "vuex";
 export default {
   name: "Education",
@@ -75,7 +75,6 @@ export default {
   },
   watch: {
     currentTagName() {
-      debugger;
       console.log(this.command);
       this.getCurrentTagName();
     },
@@ -84,6 +83,12 @@ export default {
       console.log("Prop changed: ", newVal, " | was: ", oldVal);
       // console.log(this);
       this.exec(newVal);
+    },
+    contentDetails: {
+      handler: function(val, oldVal) {
+        this.updateCategoryData(val);
+      },
+      deep: true
     }
   },
   computed: {
@@ -94,9 +99,9 @@ export default {
     })
   },
   methods: {
-    editItem(e, id) {
+    editItem(e, i) {
       const item = e.srcElement;
-      this.contentDetails.content[id - 1].value = item.innerHTML;
+      this.contentDetails.content[i].value = item.innerHTML;
     },
     goodJob() {
       debugger;
@@ -114,38 +119,32 @@ export default {
         console.log(this.currentTagName);
       }
     },
-    addContent(id) {
-      // const idItem = parseInt(id)
-      debugger;
+    addContent(i) {
       const elementArray = [...this.contentDetails.content];
-      const currentElement = elementArray[id]
-      // const element = {
-      //   id: id,
-      //   ...elementArray[id]
-      // };
-      this.contentDetails.content.splice(id + 1, 0, currentElement);
+      const newElement = { ...elementArray[i] };
+      this.contentDetails.content.splice(i + 1, 0, newElement);
     },
-    deleteContent(id) {
-      // const elementArray = [...this.contentDetails.content];
-      // const element = {
-      //   id: id,
-      //   ...elementArray[id]
-      // };
+    deleteContent(i) {
       const length = this.contentDetails
         ? this.contentDetails.content
           ? this.contentDetails.content.length
           : 0
         : 0;
-      if (id <= length - 1 && length != 1) {
-        this.contentDetails.content.splice(id, 1);
+      if (i <= length - 1 && length > 1) {
+        this.contentDetails.content.splice(i, 1);
       }
     },
-    ...mapActions("Cv", ["incrementOrder", "decrementOrder", "hiddenCategory"])
+    ...mapActions("Cv", [
+      "incrementOrder",
+      "decrementOrder",
+      "hiddenCategory",
+      "updateCategoryData"
+    ])
   },
   props: ["data", "bigfont", "smallFont", "lineheight", "fontfamily"],
   created() {
     this.contentDetails = JSON.parse(JSON.stringify(this.data));
-    console.log(this.content);
+    // console.log(this.content);
     // console.log(this.bigFont);
   }
 };

@@ -4,7 +4,9 @@
     <!-- <v-btn-toggle> -->
     <v-row no-gutters justify="space-around">
       <v-col cols="5">
-        <v-btn @click="resetFilter" depressed outlined color="red">Xóa bộ lọc</v-btn>
+        <v-btn @click="resetFilter" depressed outlined color="red"
+          >Xóa bộ lọc</v-btn
+        >
       </v-col>
 
       <v-col cols="5">
@@ -16,55 +18,14 @@
           :disabled="loading"
           @click="submit"
           width="100%"
-        >Áp dụng</v-btn>
+          >Áp dụng</v-btn
+        >
       </v-col>
     </v-row>
     <!-- <v-btn :loading="loading" :disabled="loading" @click="loader = 'loading'">Accept Terms 2</v-btn> -->
     <!-- </v-btn-toggle> -->
     <!-- <v-container fluid> -->
     <v-list>
-      <v-list-item>
-        <div>
-          <div class="layout mb10 mx10">
-            <div class="flex relative xs5">
-              <ValidationProvider
-                name="minPrice"
-                rules="numeric"
-                v-slot="{ errors }"
-                :bails="false"
-              >
-                <v-text-field
-                  v-model="filter.minPrice"
-                  placeholder="Giá thấp nhất"
-                  counter="8"
-                  minlength="6"
-                  maxlength="8"
-                ></v-text-field>
-                <span class="red--text">{{ errors[0] }}</span>
-              </ValidationProvider>
-            </div>
-
-            <div class="flex d-flex align-center justify-center xs2">-</div>
-            <div class="flex relative xs5">
-              <ValidationProvider
-                name="maxPrice"
-                rules="numeric"
-                v-slot="{ errors }"
-                :bails="false"
-              >
-                <v-text-field
-                  v-model="filter.maxPrice"
-                  placeholder="Giá cao nhất"
-                  counter="8"
-                  minlength="6"
-                  maxlength="8"
-                ></v-text-field>
-                <span class="red--text">{{ errors[0] }}</span>
-              </ValidationProvider>
-            </div>
-          </div>
-        </div>
-      </v-list-item>
       <template v-for="item in items">
         <v-list-group no-action :key="item.text">
           <template v-slot:activator>
@@ -84,7 +45,9 @@
                 >
                   <template v-slot:default="{ active, toggle }">
                     <v-list-item-content>
-                      <v-list-item-title v-text="child.text"></v-list-item-title>
+                      <v-list-item-title
+                        v-text="child.text"
+                      ></v-list-item-title>
                     </v-list-item-content>
                     <v-list-item-action>
                       <v-checkbox
@@ -108,7 +71,7 @@
 </template>
 
 <script>
-import _ from 'lodash';
+import _ from "lodash";
 // import { supplierService, filterService } from "@/_api";
 export default {
   data() {
@@ -230,31 +193,31 @@ export default {
       const oldFilter = this.$route.query;
       let query = {};
       if (filter.minPrice) {
-        query = {...query, min_price: filter.minPrice};
+        query = { ...query, min_price: filter.minPrice };
       }
       if (filter.maxPrice) {
-        query = {...query, max_price: filter.maxPrice};
+        query = { ...query, max_price: filter.maxPrice };
       }
       if (filter.supplier.length) {
-        query = {...query, supplier: filter.supplier};
+        query = { ...query, supplier: filter.supplier };
       }
       if (filter.color.length) {
-        query = {...query, color: filter.color};
+        query = { ...query, color: filter.color };
       }
       if (filter.rom.length) {
-        query = {...query, rom: filter.rom};
+        query = { ...query, rom: filter.rom };
       }
       if (filter.ram.length) {
-        query = {...query, ram: filter.ram};
+        query = { ...query, ram: filter.ram };
       }
       if (filter.frontCamera.length) {
-        query = {...query, front_camera: filter.frontCamera};
+        query = { ...query, front_camera: filter.frontCamera };
       }
       if (filter.rearCamera.length) {
-        query = {...query, rear_camera: filter.rearCamera};
+        query = { ...query, rear_camera: filter.rearCamera };
       }
       if (filter.operatingSystem.length) {
-        query = {...query, operating_system: filter.operatingSystem};
+        query = { ...query, operating_system: filter.operatingSystem };
       }
       if (!_.isEmpty(query) && !_.isEqual(query, oldFilter)) {
         this.$router.push({ path: "/filter", query: query });
@@ -263,7 +226,6 @@ export default {
       // if (!_.isEmpty(filter) && !_.isEqual(filter, oldFilter)) {
       //   this.$router.push({ path: "/filter", query: filter });
       // }
-
     },
     resetFilter() {
       this.filter.minPrice = "";
@@ -294,7 +256,7 @@ export default {
       //   )
       // );
       // this.getFilterInit();
-    },
+    }
     // getFilterInit() {
     //   const query = this.$route.query;
     //   if (query.minPrice) {

@@ -7,7 +7,7 @@
           outlined
           fab
           color="teal"
-          v-if="!questionData.isClose"
+          v-if="!questionData.isClose && isOwner"
           @click="acceptAnswer"
         >
           <v-icon>mdi-check-bold</v-icon>
@@ -119,7 +119,12 @@ export default {
       }
     }
   },
-  computed: {},
+  computed: {
+    isOwner() {
+      if (!this.question || !this.currentUser) return false;
+      return this.currentUser.userId == this.question.userId;
+    }
+  },
   methods: {
     getData() {
       this.answer = JSON.parse(JSON.stringify(this.answerData));

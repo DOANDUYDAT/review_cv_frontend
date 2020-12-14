@@ -71,6 +71,11 @@ const mutations = {
       item => item.order == order
     )[0];
     categoryItem.isShow = !categoryItem.isShow;
+  },
+  updateCategoryItem(state, data) {
+    const { type } = data;
+    let categoryItem = state.cv.content.find(item => item.type == type);
+    categoryItem = JSON.parse(JSON.stringify(data));
   }
 };
 /*eslint no-useless-catch: "error"*/
@@ -114,6 +119,9 @@ const actions = {
           reject(error);
         });
     });
+  },
+  updateCategoryData({ state, commit }, data) {
+    commit("updateCategoryItem", data);
   }
   // exec(command, arg) {
   //   document.execCommand(command, false, arg);
