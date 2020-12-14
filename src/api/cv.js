@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import feathers from "../services/restClient";
+import feathers from "../services/socketClient";
 
 const cvService = feathers.service("uploads");
 

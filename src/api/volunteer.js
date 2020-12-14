@@ -1,9 +1,10 @@
 /* eslint-disable no-unused-vars */
-import feathers from "../services/restClient";
+import feathers from "../services/socketClient";
 
 const volunteerService = feathers.service("volunteers");
 const updateInfoService = feathers.service("volunteers/update-info");
 const acceptService = feathers.service("volunteers/accept");
+const exchangePointService = feathers.service("volunteers/exchange-point");
 
 async function getVolunteer(userId) {
   const { data } = await volunteerService.find({
@@ -50,6 +51,15 @@ async function createVolunteer(info) {
   return volunteer;
 }
 
+async function exchangePoint(_id, amount, category) {
+  const res = await exchangePointService.create({
+    _id,
+    amount,
+    category
+  });
+  return res;
+}
+
 export { updateInfoService };
 
 export default {
@@ -58,5 +68,6 @@ export default {
   accept,
   updateVolunteerInfo,
   createVolunteer,
-  getListAcceptedVolunteers
+  getListAcceptedVolunteers,
+  exchangePoint
 };

@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container v-if="currentUser">
     <v-card>
       <v-toolbar class="px-8" dark flat>
         <v-card-title class="layout">
@@ -10,7 +10,8 @@
         <v-row>
           <v-col cols="12">
             <h2 class="font-weight-regular">
-              Số điểm tích lũy hiện tại của bạn là: 50 điểm
+              Số điểm tích lũy hiện tại của bạn là:
+              {{ currentUser.accumulationPoint }} điểm
             </h2>
           </v-col>
           <v-col cols="12">
@@ -48,7 +49,12 @@
                 </h3>
               </v-col>
               <v-col cols="4" class="pt-8">
-                <v-select :items="items" label="Select" outlined></v-select>
+                <v-select
+                  :items="items"
+                  v-model="categorySelected"
+                  label="Select"
+                  outlined
+                ></v-select>
               </v-col>
               <v-col cols="12">
                 <h2 class="font-weight-medium">
@@ -59,7 +65,7 @@
                 <v-slider
                   v-model="slider"
                   class="align-center"
-                  :max="100"
+                  :max="currentUser.accumulationPoint"
                   :min="0"
                   hide-details
                   thumb-label="always"
@@ -67,7 +73,7 @@
                 >
                 </v-slider>
               </v-col>
-              <v-col cols="2">100 điểm</v-col>
+              <v-col cols="2">{{ currentUser.accumulationPoint }} điểm</v-col>
               <v-col cols="2"></v-col>
               <v-col cols="3" class="">
                 <v-text-field
@@ -75,6 +81,8 @@
                   label="0 điểm"
                   single-line
                   outlined
+                  type="number"
+                  :max="currentUser.accumulationPoint"
                 ></v-text-field>
               </v-col>
               <v-col cols="2" class="text-center pt-8">
@@ -110,11 +118,24 @@
   </v-container>
 </template>
 <script>
+import volunteerService from "@/api/volunteer";
+import authService from "@/api/authentication";
 export default {
   data: () => ({
     dialog: false,
-    items: ["Điểm uy tín", "Điểm thưởng"],
-    slider: 0
+    items: [
+      {
+        text: "Điểm uy tín",
+        value: 1
+      },
+      {
+        text: "Điểm thưởng",
+        value: 2
+      }
+    ],
+    slider: 0,
+    currentUser: null,
+    categorySelected: null
   }),
   methods: {
     close() {
@@ -124,7 +145,34 @@ export default {
         this.viewedIndex = -1;
       }, 300);
     },
-    confirm() {}
+    async getData() {
+      const userId = await authService.getCurrentUserId();
+      const volunteer = await volunteerService.getVolunteer(userId);
+      this.currentUser = volunteer;
+    },
+    async confirm() {
+      try {
+        await volunteerService.exchangePoint(
+          this.currentUser._id,
+          this.slider,
+          this.categorySelected
+        );
+        this.$swal({
+          title: "Exchane point successfully!",
+          icon: "success"
+        });
+        this.getData();
+      } catch (err) {
+        this.$swal({
+          title: "Exchane point failed!",
+          text: err,
+          icon: "error"
+        });
+      }
+    }
+  },
+  created() {
+    this.getData();
   }
 };
 </script>

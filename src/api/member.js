@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import feathers from "../services/restClient";
+import feathers from "../services/socketClient";
 
 const memberService = feathers.service("members");
 const updateInfoService = feathers.service("members/update-info");
