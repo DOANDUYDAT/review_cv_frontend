@@ -43,7 +43,7 @@
                   :value="child.text"
                   active-class="deep-purple--text text--accent-4"
                 >
-                  <template v-slot:default="{ active, toggle }">
+                  <template v-slot:default="{ active }">
                     <v-list-item-content>
                       <v-list-item-title
                         v-text="child.text"
@@ -54,7 +54,6 @@
                         :input-value="active"
                         :true-value="child.text"
                         color="deep-purple accent-4"
-                        @click="toggle"
                       ></v-checkbox>
                     </v-list-item-action>
                   </template>
@@ -77,108 +76,64 @@ export default {
   data() {
     return {
       filter: {
-        minPrice: "",
-        maxPrice: "",
-        supplier: [],
-        color: [],
-        rom: [],
-        frontCamera: [],
-        rearCamera: [],
-        operatingSystem: [],
-        ram: []
+        field: [],
+        experience: [],
+        level: [],
+        time: []
       },
       loading: false,
       items: [
         {
-          text: "Màu sắc",
-          model: "color",
+          text: "Lĩnh vực làm việc",
+          model: "field",
           children: [
-            { text: "Đen" },
-            { text: "Xanh lam" },
-            { text: "Xanh lục" },
-            { text: "Vàng" },
-            { text: "Đỏ" },
-            { text: "Trắng" },
-            { text: "Bạc" },
-            { text: "Xám" },
-            { text: "Tím" },
-            { text: "Hồng" },
-            { text: "Cam" },
-            { text: "Đồng" },
-            { text: "Xanh ngọc" }
+            { text: "IT" },
+            { text: "Kế toán/Kiểm toán" },
+            { text: "Luật" },
+            { text: "Bảo hiểm" },
+            { text: "Bất động sản" },
+            { text: "Marketing/Truyền thông" },
+            { text: "Nhà hàng/Khách sạn" },
+            { text: "Xây dựng" },
+            { text: "Ngân hàng" },
+            { text: "Nhân sự" },
+            { text: "Thiết kế/ Kiến trúc" },
+            { text: "Thời trang" },
+            { text: "Du lịch" }
           ]
         },
         {
-          text: "Bộ nhớ trong",
-          model: "rom",
+          text: "Kinh nghiệm",
+          model: "experience",
           children: [
-            { text: "16GB" },
-            { text: "32GB" },
-            { text: "64GB" },
-            { text: "128GB" },
-            { text: "256GB" },
-            { text: "512GB" }
+            { text: "Chưa có" },
+            { text: "Dưới 1 năm" },
+            { text: "1 năm" },
+            { text: "2 năm" },
+            { text: "3 năm" },
+            { text: "4 năm" },
+            { text: "5 năm" },
+            { text: "Trên 5 năm" }
           ]
         },
         {
-          text: "Camera sau",
-          model: "backCamera",
+          text: "Cấp bậc",
+          model: "level",
           children: [
-            { text: "2MP" },
-            { text: "5MP" },
-            { text: "8MP" },
-            { text: "12MP" },
-            { text: "13MP" },
-            { text: "2x12MP" },
-            { text: "3x12MP" },
-            { text: "16MP" },
-            { text: "24MP" },
-            { text: "25MP" },
-            { text: "32MP" },
-            { text: "48MP" },
-            { text: "64MP" }
+            { text: "Nhân viên" },
+            { text: "Trưởng nhóm" },
+            { text: "Quản lý/Giám sát" },
+            { text: "Trưởng/Phó phòng" },
+            { text: "Trưởng chi nhánh" },
+            { text: "Phó giám đốc" },
+            { text: "Giám đốc" },
+            { text: "Thực tập sinh" }
           ]
         },
         {
-          text: "Camera trước",
-          model: "frontCamera",
-          children: [
-            { text: "2MP" },
-            { text: "5MP" },
-            { text: "7MP" },
-            { text: "8MP" },
-            { text: "12MP" },
-            { text: "13MP" },
-            { text: "16MP" },
-            { text: "20MP" },
-            { text: "24MP" },
-            { text: "25MP" },
-            { text: "48MP" },
-            { text: "TOF 3D" }
-          ]
-        },
-        {
-          text: "Hệ điều hành",
-          model: "operatingSystem",
-          children: [
-            { text: "Android 7.0" },
-            { text: "Android 8.1" },
-            { text: "Androi 9.0" },
-            { text: "iOS 12" },
-            { text: "iOS 13" }
-          ]
-        },
-        {
-          text: "RAM",
-          model: "ram",
-          children: [
-            { text: "2GB" },
-            { text: "3GB" },
-            { text: "4GB" },
-            { text: "6GB" },
-            { text: "8GB" },
-            { text: "12GB" }
-          ]
+          text: "Thời gian",
+          model: "time",
+          children: [{ text: "Fulltime" }, { text: "Parttime" }]
         }
       ]
     };
@@ -192,32 +147,17 @@ export default {
       const filter = this.filter;
       const oldFilter = this.$route.query;
       let query = {};
-      if (filter.minPrice) {
-        query = { ...query, min_price: filter.minPrice };
+      if (filter.field.length) {
+        query = { ...query, field: filter.field };
       }
-      if (filter.maxPrice) {
-        query = { ...query, max_price: filter.maxPrice };
+      if (filter.experience.length) {
+        query = { ...query, experience: filter.experience };
       }
-      if (filter.supplier.length) {
-        query = { ...query, supplier: filter.supplier };
+      if (filter.level.length) {
+        query = { ...query, level: filter.level };
       }
-      if (filter.color.length) {
-        query = { ...query, color: filter.color };
-      }
-      if (filter.rom.length) {
-        query = { ...query, rom: filter.rom };
-      }
-      if (filter.ram.length) {
-        query = { ...query, ram: filter.ram };
-      }
-      if (filter.frontCamera.length) {
-        query = { ...query, front_camera: filter.frontCamera };
-      }
-      if (filter.rearCamera.length) {
-        query = { ...query, rear_camera: filter.rearCamera };
-      }
-      if (filter.operatingSystem.length) {
-        query = { ...query, operating_system: filter.operatingSystem };
+      if (filter.time.length) {
+        query = { ...query, time: filter.time };
       }
       if (!_.isEmpty(query) && !_.isEqual(query, oldFilter)) {
         this.$router.push({ path: "/filter", query: query });
@@ -228,65 +168,12 @@ export default {
       // }
     },
     resetFilter() {
-      this.filter.minPrice = "";
-      this.filter.maxPrice = "";
-      this.filter.supplier = [];
-      this.filter.color = [];
-      this.filter.rom = [];
-      this.filter.frontCamera = [];
-      this.filter.rearCamera = [];
-      this.filter.operatingSystem = [];
-      this.filter.ram = [];
+      this.filter.field = [];
+      this.filter.experience = [];
+      this.filter.level = [];
+      this.filter.time = [];
     },
-    async getData() {
-      // const allSuppliers = await supplierService.getAllSuppliers();
-      // const suppliers = allSuppliers.map(e => {
-      //   return {
-      //     text: e.name
-      //   };
-      // });
-      // this.items.unshift(
-      //   Object.assign(
-      //     {},
-      //     {
-      //       text: "Thương hiệu",
-      //       model: "supplier",
-      //       children: suppliers
-      //     }
-      //   )
-      // );
-      // this.getFilterInit();
-    }
-    // getFilterInit() {
-    //   const query = this.$route.query;
-    //   if (query.minPrice) {
-    //     this.filter.minPrice = query.minPrice;
-    //   }
-    //   if (query.maxPrice) {
-    //     this.filter.maxPrice = query.maxPrice;
-    //   }
-    //   if (query.supplier) {
-    //     this.filter.supplier = query.supplier.split(',');
-    //   }
-    //   if (query.color) {
-    //     this.filter.color = query.color.split(',');
-    //   }
-    //   if (query.rom) {
-    //     this.filter.rom = query.rom.split(',');
-    //   }
-    //   if (query.ram) {
-    //     this.filter.ram = query.ram.split(',');
-    //   }
-    //   if (query.frontCamera) {
-    //     this.filter.frontCamera = query.frontCamera.split(',');
-    //   }
-    //   if (query.rearCamera) {
-    //     this.filter.rearCamera = filqueryer.rearCamera.split(',');
-    //   }
-    //   if (query.operatingSystem) {
-    //     this.filter.operatingSystem = query.operatingSystem.split(',');
-    //   }
-    // }
+    async getData() {}
   },
 
   created() {

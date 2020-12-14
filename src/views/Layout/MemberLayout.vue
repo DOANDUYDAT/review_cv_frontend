@@ -44,9 +44,7 @@
           </v-list>
         </v-menu>
         <v-spacer></v-spacer>
-        <v-btn icon exact>
-          <v-icon color="white">mdi-bell</v-icon>
-        </v-btn>
+        <notify-dialog></notify-dialog>
       </v-row>
     </v-app-bar>
 
@@ -58,6 +56,7 @@
   </v-app>
 </template>
 <script>
+import NotifyDialog from "./components/NotifyDialog";
 import memberService from "../../api/member";
 import { updateInfoService } from "../../api/member";
 import authService from "../../api/authentication";
@@ -65,6 +64,9 @@ export default {
   data: () => ({
     currentUser: null
   }),
+  components: {
+    NotifyDialog
+  },
   methods: {
     GoToMemberHomePage() {
       const { role } = this.currentUser.user;

@@ -114,6 +114,7 @@
 <script>
 import memberService from "../../api/member";
 import authService from "../../api/authentication";
+import userService from "@/api/user";
 export default {
   data: () => ({
     currentUser: null
@@ -151,15 +152,54 @@ export default {
       // this.form.phone = user.phone;
       // this.form.username = user.username;
     },
-    onSwitchChange() {
-      this.$swal({
-        title: "Are you sure?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes"
-      });
+    async onSwitchChange() {
+      if (this.currentUser.user.getEmailNotification) {
+        try {
+          await userService.turnOnNotify(this.currentUser.user._id);
+          await this.$swal({
+            toast: true,
+            position: "top-end",
+            title: "Turn on notification successfull!",
+            icon: "success",
+            showConfirmButton: false,
+            timer: 1500
+          });
+        } catch (err) {
+          await this.$swal({
+            toast: true,
+            position: "top-end",
+            title: "Turn on notification failed!",
+            text: err,
+            icon: "error",
+            showConfirmButton: false,
+            timer: 1500
+          });
+        }
+        await this.getData();
+      } else {
+        try {
+          await userService.turnOffNotify(this.currentUser.user._id);
+          await this.$swal({
+            toast: true,
+            position: "top-end",
+            title: "Turn off notification successfull!",
+            icon: "success",
+            showConfirmButton: false,
+            timer: 1500
+          });
+        } catch (err) {
+          await this.$swal({
+            toast: true,
+            position: "top-end",
+            title: "Turn off notification failed!",
+            text: err,
+            icon: "error",
+            showConfirmButton: false,
+            timer: 1500
+          });
+        }
+        await this.getData();
+      }
     },
     getActiveLabel(status) {
       if (status) return "Trạng thái nhận thông báo đang bật";

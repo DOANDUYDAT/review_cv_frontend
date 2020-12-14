@@ -56,9 +56,11 @@
           </v-list>
         </v-menu>
         <v-spacer></v-spacer>
-        <v-btn icon exact>
+        <!-- <v-btn icon exact>
           <v-icon color="white">mdi-bell</v-icon>
         </v-btn>
+        <v-badge offset-x="38" offset-y="7" color="red" overlap> </v-badge> -->
+        <notify-dialog></notify-dialog>
       </v-row>
     </v-app-bar>
 
@@ -70,6 +72,7 @@
   </v-app>
 </template>
 <script>
+import NotifyDialog from "./components/NotifyDialog";
 import specialistService from "../../api/specialist";
 import { updateInfoService } from "../../api/specialist";
 import authService from "../../api/authentication";
@@ -77,6 +80,9 @@ export default {
   data: () => ({
     currentUser: null
   }),
+  components: {
+    NotifyDialog
+  },
   methods: {
     GoToSpecialistHomePage() {
       const { role } = this.currentUser.user;
