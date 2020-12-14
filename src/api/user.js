@@ -1,21 +1,43 @@
 /* eslint-disable no-unused-vars */
 import feathers from "../services/restClient";
 
-const userService = feathers.service("users");
+export const userService = feathers.service("users");
+export const activeService = feathers.service("users/active");
+export const deactiveService = feathers.service("users/deactive");
 
-async function get(id, params) {
-  const { user } = await userService.get(id, params);
+async function getUser(userId) {
+  const user = await userService.get(userId);
   return user;
-}
-
-async function create(data) {
-  const response = await userService.create(data);
-  return response;
 }
 
 async function getAllUsers(params) {
   const users = await userService.find(params);
   return users;
 }
+async function updateInfo(userId, data) {
+  const users = await userService.patch(userId, data);
+  return users;
+}
 
-export default userService;
+async function activeUser(userId) {
+  const user = await activeService.create({
+    userId
+  });
+  return user;
+}
+async function deactiveUser(userId) {
+  const user = await deactiveService.create({
+    userId
+  });
+  return user;
+}
+
+export { userService as userServiceRoot };
+
+export default {
+  getUser,
+  getAllUsers,
+  updateInfo,
+  activeUser,
+  deactiveUser
+};

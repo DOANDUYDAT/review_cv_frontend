@@ -1,10 +1,7 @@
 <template>
-  <v-container class="d-flex flex-column justify-center screen--full bg">
+  <v-container class="d-flex flex-column justify-center screen--full bg" fluid>
     <ValidationObserver v-slot="{ invalid }">
-      <v-card
-        :width="$vuetify.breakpoint.xs ? '100%' : '50%'"
-        class="pa-10 mx-auto"
-      >
+      <v-card :width="widthCard" class="pa-10 mx-auto">
         <v-toolbar dark flat>
           <v-card-title class="layout justify-center">
             <span class="headline">Đăng ký làm thành viên</span>
@@ -20,9 +17,9 @@
             :bails="false"
           >
             <v-text-field
-              v-model="form.username"
+              v-model="form.userName"
               label="Username"
-              type="username"
+              type="text"
               prepend-icon="mdi-account"
             ></v-text-field>
             <span class="red--text text--lighten-1">{{ errors[0] }}</span>
@@ -109,7 +106,7 @@
   </v-container>
 </template>
 <script>
-import userService from "../api/user";
+import memberService from "../api/member";
 export default {
   name: "SignUpMember",
   components: {
@@ -117,7 +114,7 @@ export default {
   },
   data: () => ({
     form: {
-      username: "",
+      userName: "",
       email: "",
       phone: "",
       password: "",
@@ -126,14 +123,35 @@ export default {
       showConfirmPassword: false
     }
   }),
+  computed: {
+    widthCard() {
+      switch (this.$vuetify.breakpoint.name) {
+        case "xs":
+          return "100%";
+        case "sm":
+          return "100%";
+        case "md":
+          return "60%";
+        case "lg":
+          return 500;
+        case "xl":
+          return 500;
+        default:
+          return "100%";
+      }
+    }
+  },
   methods: {
     SignUpMember() {
+      const { userName, password, email, phone } = this.form;
       const data = {
-        ...this.form,
-        role: "1"
+        userName,
+        password,
+        email,
+        phone
       };
-      userService
-        .create(data)
+      memberService
+        .createMember(data)
         .then(response => {
           // this.$router.push({ name: "About" });
           console.log(response);

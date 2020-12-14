@@ -10,10 +10,20 @@
       <v-toolbar-title>Admin</v-toolbar-title>
 
       <v-spacer></v-spacer>
-      <v-btn>
-        <span>Đần Thúi</span>
-        <v-icon right>mdi-account-circle</v-icon>
-      </v-btn>
+      <v-menu offset-y>
+        <template v-slot:activator="{ on }">
+          <v-btn text dark v-on="on">
+            <v-icon left>mdi-account-circle</v-icon>
+            Admin
+            <v-icon right>mdi-menu-down</v-icon>
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item @click="LogOut">
+            <v-list-item-title>Đăng xuất</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </v-app-bar>
     <v-navigation-drawer clipped app>
       <v-list>
@@ -51,6 +61,7 @@
 <script>
 import BreadcrumbBase from "../Admin/BreadcrumbBase";
 import AlertList from "../Admin/AlertList";
+import authService from "../../api/authentication";
 
 export default {
   name: "Admin",
@@ -64,10 +75,6 @@ export default {
             {
               text: "Danh sách người dùng",
               link: "/Admin/Members"
-            },
-            {
-              text: "Danh sách đăng ký mới",
-              link: "/Admin/New-members"
             }
           ]
         },
@@ -101,6 +108,20 @@ export default {
         }
       ]
     };
+  },
+  methods: {
+    LogOut() {
+      authService.logout().finally(() => {
+        this.$router.push({ name: "Home" });
+        this.$swal({
+          position: "center",
+          icon: "success",
+          title: "You are logged out!",
+          showConfirmButton: false,
+          timer: 1500
+        });
+      });
+    }
   },
   components: {
     BreadcrumbBase,

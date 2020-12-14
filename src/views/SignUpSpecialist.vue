@@ -1,10 +1,7 @@
 <template>
-  <v-container class="d-flex flex-column justify-center screen--full bg">
+  <v-container class="d-flex flex-column justify-center screen--full bg" fluid>
     <ValidationObserver v-slot="{ invalid }">
-      <v-card
-        :width="$vuetify.breakpoint.xs ? '100%' : '50%'"
-        class="pa-10 mx-auto"
-      >
+      <v-card :width="widthCard" class="pa-10 mx-auto">
         <v-toolbar dark flat>
           <v-card-title class="layout justify-center">
             <span class="headline">Đăng ký làm chuyên gia</span>
@@ -20,9 +17,9 @@
             :bails="false"
           >
             <v-text-field
-              v-model="form.username"
+              v-model="form.userName"
               label="Username"
-              type="username"
+              type="text"
               prepend-icon="mdi-account"
             ></v-text-field>
             <span class="red--text text--lighten-1">{{ errors[0] }}</span>
@@ -78,7 +75,7 @@
           <ValidationProvider
             mode="aggressive"
             name="Confirm Password"
-            rules="required|alpha_dash|min:6|confirmed:password"
+            rules="required|alpha_dash|min:6|confirmed:@Password"
             v-slot="{ errors }"
             :bails="false"
           >
@@ -176,7 +173,7 @@
   </v-container>
 </template>
 <script>
-import userService from "../api/user";
+import specialistService from "../api/specialist";
 export default {
   name: "SignUpSpecialist",
   components: {
@@ -196,7 +193,7 @@ export default {
       { name: "Quản lý điều hành" }
     ],
     form: {
-      username: "",
+      userName: "",
       email: "",
       phone: "",
       password: "",
@@ -208,11 +205,46 @@ export default {
       fields: ""
     }
   }),
+  computed: {
+    widthCard() {
+      switch (this.$vuetify.breakpoint.name) {
+        case "xs":
+          return "100%";
+        case "sm":
+          return "100%";
+        case "md":
+          return "60%";
+        case "lg":
+          return 500;
+        case "xl":
+          return 500;
+        default:
+          return "100%";
+      }
+    }
+  },
   methods: {
     SignUpSpecialist() {
-      const data = this.form;
-      userService
-        .create(data)
+      const {
+        userName,
+        password,
+        email,
+        phone,
+        fields,
+        company,
+        website
+      } = this.form;
+      const data = {
+        userName,
+        password,
+        email,
+        phone,
+        fields,
+        company,
+        websiteCompany: website
+      };
+      specialistService
+        .createSpecialist(data)
         .then(response => {
           // this.$router.push({ name: "About" });
           console.log(response);

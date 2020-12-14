@@ -4,7 +4,6 @@ import VueRouter from "vue-router";
 
 import authService from "@/api/authentication";
 
-import Home from "../views/Home";
 import PageNotFound from "../views/PageNotFound";
 
 Vue.use(VueRouter);
@@ -23,7 +22,8 @@ const routes = [
       {
         path: "",
         name: "Home",
-        component: Home,
+        component: () =>
+          import(/* webpackChunkName: "home" */ "../views/Home.vue"),
         meta: {
           requiresAuth: false
         }
@@ -76,7 +76,7 @@ const routes = [
     ]
   },
   {
-    path: "/CV",
+    path: "/cv",
     component: () =>
       import(/* webpackChunkName: "CV" */ "../views/Layout/CvLayout.vue"),
     meta: {
@@ -85,13 +85,14 @@ const routes = [
     children: [
       {
         path: "",
-        name: "QuanLy",
+        name: "Quan Ly",
         component: () =>
           import(
             /* webpackChunkName: "CV" */ "../views/Quan_Ly_CV/Quan_Ly.vue"
           ),
         meta: {
-          requiresAuth: false
+          requiresAuth: false,
+          roles: ["member"]
         }
       },
       {
@@ -100,7 +101,8 @@ const routes = [
         component: () =>
           import(/* webpackChunkName: "CV" */ "../views/Quan_Ly_CV/MauCV.vue"),
         meta: {
-          requiresAuth: false
+          requiresAuth: false,
+          roles: ["member"]
         }
       },
       {
@@ -111,7 +113,8 @@ const routes = [
             /* webpackChunkName: "CV" */ "../views/Quan_Ly_CV/InforCV.vue"
           ),
         meta: {
-          requiresAuth: false
+          requiresAuth: false,
+          roles: ["member"]
         }
       },
       {
@@ -120,7 +123,8 @@ const routes = [
         component: () =>
           import(/* webpackChunkName: "CV" */ "../views/Quan_Ly_CV/EditCV.vue"),
         meta: {
-          requiresAuth: false
+          requiresAuth: false,
+          roles: ["member"]
         }
       },
       {
@@ -131,7 +135,8 @@ const routes = [
             /* webpackChunkName: "CV" */ "../views/Quan_Ly_CV/CV_content.vue"
           ),
         meta: {
-          requiresAuth: false
+          requiresAuth: false,
+          roles: ["member"]
         }
       },
       {
@@ -140,14 +145,15 @@ const routes = [
         component: () =>
           import(/* webpackChunkName: "CV" */ "../views/Quan_Ly_CV/Add_CV.vue"),
         meta: {
-          requiresAuth: false
+          requiresAuth: false,
+          roles: ["member"]
         }
       }
     ]
   },
   {
-    path: "/Admin",
-    name: "Admin",
+    path: "/admin",
+    name: "admin",
     component: () =>
       import(/* webpackChunkName: "admin" */ "../views/Layout/AdminLayout.vue"),
     meta: {
@@ -161,18 +167,6 @@ const routes = [
         component: () =>
           import(
             /* webpackChunkName: "admin" */ "../views/Admin/members/Members.vue"
-          ),
-        meta: {
-          requiresAuth: true,
-          roles: ["admin"]
-        }
-      },
-      {
-        path: "New-members",
-        name: "New-members",
-        component: () =>
-          import(
-            /* webpackChunkName: "admin" */ "../views/Admin/members/NewMembers.vue"
           ),
         meta: {
           requiresAuth: true,
@@ -230,7 +224,185 @@ const routes = [
     ]
   },
   {
-    path: "/Forbidden",
+    path: "/memberHome",
+    component: () =>
+      import(
+        /* webpackChunkName: "memberHome" */ "../views/Layout/MemberLayout.vue"
+      ),
+    meta: {
+      requiresAuth: true,
+      roles: ["member"]
+    },
+    children: [
+      {
+        path: "",
+        name: "Upload CV",
+        component: () =>
+          import(
+            /* webpackChunkName: "memberHome" */ "../views/Member/UploadCV.vue"
+          ),
+        meta: {
+          requiresAuth: false,
+          roles: ["member"]
+        }
+      },
+      {
+        path: "update-profile",
+        name: "Update Profile",
+        component: () =>
+          import(
+            /* webpackChunkName: "memberHome" */ "../views/Member/UpdateProfile.vue"
+          ),
+        meta: {
+          requiresAuth: false,
+          roles: ["member"]
+        }
+      }
+    ]
+  },
+  {
+    path: "/specialistHome",
+    component: () =>
+      import(
+        /* webpackChunkName: "specialistHome" */ "../views/Layout/SpecialistLayout.vue"
+      ),
+    meta: {
+      requiresAuth: true,
+      roles: ["specialist"]
+    },
+    children: [
+      {
+        path: "",
+        name: "Specilist Home",
+        component: () =>
+          import(
+            /* webpackChunkName: "specialistHome" */ "../views/Specialist/Home.vue"
+          ),
+        meta: {
+          requiresAuth: false,
+          roles: ["specialist"]
+        }
+      },
+      {
+        path: "update-specialist-profile",
+        name: "Update Specialist Profile",
+        component: () =>
+          import(
+            /* webpackChunkName: "specialistHome" */ "../views/Specialist/UpdateSpecialistProfile.vue"
+          ),
+        meta: {
+          requiresAuth: false,
+          roles: ["specialist"]
+        }
+      }
+    ]
+  },
+  {
+    path: "/volunteerHome",
+    component: () =>
+      import(
+        /* webpackChunkName: "volunteerHome" */ "../views/Layout/VolunteerLayout.vue"
+      ),
+    meta: {
+      requiresAuth: true,
+      roles: ["volunteer"]
+    },
+    children: [
+      {
+        path: "",
+        name: "Volunteer Home",
+        component: () =>
+          import(
+            /* webpackChunkName: "volunteerHome" */ "../views/Member/UploadCV.vue"
+          ),
+        meta: {
+          requiresAuth: false,
+          roles: ["volunteer"]
+        }
+      },
+      {
+        path: "update-volunteer-profile",
+        name: "Update Volunteer Profile",
+        component: () =>
+          import(
+            /* webpackChunkName: "volunteerHome" */ "../views/Volunteer/UpdateVolunteerProfile.vue"
+          ),
+        meta: {
+          requiresAuth: false,
+          roles: ["volunteer"]
+        }
+      },
+      {
+        path: "convert-point",
+        name: "Convert Point",
+        component: () =>
+          import(
+            /* webpackChunkName: "volunteerHome" */ "../views/Volunteer/ConvertPoint.vue"
+          ),
+        meta: {
+          requiresAuth: false,
+          roles: ["volunteer"]
+        }
+      },
+      {
+        path: "exchange-gift",
+        name: "Exchange Gift",
+        component: () =>
+          import(
+            /* webpackChunkName: "volunteerHome" */ "../views/Volunteer/ExchangeGift.vue"
+          ),
+        meta: {
+          requiresAuth: false,
+          roles: ["volunteer"]
+        }
+      }
+    ]
+  },
+  {
+    path: "/forums",
+    component: () =>
+      import(
+        /* webpackChunkName: "forums" */ "../views/Layout/ForumsLayout.vue"
+      ),
+    meta: {
+      requiresAuth: true
+    },
+    children: [
+      {
+        path: "",
+        name: "Forums Home",
+        component: () =>
+          import(/* webpackChunkName: "forums" */ "../views/Forums/Home.vue"),
+        meta: {
+          requiresAuth: true
+        }
+      },
+      {
+        path: "questions/:questionId/:questionTitle",
+        name: "Question Detail",
+        component: () =>
+          import(
+            /* webpackChunkName: "forums" */ "../views/Forums/Question.vue"
+          ),
+        meta: {
+          requiresAuth: true
+        }
+      },
+      {
+        path: "questions/ask",
+        name: "Question Ask",
+        component: () =>
+          import(
+            /* webpackChunkName: "forums" */ "../views/Forums/QuestionAsk.vue"
+          ),
+        meta: {
+          requiresAuth: true
+        }
+      }
+    ]
+  },
+  {
+    path: "/forbidden",
     name: "Forbidden",
     component: () =>
       import(/* webpackChunkName: "forbidden" */ "../views/Forbidden.vue"),
@@ -243,7 +415,7 @@ const routes = [
     name: "Page Not Found",
     component: PageNotFound,
     meta: {
-      requiresAuth: false
+      requiresAuth: true
     }
   }
 ];
@@ -255,6 +427,7 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
+  console.log(to);
   authService
     .reAuthenticate()
     .then(user => {
