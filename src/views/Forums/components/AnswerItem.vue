@@ -7,7 +7,7 @@
           outlined
           fab
           color="teal"
-          v-if="!questionData.isClose && isOwner"
+          v-if="!questionIsClose && isOwner"
           @click="acceptAnswer"
         >
           <v-icon>mdi-check-bold</v-icon>
@@ -104,12 +104,10 @@ export default {
         return null;
       }
     },
-    questionData: {
-      type: Object,
+    questionIsClose: {
+      type: Boolean,
       required: true,
-      default: function() {
-        return null;
-      }
+      default: false
     },
     currentUserData: {
       type: Object,

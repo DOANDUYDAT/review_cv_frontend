@@ -53,8 +53,9 @@
       </v-col>
     </v-row>
     <answer-list
-      :question-data="question"
+      :question-is-close="question.isClose"
       :current-user-data="currentUser"
+      :list-answers-data="question.answers"
       v-if="question && currentUser"
     ></answer-list>
     <v-divider></v-divider>

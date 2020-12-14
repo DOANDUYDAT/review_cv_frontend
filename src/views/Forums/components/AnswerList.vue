@@ -5,7 +5,7 @@
         v-for="answer in listAnswers"
         :key="answer._id"
         :answer-data="answer"
-        :question-data="questionData"
+        :question-is-close="questionIsClose"
         :current-user-data="currentUserData"
       ></answer-item>
       <div class="text-center">
@@ -20,7 +20,7 @@
 
 <script>
 import AnswerItem from "./AnswerItem";
-import answerService from "@/api/answer";
+// import answerService from "@/api/answer";
 
 export default {
   data() {
@@ -33,15 +33,20 @@ export default {
     AnswerItem
   },
   props: {
-    questionData: {
+    questionIsClose: {
+      type: Boolean,
+      required: true,
+      default: false
+    },
+    currentUserData: {
       type: Object,
       required: true,
       default: function() {
         return null;
       }
     },
-    currentUserData: {
-      type: Object,
+    listAnswersData: {
+      type: Array,
       required: true,
       default: function() {
         return null;
@@ -56,16 +61,17 @@ export default {
   watch: {
     page: function() {
       this.getData();
-    },
-    "questionData.listAnswers": "getData"
+    }
+    // "questionData.listAnswers": "getData"
   },
   methods: {
     async getData() {
-      const questionId = this.$route.params.questionId;
-      this.listAnswers = await answerService.getListAnswersByQuestionId(
-        questionId,
-        this.page
-      );
+      // const questionId = this.$route.params.questionId;
+      // this.listAnswers = await answerService.getListAnswersByQuestionId(
+      //   questionId,
+      //   this.page
+      // );
+      this.listAnswers = this.listAnswersData;
     }
   },
   created() {
