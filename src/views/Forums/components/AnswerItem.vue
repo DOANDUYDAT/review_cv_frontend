@@ -39,6 +39,24 @@
       <v-col cols="3" class="text-right pb-0">
         asked by {{ answer.user.userName }}
       </v-col>
+      <v-col cols="10" offset="2" v-if="listComments">
+        <div
+          v-for="comment in listComments"
+          :key="comment._id"
+          :comment-data="comment"
+          :answer-data="answerData"
+          :current-user-data="currentUserData"
+        >
+          <v-row>
+            <v-col cols="12" class="py-0">
+              <div v-html="comment.content"></div>
+            </v-col>
+            <v-col cols="3" class="text-right pb-0">
+              asked by {{ comment.user.userName }}
+            </v-col>
+          </v-row>
+        </div>
+      </v-col>
       <v-col cols="11" offset="1">
         <v-btn color="primary" text @click.stop="checkPoint"
           >add a comment</v-btn
@@ -91,6 +109,7 @@ export default {
       isAllowComment: false,
       snackbar: false,
       edit: false,
+      listComments: null,
       comment: {
         content: ""
       }

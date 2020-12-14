@@ -47,9 +47,7 @@
           </v-list>
         </v-menu>
         <v-spacer></v-spacer>
-        <v-btn icon exact>
-          <v-icon color="white">mdi-bell</v-icon>
-        </v-btn>
+        <notify-dialog></notify-dialog>
       </v-row>
     </v-app-bar>
 
@@ -61,6 +59,7 @@
   </v-app>
 </template>
 <script>
+import NotifyDialog from "./components/NotifyDialog";
 import volunteerService from "../../api/volunteer";
 import { updateInfoService } from "../../api/volunteer";
 import authService from "../../api/authentication";
@@ -71,6 +70,9 @@ export default {
     // },
     currentUser: null
   }),
+  components: {
+    NotifyDialog
+  },
   methods: {
     GoToVolunteerHomePage() {
       const { role } = this.currentUser.user;

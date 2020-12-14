@@ -4,6 +4,8 @@ import feathers from "../services/restClient";
 export const userService = feathers.service("users");
 export const activeService = feathers.service("users/active");
 export const deactiveService = feathers.service("users/deactive");
+export const turnOnService = feathers.service("users/turn-on-notification");
+export const turnOffService = feathers.service("users/turn-off-notification");
 
 async function getUser(userId) {
   const user = await userService.get(userId);
@@ -34,14 +36,14 @@ async function deactiveUser(userId) {
 }
 
 async function turnOnNotify(userId) {
-  const user = await activeService.create({
+  const user = await turnOnService.create({
     userId
   });
   return user;
 }
 
 async function turnOffNotify(userId) {
-  const user = await deactiveService.create({
+  const user = await turnOffService.create({
     userId
   });
   return user;

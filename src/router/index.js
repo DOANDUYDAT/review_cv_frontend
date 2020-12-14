@@ -220,6 +220,30 @@ const routes = [
           requiresAuth: true,
           roles: ["admin"]
         }
+      },
+      {
+        path: "gifts",
+        name: "Gifts",
+        component: () =>
+          import(
+            /* webpackChunkName: "admin" */ "../views/Admin/gifts/Gifts.vue"
+          ),
+        meta: {
+          requiresAuth: true,
+          roles: ["admin"]
+        }
+      },
+      {
+        path: "Add-Gift",
+        name: "Add-Gift",
+        component: () =>
+          import(
+            /* webpackChunkName: "admin" */ "../views/Admin/gifts/AddGift.vue"
+          ),
+        meta: {
+          requiresAuth: true,
+          roles: ["admin"]
+        }
       }
     ]
   },

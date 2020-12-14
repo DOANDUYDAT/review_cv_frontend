@@ -105,6 +105,20 @@ export default {
               link: "/Admin/New-volunteers"
             }
           ]
+        },
+        {
+          text: "Quản lý quà tặng",
+          icon: "mdi-gift",
+          children: [
+            {
+              text: "Danh sách quà tặng",
+              link: "/Admin/Gifts"
+            },
+            {
+              text: "Thêm quà tặng",
+              link: "/Admin/Add-Gift"
+            }
+          ]
         }
       ]
     };
