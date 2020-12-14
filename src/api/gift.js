@@ -1,4 +1,4 @@
-import feathers from "../services/restClient";
+import feathers from "../services/socketClient";
 
 const giftService = feathers.service("gifts");
 

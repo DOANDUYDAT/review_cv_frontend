@@ -20,7 +20,8 @@
 
 <script>
 import AnswerItem from "./AnswerItem";
-// import answerService from "@/api/answer";
+import { answerServiceRoot } from "@/api/answer";
+import answerService from "@/api/answer.js";
 
 export default {
   data() {
@@ -61,7 +62,8 @@ export default {
   watch: {
     page: function() {
       this.getData();
-    }
+    },
+    listAnswersData: "getData"
     // "questionData.listAnswers": "getData"
   },
   methods: {
@@ -76,6 +78,14 @@ export default {
   },
   created() {
     this.getData();
+    // console.log(typeof this.getData);
+    answerServiceRoot.on("created", async () => {
+      const questionId = this.$route.params.questionId;
+      this.listAnswers = await answerService.getListAnswersByQuestionId(
+        questionId,
+        this.page
+      );
+    });
   }
 };
 </script>

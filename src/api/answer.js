@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import feathers from "../services/restClient";
+import feathers from "../services/socketClient";
 
 const answerService = feathers.service("answers");
 const dislikeService = feathers.service("answers/dislike");
@@ -64,7 +64,7 @@ async function acceptAnswer(_id) {
   return res;
 }
 
-export { acceptService };
+export { acceptService, answerService as answerServiceRoot };
 
 export default {
   getAnswer,
