@@ -44,7 +44,13 @@
     </v-row>
     <v-row>
       <v-col cols="12" class="text-right">
-        <v-btn small v-if="isOwner" color="warning">close</v-btn>
+        <v-btn
+          small
+          v-if="isOwner && !question.isClose"
+          color="warning"
+          @click="closeQuestion"
+          >close</v-btn
+        >
       </v-col>
     </v-row>
     <v-row>
@@ -56,6 +62,7 @@
       :question-is-close="question.isClose"
       :current-user-data="currentUser"
       :list-answers-data="question.answers"
+      :owner-of-question="question.user"
       v-if="question && currentUser"
     ></answer-list>
     <v-divider></v-divider>
@@ -117,6 +124,7 @@ import AnswerList from "./components/AnswerList";
 import authService from "../../api/authentication";
 import questionService from "@/api/question.js";
 import answerService from "@/api/answer.js";
+import { answerServiceRoot } from "@/api/answer.js";
 import { acceptService } from "@/api/answer.js";
 import { Editor, EditorContent, EditorMenuBar } from "tiptap";
 import {
@@ -274,6 +282,7 @@ export default {
   },
   created() {
     this.getData();
+    answerServiceRoot.on("created", async () => this.getData());
     acceptService.on("created", () => this.getData());
   }
 };

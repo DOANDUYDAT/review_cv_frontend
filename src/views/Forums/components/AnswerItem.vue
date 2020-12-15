@@ -39,14 +39,14 @@
       <v-col offset="9" cols="3" class="text-right pb-0">
         answed by {{ answer.user.userName }}
       </v-col>
-      <v-col cols="11" class="pl-4" offset="1" v-if="answerData.comments">
+      <v-col cols="11" class="pl-4" offset="1" v-if="answer.comments">
         <v-row>
           <v-col cols="12" class="py-0">
-            <h4>{{ answerData.comments.length }} Bình luận</h4>
+            <h4>{{ answer.comments.length }} Bình luận</h4>
           </v-col>
         </v-row>
         <div
-          v-for="comment in answerData.comments"
+          v-for="comment in answer.comments"
           :key="comment._id"
           :comment-data="comment"
           :current-user-data="currentUserData"
@@ -105,8 +105,11 @@
   </div>
 </template>
 <script>
+/* eslint-disable no-unused-vars */
 import answerService from "@/api/answer.js";
 import commentService from "@/api/comment.js";
+import { commentServiceRoot } from "@/api/comment.js";
+
 export default {
   data() {
     return {
@@ -132,6 +135,13 @@ export default {
       required: true,
       default: false
     },
+    ownerOfQuestion: {
+      type: Object,
+      required: true,
+      default: function() {
+        return null;
+      }
+    },
     currentUserData: {
       type: Object,
       required: true,
@@ -142,8 +152,17 @@ export default {
   },
   computed: {
     isOwner() {
-      if (!this.question || !this.currentUser) return false;
-      return this.currentUser.userId == this.question.userId;
+      if (this.ownerOfQuestion && this.currentUserData) {
+        return this.ownerOfQuestion._id == this.currentUserData.userId;
+      } else {
+        return false;
+      }
+    }
+  },
+  watch: {
+    answerData: {
+      handler: "getData",
+      deep: true
     }
   },
   methods: {
@@ -157,7 +176,7 @@ export default {
       };
       try {
         await commentService.createComment(data);
-        this.comment.content = "";
+        this.comment.content = "enter you comment";
         const updatedAnswer = await answerService.getAnswer(this.answer._id);
         this.answer = updatedAnswer;
       } catch (err) {
@@ -193,6 +212,10 @@ export default {
   },
   created() {
     this.getData();
+    commentServiceRoot.on("created", async () => {
+      const answerId = this.answer._id;
+      this.answer = await answerService.getAnswer(answerId);
+    });
   }
 };
 </script>

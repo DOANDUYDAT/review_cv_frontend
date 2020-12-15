@@ -18,20 +18,20 @@ async function createComment(data) {
   return res;
 }
 
-// async function getListCommentsByAnswerId(answerId) {
-//   const skipNumber = (pageNumber - 1) * LIMIT_NUMBER;
-//   const { data } = await answerService.find({
-//     query: {
-//       $limit: LIMIT_NUMBER,
-//       $sort: {
-//         createdAt: -1
-//       },
-//       $skip: skipNumber,
-//       questionId
-//     }
-//   });
-//   return data;
-// }
+async function getListCommentsByAnswerId(answerId) {
+  // const skipNumber = (pageNumber - 1) * LIMIT_NUMBER;
+  const { data } = await commentService.find({
+    query: {
+      // $limit: LIMIT_NUMBER,
+      $sort: {
+        createdAt: -1
+      },
+      // $skip: skipNumber,
+      answerId
+    }
+  });
+  return data;
+}
 
 // async function getTotalAnswer(questionId) {
 //   const { total } = await answerService.find({
@@ -64,11 +64,11 @@ async function likeComment(id) {
 //   return res;
 // }
 
-// export { acceptService };
+export { commentService as commentServiceRoot };
 
 export default {
   getComment,
-  // getListAnswersByQuestionId,
+  getListCommentsByAnswerId,
   likeComment,
   createComment
   // dislikeAnswer,
