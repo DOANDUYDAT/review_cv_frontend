@@ -7,6 +7,7 @@
         :answer-data="answer"
         :question-is-close="questionIsClose"
         :current-user-data="currentUserData"
+        :owner-of-question="ownerOfQuestion"
       ></answer-item>
       <div class="text-center">
         <v-pagination v-model="page" :length="lengthPage"></v-pagination>
@@ -19,9 +20,11 @@
 </template>
 
 <script>
+/* eslint-disable no-unused-vars */
 import AnswerItem from "./AnswerItem";
 import { answerServiceRoot } from "@/api/answer";
 import answerService from "@/api/answer.js";
+import { acceptService } from "@/api/answer.js";
 
 export default {
   data() {
@@ -46,6 +49,13 @@ export default {
         return null;
       }
     },
+    ownerOfQuestion: {
+      type: Object,
+      required: true,
+      default: function() {
+        return null;
+      }
+    },
     listAnswersData: {
       type: Array,
       required: true,
@@ -56,36 +66,27 @@ export default {
   },
   computed: {
     lengthPage() {
-      return Math.floor(this.listAnswers.length / 20) + 1;
+      return Math.floor(this.listAnswers.length / 5) + 1;
     }
   },
   watch: {
     page: function() {
       this.getData();
     },
-    listAnswersData: "getData"
-    // "questionData.listAnswers": "getData"
+    listAnswersData: {
+      handler: function(val, oldVal) {
+        this.listAnswers = JSON.parse(JSON.stringify(val));
+      },
+      deep: true
+    }
   },
   methods: {
     async getData() {
-      // const questionId = this.$route.params.questionId;
-      // this.listAnswers = await answerService.getListAnswersByQuestionId(
-      //   questionId,
-      //   this.page
-      // );
-      this.listAnswers = this.listAnswersData;
+      this.listAnswers = JSON.parse(JSON.stringify(this.listAnswersData));
     }
   },
   created() {
     this.getData();
-    // console.log(typeof this.getData);
-    answerServiceRoot.on("created", async () => {
-      const questionId = this.$route.params.questionId;
-      this.listAnswers = await answerService.getListAnswersByQuestionId(
-        questionId,
-        this.page
-      );
-    });
   }
 };
 </script>

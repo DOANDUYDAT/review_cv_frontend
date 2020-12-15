@@ -18,21 +18,31 @@ async function createAnswer(data) {
   return res;
 }
 
-async function getListAnswersByQuestionId(questionId, pageNumber) {
-  const skipNumber = (pageNumber - 1) * LIMIT_NUMBER;
+// async function getListAnswersByQuestionId(questionId, pageNumber) {
+//   const skipNumber = (pageNumber - 1) * LIMIT_NUMBER;
+//   const { data } = await answerService.find({
+//     query: {
+//       $limit: LIMIT_NUMBER,
+//       $sort: {
+//         createdAt: -1
+//       },
+//       $skip: skipNumber,
+//       questionId
+//     }
+//   });
+//   return data;
+// }
+async function getListAnswersByQuestionId(questionId) {
   const { data } = await answerService.find({
     query: {
-      $limit: LIMIT_NUMBER,
       $sort: {
         createdAt: -1
       },
-      $skip: skipNumber,
       questionId
     }
   });
   return data;
 }
-
 async function getTotalAnswer(questionId) {
   const { total } = await answerService.find({
     query: {
