@@ -12,13 +12,11 @@
       </v-btn>
     </template>
     <v-card :width="320">
-      <v-list dense>
+      <v-list>
         <v-list-item>
-          <v-list-item-content>
-            <v-list-item-title class="title">
-              Thông báo
-            </v-list-item-title>
-          </v-list-item-content>
+          <v-list-item-title class="title">
+            Thông báo
+          </v-list-item-title>
         </v-list-item>
         <v-divider></v-divider>
         <!-- <v-list-item-group color="primary"> -->

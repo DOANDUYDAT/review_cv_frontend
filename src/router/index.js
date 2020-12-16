@@ -318,6 +318,18 @@ const routes = [
           requiresAuth: false,
           roles: ["specialist"]
         }
+      },
+      {
+        path: "view-cv",
+        name: "View Cv",
+        component: () =>
+          import(
+            /* webpackChunkName: "specialistHome" */ "../views/Specialist/ViewCv.vue"
+          ),
+        meta: {
+          requiresAuth: false,
+          roles: ["specialist"]
+        }
       }
     ]
   },

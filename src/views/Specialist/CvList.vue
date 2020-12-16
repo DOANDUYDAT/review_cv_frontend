@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-row>
+    <v-row @click="goToCv">
       <v-col cols="2" class="text-center" align-self="center">
         <v-avatar color="grey darken-1" size="100">
           <v-img src="../../assets/avatar.jpg"></v-img>
@@ -46,6 +46,11 @@ export default {
     };
   },
   methods: {
+    goToCv() {
+      this.$router.push({
+        name: "View Cv"
+      });
+    },
     async interestedCv() {
       if (!this.heart) {
         this.heart = !this.heart;
