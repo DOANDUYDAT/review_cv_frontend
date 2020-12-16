@@ -452,6 +452,12 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   console.log(to);
+  // authService.getCurrentUserId();
+  // if (currentUserId) {
+
+  // } else {
+
+  // }
   authService
     .reAuthenticate()
     .then(user => {

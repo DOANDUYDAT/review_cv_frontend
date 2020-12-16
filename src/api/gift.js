@@ -2,9 +2,9 @@ import feathers from "../services/socketClient";
 
 const giftService = feathers.service("gifts");
 
-async function getAllGifts(params) {
-  const gift = await giftService.find(params);
-  return gift;
+async function getAllGifts() {
+  const { data } = await giftService.find({});
+  return data;
 }
 
 async function createGift(info) {

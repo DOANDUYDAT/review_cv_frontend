@@ -59,6 +59,8 @@
   </v-container>
 </template>
 <script>
+import giftService from "@/api/gift.js";
+
 export default {
   data: () => ({
     giftsList: []
@@ -69,7 +71,17 @@ export default {
   methods: {
     exchangeGift() {
       console.log("echangeGift");
+    },
+    async getData() {
+      try {
+        this.giftsList = await giftService.getAllGifts();
+      } catch (error) {
+        console.log(error);
+      }
     }
+  },
+  created() {
+    this.getData();
   }
 };
 </script>
