@@ -27,13 +27,13 @@
                   prepend-icon="mdi-upload"
                   color="#3f51b5"
                   style="position: absolute; top: 30px; left: 60px; z-index: 10"
-                  name="uri"
+                  v-model="file"
                 >
                 </v-file-input>
               </v-img>
             </v-card-text>
             <v-card-actions class="d-flex justify-center">
-              <v-btn color="#0da1ec" class="white--text" @click="UploadCv">
+              <v-btn color="#0da1ec" class="white--text" @click="upLoadCv">
                 Get a free CV review
               </v-btn>
             </v-card-actions>
@@ -44,16 +44,17 @@
   </div>
 </template>
 <script>
-// import cvService from "../../api/cv";
+import cvService from "@/api/cv";
 export default {
   data: () => {
     return {
-      file: ""
+      file: null
     };
   },
   methods: {
-    UploadCv() {
-      console.log("upload");
+    async upLoadCv() {
+      const res = await cvService.uploadCv(this.file);
+      console.log(res);
     },
     handleFileUpload(file) {
       console.log(file);

@@ -158,13 +158,13 @@ export default {
           this.categorySelected
         );
         this.$swal({
-          title: "Exchane point successfully!",
+          title: "Exchange point successfully!",
           icon: "success"
         });
         this.getData();
       } catch (err) {
         this.$swal({
-          title: "Exchane point failed!",
+          title: "Exchange point failed!",
           text: err,
           icon: "error"
         });
