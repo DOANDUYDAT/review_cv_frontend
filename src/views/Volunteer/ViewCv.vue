@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-sheet class="pa-4">
     <v-row>
       <v-col cols="9"></v-col>
       <v-col cols="3">
@@ -36,7 +36,7 @@
           <v-col cols="1" class="py-0">
             <v-icon small>mdi-map-marker</v-icon>
           </v-col>
-          <v-col cols="5" class="body-2 py-0">
+          <v-col cols="5" class="flex-end py-0 body-2">
             Hà Nội
           </v-col>
         </v-row>
@@ -79,7 +79,7 @@
         </v-row>
       </v-col>
     </v-row>
-  </v-container>
+  </v-sheet>
 </template>
 <script>
 export default {

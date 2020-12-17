@@ -16,8 +16,8 @@
           <v-btn text @click="GoToForumsPage" color="white">
             Diễn đàn
           </v-btn>
-          <v-btn rounded text dark>
-            Điểm uy tín: 50
+          <v-btn rounded text dark v-if="currentUser">
+            Điểm uy tín: {{ currentUser.reputationPoint }}
           </v-btn>
         </v-col>
         <v-menu offset-y v-if="currentUser">
@@ -52,16 +52,16 @@
     </v-app-bar>
 
     <v-main>
-      <!-- <v-container> -->
-      <router-view></router-view>
-      <!-- </v-container> -->
+      <v-container>
+        <router-view></router-view>
+      </v-container>
     </v-main>
   </v-app>
 </template>
 <script>
 import NotifyDialog from "./components/NotifyDialog";
 import volunteerService from "../../api/volunteer";
-import { updateInfoService } from "../../api/volunteer";
+import { updateInfoService, exchangePointService } from "../../api/volunteer";
 import authService from "../../api/authentication";
 export default {
   data: () => ({
@@ -130,6 +130,7 @@ export default {
   },
   mounted() {
     updateInfoService.on("created", () => this.getData());
+    exchangePointService.on("created", () => this.getData());
   }
 };
 </script>

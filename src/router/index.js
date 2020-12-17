@@ -349,7 +349,7 @@ const routes = [
         name: "Volunteer Home",
         component: () =>
           import(
-            /* webpackChunkName: "volunteerHome" */ "../views/Member/UploadCV.vue"
+            /* webpackChunkName: "volunteerHome" */ "../views/Volunteer/Home.vue"
           ),
         meta: {
           requiresAuth: false,
@@ -386,6 +386,18 @@ const routes = [
         component: () =>
           import(
             /* webpackChunkName: "volunteerHome" */ "../views/Volunteer/ExchangeGift.vue"
+          ),
+        meta: {
+          requiresAuth: false,
+          roles: ["volunteer"]
+        }
+      },
+      {
+        path: "view-cv",
+        name: "Volunteer View Cv",
+        component: () =>
+          import(
+            /* webpackChunkName: "volunteerHome" */ "../views/Volunteer/ViewCv.vue"
           ),
         meta: {
           requiresAuth: false,

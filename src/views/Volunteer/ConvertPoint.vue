@@ -157,6 +157,8 @@ export default {
           this.slider,
           this.categorySelected
         );
+        this.dialog = false;
+        this.slider = 0;
         this.$swal({
           title: "Exchange point successfully!",
           icon: "success"
