@@ -50,6 +50,9 @@
             <v-list-item @click="GoToChangeStatusNotifyPage">
               <v-list-item-title>Cài đặt thông báo email</v-list-item-title>
             </v-list-item>
+            <v-list-item @click="GoToReviewCvListPage">
+              <v-list-item-title>Danh sách CV review</v-list-item-title>
+            </v-list-item>
             <v-list-item @click="LogOut">
               <v-list-item-title>Đăng xuất</v-list-item-title>
             </v-list-item>
@@ -106,6 +109,9 @@ export default {
     },
     GoToChangeStatusNotifyPage() {
       this.$router.push({ name: "Update Specialist Profile" });
+    },
+    GoToReviewCvListPage() {
+      this.$router.push({ name: "Review CV List" });
     },
     GoToForumsPage() {
       this.$router.push({ name: "Forums Home" });
