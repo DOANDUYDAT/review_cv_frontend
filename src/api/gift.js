@@ -1,6 +1,7 @@
 import feathers from "../services/socketClient";
 
 const giftService = feathers.service("gifts");
+const receiveService = feathers.service("gifts/receive");
 
 async function getAllGifts() {
   const { data } = await giftService.find({});
@@ -54,9 +55,17 @@ async function deleteGift(id) {
   return gift;
 }
 
+async function exchangeGift(_id) {
+  const res = await receiveService.create({
+    _id
+  });
+  return res;
+}
+
 export default {
   getAllGifts,
   createGift,
   deleteGift,
-  updateGift
+  updateGift,
+  exchangeGift
 };
