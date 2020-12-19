@@ -33,7 +33,7 @@
             </v-row>
           </v-col>
           <v-col cols="4">
-            <div class="my-avatar">
+            <!-- <div class="my-avatar">
               <div v-if="imagesShow.length">
                 <v-avatar
                   v-for="(image, i) in imagesShow"
@@ -46,15 +46,14 @@
                   <v-img :src="image"></v-img>
                 </v-avatar>
               </div>
-            </div>
+            </div> -->
             <v-file-input
-              multiple
               show-size
               prepend-icon="mdi-camera"
-              @change="handleFileUpload"
-              accept="image/*"
+              accept="image"
               full-width
               label="Thêm ảnh"
+              v-model="gift.image"
             ></v-file-input>
           </v-col>
         </v-row>
@@ -90,7 +89,7 @@ export default {
         value: 0,
         category: "",
         quantity: 0,
-        images: []
+        image: null
       },
       items: [
         {
@@ -119,12 +118,13 @@ export default {
   computed: {},
   methods: {
     async submit() {
-      const { name, value, category, quantity } = this.gift;
+      const { name, value, category, quantity, image } = this.gift;
       const data = {
         name,
         value,
         category,
-        quantity
+        quantity,
+        image
       };
       giftService
         .createGift(data)
@@ -143,19 +143,19 @@ export default {
           this.$swal("error: ", err.message, "error");
         });
     },
-    handleFileUpload(files) {
-      this.gift.images = [];
-      for (let i = 0; i < files.length; i++) {
-        // this.gift.images.push({ image: files[i]});
-        this.gift.images.push(files[i]);
-        let reader = new FileReader();
-        reader.onload = function() {
-          this.imagesShow.push({ image: reader.result });
-          // this.imagesShow.push(reader.result);
-        }.bind(this);
-        reader.readAsDataURL(files[i]);
-      }
-    },
+    // handleFileUpload(files) {
+    //   this.gift.images = [];
+    //   for (let i = 0; i < files.length; i++) {
+    //     // this.gift.images.push({ image: files[i]});
+    //     this.gift.images.push(files[i]);
+    //     let reader = new FileReader();
+    //     reader.onload = function() {
+    //       this.imagesShow.push({ image: reader.result });
+    //       // this.imagesShow.push(reader.result);
+    //     }.bind(this);
+    //     reader.readAsDataURL(files[i]);
+    //   }
+    // },
     resetInput() {
       this.gift.name = "";
       this.gift.value = 0;

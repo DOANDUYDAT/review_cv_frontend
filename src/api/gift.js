@@ -7,9 +7,22 @@ async function getAllGifts() {
   return data;
 }
 
-async function createGift(info) {
-  const gift = await giftService.create(info);
-  return gift;
+async function createGift(data) {
+  let myForm = new FormData();
+  myForm.append("name", data.name);
+  myForm.append("value", data.value);
+  myForm.append("quantity", data.quantity);
+  myForm.append("category", data.category);
+  myForm.append("uri", data.image);
+  console.log(data.image);
+  const res = await fetch("http://localhost:3030/gifts", {
+    method: "POST",
+    body: myForm,
+    headers: {
+      Authorization: "Bearer " + feathers.authentication.getAccessToken()
+    }
+  });
+  return res;
 }
 
 async function deleteGift(info) {

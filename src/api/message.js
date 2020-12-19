@@ -23,4 +23,10 @@ async function FindMessagesByUserId() {
   return messages;
 }
 
-export default messageService;
+export { messageService as messageServiceRoot };
+
+export default {
+  get,
+  create,
+  FindMessagesByUserId
+};

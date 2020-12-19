@@ -8,6 +8,8 @@
 /* eslint-disable no-unused-vars */
 import authService from "../api/authentication";
 import messageService from "../api/message";
+import { notificationServiceRoot } from "../api/notification";
+import { messageServiceRoot } from "../api/message";
 export default {
   name: "About",
   methods: {
@@ -23,6 +25,10 @@ export default {
         });
       });
     }
+  },
+  created() {
+    notificationServiceRoot.on("created", data => console.log(data));
+    messageServiceRoot.on("created", data => console.log(data));
   }
 };
 </script>
