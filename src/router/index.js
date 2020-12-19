@@ -281,6 +281,30 @@ const routes = [
           requiresAuth: false,
           roles: ["member"]
         }
+      },
+      {
+        path: "review-result-list",
+        name: "Review Result List",
+        component: () =>
+          import(
+            /* webpackChunkName: "memberHome" */ "../views/Member/ReviewResultList.vue"
+          ),
+        meta: {
+          requiresAuth: false,
+          roles: ["member"]
+        }
+      },
+      {
+        path: "review-result",
+        name: "Review Result",
+        component: () =>
+          import(
+            /* webpackChunkName: "memberHome" */ "../views/Member/ReviewResult.vue"
+          ),
+        meta: {
+          requiresAuth: false,
+          roles: ["member"]
+        }
       }
     ]
   },
@@ -425,7 +449,7 @@ const routes = [
           ),
         meta: {
           requiresAuth: false,
-          roles: ["specialist"]
+          roles: ["volunteer"]
         }
       }
     ]

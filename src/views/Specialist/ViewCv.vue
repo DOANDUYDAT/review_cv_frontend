@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-sheet class="pa-4">
     <v-row>
       <v-col cols="9"></v-col>
       <v-col cols="3">
@@ -79,7 +79,7 @@
         </v-row>
       </v-col>
     </v-row>
-  </v-container>
+  </v-sheet>
 </template>
 <script>
 export default {
@@ -124,8 +124,4 @@ export default {
   }
 };
 </script>
-<style lang="scss" scoped>
-.container {
-  background-color: white;
-}
-</style>
+<style lang="scss" scoped></style>
