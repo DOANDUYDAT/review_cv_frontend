@@ -37,7 +37,9 @@
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="green" disabled text>{{ item.value }} điểm</v-btn>
-                <v-btn color="blue" text @click="exchangeGift">Đổi quà</v-btn>
+                <v-btn color="blue" text @click="exchangeGift(item)"
+                  >Đổi quà</v-btn
+                >
               </v-card-actions>
             </v-card>
           </v-col>
@@ -62,8 +64,21 @@ export default {
     // HelloWorld
   },
   methods: {
-    exchangeGift() {
-      console.log("echangeGift");
+    async exchangeGift(gift) {
+      try {
+        await giftService.exchangeGift(gift._id);
+        this.$swal({
+          title: "Đổi quà thành công!",
+          icon: "success"
+        });
+      } catch (err) {
+        this.$swal({
+          title: "Đổi quà thất bại!",
+          text: err,
+          icon: "error"
+        });
+      }
+      this.getData();
     },
     async getData() {
       try {
