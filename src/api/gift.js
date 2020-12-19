@@ -14,24 +14,49 @@ async function createGift(data) {
   myForm.append("quantity", data.quantity);
   myForm.append("category", data.category);
   myForm.append("uri", data.image);
-  console.log(data.image);
+
+  let myHeaders = new Headers();
+  let token = "Bearer " + (await feathers.authentication.getAccessToken());
+  myHeaders.append("Authorization", token);
+  console.log(token);
   const res = await fetch("http://localhost:3030/gifts", {
     method: "POST",
     body: myForm,
-    headers: {
-      Authorization: "Bearer " + feathers.authentication.getAccessToken()
-    }
+    headers: myHeaders,
+    redirect: "follow"
   });
   return res;
 }
 
-async function deleteGift(info) {
-  const gift = await giftService.remove(info);
+async function updateGift(data) {
+  let myForm = new FormData();
+  myForm.append("name", data.name);
+  myForm.append("value", data.value);
+  myForm.append("quantity", data.quantity);
+  myForm.append("category", data.category);
+  myForm.append("uri", data.image);
+
+  let myHeaders = new Headers();
+  let token = "Bearer " + (await feathers.authentication.getAccessToken());
+  myHeaders.append("Authorization", token);
+  console.log(token);
+  const res = await fetch("http://localhost:3030/gifts", {
+    method: "PATCH",
+    body: myForm,
+    headers: myHeaders,
+    redirect: "follow"
+  });
+  return res;
+}
+
+async function deleteGift(id) {
+  const gift = await giftService.remove(id);
   return gift;
 }
 
 export default {
   getAllGifts,
   createGift,
-  deleteGift
+  deleteGift,
+  updateGift
 };

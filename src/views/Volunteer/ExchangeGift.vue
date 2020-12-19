@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <div v-if="currentUser">
     <v-card>
       <v-toolbar class="px-8" dark flat>
         <v-card-title class="layout">
@@ -10,45 +10,33 @@
         <v-row>
           <v-col cols="12">
             <h2 class="font-weight-regular">
-              Số điểm thưởng hiện tại của bạn là: 50 điểm
+              Số điểm thưởng hiện tại của bạn là:
+              {{ currentUser.rewardPoint }} điểm
             </h2>
           </v-col>
         </v-row>
-        <v-row>
+        <v-row v-if="gifts">
           <v-col
-            v-for="item in giftsList"
-            :key="item.id"
+            v-for="item in gifts"
+            :key="item._id"
             cols="12"
             sm="6"
             md="4"
             lg="3"
           >
-            <v-card
-              v-if="item.id"
-              hover
-              height="100%"
-              :max-width="maxWidthItem"
-              flat
-              exact
-            >
+            <v-card hover height="100%" flat exact>
               <!-- eager giúp force các ảnh được load hết -->
+              <v-card-title>{{ item.name }}</v-card-title>
               <v-img
                 :height="heightImage"
-                :src="item.images.length ? item.images[0].image : ''"
+                :src="item.image"
                 contain
                 eager
               ></v-img>
 
-              <!-- <v-card-text class="py-0">
-
-                <p class="mb-0">{{ product.name }}</p>
-                <div class="py-2 font-weight-black">
-                  {{ formatCurrency(product.price) }}đ
-                </div>
-              </v-card-text> -->
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="green" disabled text>điểm</v-btn>
+                <v-btn color="green" disabled text>{{ item.value }} điểm</v-btn>
                 <v-btn color="blue" text @click="exchangeGift">Đổi quà</v-btn>
               </v-card-actions>
             </v-card>
@@ -56,14 +44,19 @@
         </v-row>
       </v-card-text>
     </v-card>
-  </v-container>
+  </div>
 </template>
 <script>
 import giftService from "@/api/gift.js";
+import volunteerService from "@/api/volunteer";
+import authService from "@/api/authentication";
 
 export default {
   data: () => ({
-    giftsList: []
+    gifts: null,
+    currentUser: null,
+    heightImage: 100,
+    maxWidthItem: 100
   }),
   components: {
     // HelloWorld
@@ -74,7 +67,10 @@ export default {
     },
     async getData() {
       try {
-        this.giftsList = await giftService.getAllGifts();
+        this.gifts = await giftService.getAllGifts();
+        const userId = await authService.getCurrentUserId();
+        const volunteer = await volunteerService.getVolunteer(userId);
+        this.currentUser = volunteer;
       } catch (error) {
         console.log(error);
       }

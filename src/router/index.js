@@ -536,7 +536,7 @@ router.beforeEach((to, from, next) => {
       // TH1: đang đăng nhập mà vaò page không yêu cầu đăng nhập thì redirect tới /About
       if (!to.matched.some(record => record.meta.requiresAuth)) {
         next({
-          path: "/About"
+          path: "/forums"
         });
       }
       // TH2: page yêu cầu đăng nhập, nhưng không yêu cầu quyền

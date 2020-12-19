@@ -93,7 +93,22 @@ export default {
         .login(data)
         // eslint-disable-next-line no-unused-vars
         .then(user => {
-          this.$router.push({ path: "/About" });
+          switch (user.role) {
+            case "admin":
+              this.$router.push({ path: "/admin" });
+              break;
+            case "member":
+              this.$router.push({ path: "/memberHome" });
+              break;
+            case "specialist":
+              this.$router.push({ path: "/specialistHome" });
+              break;
+            case "volunteer":
+              this.$router.push({ path: "/volunteerHome" });
+              break;
+            default:
+              this.$router.push({ path: "/forums" });
+          }
           this.$swal({
             position: "center",
             icon: "success",

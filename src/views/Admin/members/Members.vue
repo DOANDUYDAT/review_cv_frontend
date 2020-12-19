@@ -198,12 +198,12 @@ export default {
         } else {
           try {
             await userService.deactiveUser(member.user._id);
-            await this.$swal({
+            this.$swal({
               title: "Inactive successfull!",
               icon: "success"
             });
           } catch (err) {
-            await this.$swal({
+            this.$swal({
               title: "Inactive failed!",
               text: err,
               icon: "error"

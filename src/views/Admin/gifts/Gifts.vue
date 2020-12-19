@@ -43,7 +43,7 @@ export default {
     headers: [
       {
         text: "Gift Id",
-        value: "id",
+        value: "_id",
         sortable: false,
         filterable: true
       },
@@ -78,7 +78,9 @@ export default {
         sortable: false,
         filterable: false
       }
-    ]
+    ],
+    gifts: null,
+    search: null
   }),
 
   computed: {},
@@ -90,31 +92,24 @@ export default {
 
   methods: {
     async getData() {
-      const allGifts = await giftService.getAllGifts();
-      this.gifts = allGifts;
+      this.gifts = await giftService.getAllGifts();
     },
     async deleteItem(item) {
-      const giftId = item.id;
-      const confirmStatus = confirm(
-        "Are you sure you want to delete this item?"
-      );
-      if (confirmStatus) {
-        try {
-          const isSuccess = await giftService.deleteGift(giftId);
-          if (isSuccess) {
-            await this.getData();
-            this.$store.dispatch("alert/success", {
-              message: "Delete Successfully!"
-            });
-          }
-        } catch (error) {
-          if (error.response) {
-            this.$store.dispatch("alert/error", {
-              message: error.response.data.detail
-            });
-          }
-        }
+      const giftId = item._id;
+      try {
+        await giftService.deleteGift(giftId);
+        this.$swal({
+          title: "Xóa quà tặng thành công!",
+          icon: "success"
+        });
+      } catch (err) {
+        this.$swal({
+          title: "Xóa quà tặng thất bại!",
+          text: err.message,
+          icon: "error"
+        });
       }
+      this.getData();
     }
   }
 };
