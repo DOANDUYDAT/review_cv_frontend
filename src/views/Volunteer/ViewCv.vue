@@ -36,7 +36,7 @@
           <v-col cols="1" class="py-0">
             <v-icon small>mdi-map-marker</v-icon>
           </v-col>
-          <v-col cols="5" class="body-2 py-0">
+          <v-col cols="5" class="flex-end py-0 body-2">
             Hà Nội
           </v-col>
         </v-row>

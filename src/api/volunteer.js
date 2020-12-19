@@ -60,7 +60,7 @@ async function exchangePoint(_id, amount, category) {
   return res;
 }
 
-export { updateInfoService };
+export { updateInfoService, exchangePointService };
 
 export default {
   getVolunteer,

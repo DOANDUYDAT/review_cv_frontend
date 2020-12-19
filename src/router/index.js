@@ -281,6 +281,30 @@ const routes = [
           requiresAuth: false,
           roles: ["member"]
         }
+      },
+      {
+        path: "review-result-list",
+        name: "Review Result List",
+        component: () =>
+          import(
+            /* webpackChunkName: "memberHome" */ "../views/Member/ReviewResultList.vue"
+          ),
+        meta: {
+          requiresAuth: false,
+          roles: ["member"]
+        }
+      },
+      {
+        path: "review-result",
+        name: "Review Result",
+        component: () =>
+          import(
+            /* webpackChunkName: "memberHome" */ "../views/Member/ReviewResult.vue"
+          ),
+        meta: {
+          requiresAuth: false,
+          roles: ["member"]
+        }
       }
     ]
   },
@@ -320,6 +344,18 @@ const routes = [
         }
       },
       {
+        path: "review-cv-list",
+        name: "Review CV List",
+        component: () =>
+          import(
+            /* webpackChunkName: "specialistHome" */ "../views/Specialist/ReviewCvList.vue"
+          ),
+        meta: {
+          requiresAuth: false,
+          roles: ["specialist"]
+        }
+      },
+      {
         path: "view-cv",
         name: "View Cv",
         component: () =>
@@ -349,7 +385,7 @@ const routes = [
         name: "Volunteer Home",
         component: () =>
           import(
-            /* webpackChunkName: "volunteerHome" */ "../views/Member/UploadCV.vue"
+            /* webpackChunkName: "volunteerHome" */ "../views/Volunteer/Home.vue"
           ),
         meta: {
           requiresAuth: false,
@@ -386,6 +422,30 @@ const routes = [
         component: () =>
           import(
             /* webpackChunkName: "volunteerHome" */ "../views/Volunteer/ExchangeGift.vue"
+          ),
+        meta: {
+          requiresAuth: false,
+          roles: ["volunteer"]
+        }
+      },
+      {
+        path: "view-cv",
+        name: "Volunteer View Cv",
+        component: () =>
+          import(
+            /* webpackChunkName: "volunteerHome" */ "../views/Volunteer/ViewCv.vue"
+          ),
+        meta: {
+          requiresAuth: false,
+          roles: ["volunteer"]
+        }
+      },
+      {
+        path: "review-cv-list",
+        name: "Volunteer Review CV List",
+        component: () =>
+          import(
+            /* webpackChunkName: "volunteerHome" */ "../views/Volunteer/ReviewCvList.vue"
           ),
         meta: {
           requiresAuth: false,

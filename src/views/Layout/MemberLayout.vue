@@ -38,6 +38,9 @@
             <v-list-item @click="GoToChangeStatusNotifyPage">
               <v-list-item-title>Cài đặt thông báo email</v-list-item-title>
             </v-list-item>
+            <v-list-item @click="GoToReviewResultListPage">
+              <v-list-item-title>Kết quả review</v-list-item-title>
+            </v-list-item>
             <v-list-item @click="LogOut">
               <v-list-item-title>Đăng xuất</v-list-item-title>
             </v-list-item>
@@ -93,6 +96,9 @@ export default {
     },
     GoToForumsPage() {
       this.$router.push({ name: "Forums Home" });
+    },
+    GoToReviewResultListPage() {
+      this.$router.push({ name: "Review Result List" });
     },
     GoToQuanLyCVPage() {
       this.$router.push({ name: "Quan Ly" });
