@@ -24,20 +24,47 @@
             md="4"
             lg="3"
           >
-            <v-card hover height="100%" flat exact>
+            <v-card hover height="100%" exact class="px-4">
               <!-- eager giúp force các ảnh được load hết -->
-              <v-card-title>{{ item.name }}</v-card-title>
-              <v-img
+              <v-card-title class="sub-title text-center">{{
+                item.name
+              }}</v-card-title>
+              <!-- <v-img
                 :height="heightImage"
                 :src="item.image"
                 contain
                 eager
+              ></v-img> -->
+              <v-img
+                :height="heightImage"
+                src="../../assets/voucher.png"
               ></v-img>
-
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="green" disabled text>{{ item.value }} điểm</v-btn>
-                <v-btn color="blue" text @click="exchangeGift">Đổi quà</v-btn>
+              <v-row>
+                <v-col class="pb-0"
+                  >Số lượng còn lại: {{ item.quantity }}</v-col
+                >
+              </v-row>
+              <v-divider></v-divider>
+              <!-- <v-img
+                :height="heightImage"
+                src="../../assets/viettel 50.png"
+              ></v-img> -->
+              <v-card-actions class="d-flex justify-space-around">
+                <v-chip class="ma-2" label dark color="green">
+                  {{ item.value }} điểm
+                </v-chip>
+                <v-chip
+                  class="ma-2"
+                  label
+                  dark
+                  color="blue"
+                  @click="exchangeGift"
+                >
+                  Đổi quà
+                </v-chip>
+                <!-- <v-btn color="blue" small dark @click="exchangeGift"
+                  >Đổi quà</v-btn
+                > -->
               </v-card-actions>
             </v-card>
           </v-col>
@@ -55,7 +82,7 @@ export default {
   data: () => ({
     gifts: null,
     currentUser: null,
-    heightImage: 100,
+    heightImage: 200,
     maxWidthItem: 100
   }),
   components: {
@@ -84,5 +111,8 @@ export default {
 <style lang="scss" scoped>
 .v-toolbar {
   background-image: linear-gradient(0.25turn, #00bda0 30%, #007ddd);
+}
+.v-card__title {
+  word-break: break-word;
 }
 </style>

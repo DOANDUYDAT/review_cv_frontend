@@ -12,21 +12,17 @@
             <h3>Nguyễn Văn A</h3>
             <span>Lĩnh vực làm việc: IT</span><br />
             <span>Cấp bậc: Trưởng/Phó phòng</span>
+            <v-row>
+              <v-col cols="6" class="py-0 text-left"
+                >Kinh nghiệm:
+                <span class="green--text">Dưới 1 năm</span>
+              </v-col>
+              <v-col cols="6" class="py-0 text-right"
+                >Cập nhật 6 ngày trước</v-col
+              >
+            </v-row>
           </v-col>
-          <v-col cols="3" class="text-right">
-            <v-btn icon @click.stop="interestedCv">
-              <v-icon v-if="!heart">mdi-heart-outline</v-icon>
-              <v-icon color="red" v-else>mdi-heart</v-icon>
-            </v-btn>
-            <span class="body-2" :class="{ 'red--text': heart }">Quan tâm</span>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col cols="6" class="pt-0 text-left"
-            >Kinh nghiệm:
-            <span class="green--text">Dưới 1 năm</span>
-          </v-col>
-          <v-col cols="6" class="pt-0 text-right">Cập nhật 6 ngày trước</v-col>
+          <v-col cols="3" class="text-right"></v-col>
         </v-row>
       </v-col>
     </v-row>
@@ -36,63 +32,13 @@
 <script>
 export default {
   data() {
-    return {
-      heart: false
-    };
+    return {};
   },
   methods: {
     goToCv() {
       this.$router.push({
         path: "/volunteerHome/view-cv"
       });
-    },
-    async interestedCv() {
-      if (!this.heart) {
-        this.heart = !this.heart;
-        try {
-          await this.$swal({
-            toast: true,
-            position: "top-end",
-            title: "Quan tâm CV thành công!",
-            icon: "success",
-            showConfirmButton: false,
-            timer: 1500
-          });
-        } catch (err) {
-          await this.$swal({
-            toast: true,
-            position: "top-end",
-            title: "Quan tâm CV thất bại!",
-            text: err,
-            icon: "error",
-            showConfirmButton: false,
-            timer: 1500
-          });
-        }
-      } else {
-        this.heart = !this.heart;
-        try {
-          await this.$swal({
-            toast: true,
-            position: "top-end",
-            title: "Bỏ quan tâm CV thành công!",
-            icon: "success",
-            showConfirmButton: false,
-            timer: 1500
-          });
-        } catch (err) {
-          await this.$swal({
-            toast: true,
-            position: "top-end",
-            title: "Bỏ quan tâm CV thất bại!",
-            text: err,
-            icon: "error",
-            showConfirmButton: false,
-            timer: 1500
-          });
-        }
-      }
-      // this.heart = !this.heart;
     }
   }
 };
