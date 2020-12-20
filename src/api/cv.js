@@ -3,6 +3,7 @@ import feathers from "../services/socketClient";
 
 const cvService = feathers.service("cvs");
 const interestService = feathers.service("cvs/interest");
+const reviewCvService = feathers.service("cvs/review-cv");
 
 async function uploadCv(cv) {
   const fData = new FormData();
@@ -52,11 +53,18 @@ async function getListCvById(listCvId) {
   });
   return data;
 }
+async function reviewCv(cvId) {
+  const res = await reviewCvService.create({
+    cvId
+  });
+  return res;
+}
 
 export default {
   uploadCv,
   interestedCv,
   getAllCvs,
   getCvById,
-  getListCvById
+  getListCvById,
+  reviewCv
 };
