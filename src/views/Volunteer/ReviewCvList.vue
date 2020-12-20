@@ -67,26 +67,8 @@ export default {
   },
   methods: {
     async upLoadReview() {
-      const { file } = this.file;
-      const data = {
-        file
-      };
-      reviewService
-        .createReview(data)
-        .then(response => {
-          console.log(response);
-          this.$swal({
-            position: "center",
-            icon: "success",
-            title: "Thêm review thành công",
-            showConfirmButton: false,
-            timer: 1500
-          });
-        })
-        .catch(err => {
-          console.log(err);
-          this.$swal("error: ", err.message, "error");
-        });
+      const res = await reviewService.uploadReview(this.file);
+      console.log(res);
     }
   }
 };

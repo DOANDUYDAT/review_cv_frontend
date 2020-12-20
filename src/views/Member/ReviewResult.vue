@@ -2,31 +2,7 @@
   <v-container>
     <v-sheet class="pa-4">
       <v-row>
-        <v-col cols="9">
-          <v-card class="elevation-4">
-            <v-toolbar>
-              <v-toolbar-title>Chat</v-toolbar-title>
-            </v-toolbar>
-            <v-card-text>
-              <v-list ref="chat" id="logs">
-                <template v-for="(item, index) in logs">
-                  <v-subheader v-if="item" :key="index">{{ item }}</v-subheader>
-                </template>
-              </v-list>
-            </v-card-text>
-            <v-card-actions>
-              <v-text-field
-                placeholder="Nhập vào đây để trò chuyện"
-                outlined
-                v-model="msg"
-                append-outer-icon="mdi-send"
-                @keyup.enter="submit"
-                @click:append-outer="submit"
-              >
-              </v-text-field>
-            </v-card-actions>
-          </v-card>
-        </v-col>
+        <v-col cols="9"> </v-col>
         <v-col cols="3">
           <v-row>
             <v-col cols="4" class="text-center" align-self="center">
@@ -103,7 +79,7 @@
           <v-divider></v-divider>
           <v-row>
             <v-col cols="2" class="py-0">
-              <v-btn small text fab>
+              <v-btn @click.stop="dialog2 = true" small text fab>
                 <v-icon>mdi-message-text</v-icon>
               </v-btn>
             </v-col>
@@ -124,10 +100,7 @@
       <v-dialog v-model="dialog" max-width="450">
         <v-card>
           <v-card-title>
-            <!-- <v-col></v-col>
-            <v-col></v-col> -->
             <div class="flex-grow-1 text-center headline">Báo cáo</div>
-            <!-- <v-spacer></v-spacer> -->
             <div class="float-right">
               <v-btn fab small elevation="0" @click="dialog = false">
                 <v-icon>
@@ -171,6 +144,59 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
+      <v-dialog v-model="dialog2" max-width="450">
+        <v-card class="elevation-4">
+          <v-toolbar>
+            <v-toolbar-title>Chat</v-toolbar-title>
+            <v-spacer></v-spacer>
+            <!-- <div class="flex-grow-1 text-center headline">Báo cáo</div> -->
+            <div class="float-right">
+              <v-btn fab small elevation="0" @click="dialog2 = false">
+                <v-icon>
+                  mdi-close
+                </v-icon>
+              </v-btn>
+            </div>
+          </v-toolbar>
+          <v-card-text>
+            <v-list ref="chat" id="logs">
+              <template v-for="(item, index) in logs">
+                <!-- <v-subheader v-if="item" :key="index">{{ item }}</v-subheader> -->
+                <div
+                  v-if="item"
+                  :key="index"
+                  :class="{ 'd-flex flex-row-reverse': item.me }"
+                >
+                  <v-menu offset-y>
+                    <template v-slot:activator="{ on }">
+                      <v-chip
+                        :color="item.me ? 'primary' : 'grey'"
+                        dark
+                        style="height:auto;weight:220px;white-space: normal;"
+                        class="pa-2 mb-2"
+                        v-on="on"
+                      >
+                        {{ item.content }}
+                      </v-chip>
+                    </template>
+                  </v-menu>
+                </div>
+              </template>
+            </v-list>
+          </v-card-text>
+          <v-card-actions>
+            <v-text-field
+              placeholder="Nhập vào đây để trò chuyện"
+              outlined
+              v-model="msg.content"
+              append-outer-icon="mdi-send"
+              @keyup.enter="submit"
+              @click:append-outer="submit"
+            >
+            </v-text-field>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-sheet>
   </v-container>
 </template>
@@ -180,6 +206,7 @@ export default {
     return {
       status: false,
       dialog: false,
+      dialog2: false,
       radioGroup: null,
       tags: [
         "Review không chính xác",
@@ -189,8 +216,20 @@ export default {
         "Spam",
         "Vấn đề khác"
       ],
-      logs: [],
-      msg: null
+      logs: [
+        {
+          content: "lorem ipsum",
+          me: true
+        },
+        {
+          content: "dolor",
+          me: false
+        }
+      ],
+      msg: {
+        content: "",
+        me: true
+      }
     };
   },
   methods: {
@@ -234,8 +273,9 @@ export default {
       console.log("download CV");
     },
     submit() {
-      this.logs.push(this.msg);
-      this.msg = "";
+      const data = Object.assign({}, this.msg);
+      this.logs.push(data);
+      this.msg.content = "";
     }
   },
   watch: {
@@ -249,7 +289,10 @@ export default {
 </script>
 <style lang="scss" scoped>
 #logs {
-  height: 100px;
+  height: 400px;
   overflow: auto;
+}
+.v-chip {
+  max-width: 70%;
 }
 </style>
