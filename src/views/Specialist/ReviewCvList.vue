@@ -44,7 +44,7 @@
                     >
                     </v-file-input>
                   </v-img>
-                  <v-btn color="#0da1ec" small outlined @click="upLoadCv">
+                  <v-btn color="#0da1ec" small outlined @click="upLoadReview">
                     Submit
                   </v-btn>
                 </form>
@@ -58,7 +58,7 @@
   </v-sheet>
 </template>
 <script>
-import cvService from "@/api/cv";
+import reviewService from "@/api/review";
 export default {
   data() {
     return {
@@ -66,8 +66,8 @@ export default {
     };
   },
   methods: {
-    async upLoadCv() {
-      const res = await cvService.uploadCv(this.file);
+    async upLoadReview() {
+      const res = await reviewService.uploadReview(this.file);
       console.log(res);
     }
   }
