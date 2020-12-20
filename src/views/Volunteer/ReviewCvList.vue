@@ -80,8 +80,15 @@ export default {
   },
   methods: {
     async upLoadReview() {
-      const res = await reviewService.uploadReview(this.file);
-      console.log(res);
+      await reviewService.uploadReview(this.file);
+      this.$swal({
+        toast: true,
+        position: "top-end",
+        icon: "success",
+        title: "Upload review thành công",
+        showConfirmButton: false,
+        timer: 1500
+      });
     },
     async getData() {
       const userId = await authService.getCurrentUserId();

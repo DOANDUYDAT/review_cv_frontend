@@ -1,7 +1,14 @@
 <template>
   <v-sheet class="pa-4" v-if="cv">
     <v-row>
-      <v-col cols="9"></v-col>
+      <v-col cols="9">
+        <iframe
+          :src="linkex"
+          width="100%"
+          height="800px"
+          frameborder="0"
+        ></iframe>
+      </v-col>
       <v-col cols="3">
         <v-row>
           <v-col cols="3" class="text-center" align-self="center">
@@ -94,7 +101,9 @@ export default {
     return {
       status: false,
       cv: null,
-      currentUser: null
+      currentUser: null,
+      file: null,
+      linkex: null
     };
   },
   methods: {
@@ -138,6 +147,9 @@ export default {
       const volunteer = await volunteerService.getVolunteer(userId);
       this.currentUser = volunteer;
       this.status = volunteer.listReceivedCv.includes(cvId);
+      let myUrl = "http://localhost:3030/cv/" + this.cv.link;
+      this.file = await (await fetch(myUrl)).blob();
+      this.linkex = URL.createObjectURL(this.file);
     }
   },
   created() {
