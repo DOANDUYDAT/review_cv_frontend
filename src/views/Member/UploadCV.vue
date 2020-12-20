@@ -1,6 +1,6 @@
 <template>
   <div style="background-color:#3f51b5; height:100%">
-    <ValidationObserver v-slot="{ invalid }">
+    <ValidationObserver v-slot="{ invalid }" ref="formUploadCv">
       <v-row justify="center">
         <v-col cols="5" class="pt-16">
           <div style="background-color:white; height:100%">
@@ -8,7 +8,7 @@
               <h2 class="text-highlight ">Thông tin cá nhân</h2>
             </v-row>
             <v-row class="px-8">
-              <v-col cols="4">Họ và tên</v-col>
+              <!-- <v-col cols="4">Họ và tên</v-col>
               <v-col cols="8">
                 <ValidationProvider
                   mode="aggressive"
@@ -25,7 +25,7 @@
                   ></v-text-field>
                   <span class="red--text text--lighten-1">{{ errors[0] }}</span>
                 </ValidationProvider>
-              </v-col>
+              </v-col> -->
               <v-col cols="4">Kinh nghiệm</v-col>
               <v-col cols="8">
                 <v-select
@@ -34,12 +34,6 @@
                   :items="exps"
                   outlined
                 ></v-select>
-                <!-- <v-text-field
-                  v-model="cv.exp"
-                  placeholder="Kinh nghiệm"
-                  outlined
-                  dense
-                ></v-text-field -->
               </v-col>
               <v-col cols="4">Lĩnh vực làm việc</v-col>
               <v-col cols="8">
@@ -91,18 +85,12 @@
                   :items="positions"
                   outlined
                 ></v-select>
-                <!-- <v-text-field
-                  v-model="cv.position"
-                  placeholder="Cấp bậc"
-                  outlined
-                  dense
-                ></v-text-field -->
               </v-col>
               <v-col cols="4">Địa điểm làm việc</v-col>
               <v-col cols="8">
                 <ValidationProvider
                   mode="aggressive"
-                  name="fullName"
+                  name="Location"
                   rules="required"
                   v-slot="{ errors }"
                   :bails="false"
@@ -126,51 +114,9 @@
                   :items="timeTypes"
                   outlined
                 ></v-select>
-                <!-- <v-text-field
-                  v-model="cv.timeType"
-                  placeholder="Thời gian làm việc"
-                  outlined
-                  dense
-                ></v-text-field -->
               </v-col>
             </v-row>
           </div>
-          <!-- <v-form>
-              <ValidationProvider
-                mode="aggressive"
-                name="email"
-                rules="required|email"
-                v-slot="{ errors }"
-                :bails="false"
-              >
-                <v-text-field
-                  v-model="form.email"
-                  prepend-icon="mdi-email"
-                  label="Email"
-                  type="email"
-                ></v-text-field>
-                <span class="red--text text--lighten-1">{{ errors[0] }}</span>
-              </ValidationProvider>
-              <ValidationProvider
-                mode="aggressive"
-                name="password"
-                rules="required|alpha_dash|min:6"
-                v-slot="{ errors }"
-                :bails="false"
-              >
-                <v-text-field
-                  :type="form.showPassword ? 'text' : 'password'"
-                  v-model="form.password"
-                  label="Password"
-                  counter="16"
-                  prepend-icon="mdi-lock"
-                  :append-icon="form.showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-                  @click:append="form.showPassword = !form.showPassword"
-                  @keyup.enter="login"
-                ></v-text-field>
-                <span class="red--text text--lighten-1">{{ errors[0] }}</span>
-              </ValidationProvider>
-            </v-form> -->
         </v-col>
         <v-col cols="4" class="text-center pt-16">
           <h1 class="font-weight-medium white--text">
@@ -196,7 +142,7 @@
                   <v-file-input
                     hide-input
                     prepend-icon="mdi-upload"
-                    accept=".doc,.docx,application/pdf"
+                    accept="application/pdf"
                     color="#3f51b5"
                     style="position: absolute; top: 30px; left: 60px; z-index: 10"
                     v-model="cv.file"
@@ -268,7 +214,6 @@ export default {
       ],
       cv: {
         file: null,
-        fullName: "",
         exp: "",
         fields: [],
         position: "",
@@ -280,8 +225,23 @@ export default {
   methods: {
     async upLoadCv() {
       if (this.cv.file) {
-        const res = await cvService.uploadCv(this.cv);
-        console.log(res);
+        await cvService.uploadCv(this.cv);
+        this.cv.file = null;
+        this.cv.exp = "";
+        this.cv.fields = [];
+        this.cv.position = "";
+        this.cv.location = "";
+        this.cv.timeType = "";
+        //then do this to reset your ValidationObserver
+        this.$nextTick(() => this.$refs.formUploadCv.reset());
+        // this.errors.clear();
+        this.$swal({
+          position: "center",
+          icon: "success",
+          title: "Upload CV thành công",
+          showConfirmButton: false,
+          timer: 1500
+        });
       } else {
         this.$swal({
           position: "center",

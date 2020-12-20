@@ -8,7 +8,6 @@ const reviewCvService = feathers.service("cvs/review-cv");
 async function uploadCv(cv) {
   const fData = new FormData();
   fData.append("uri", cv.file);
-  fData.append("fullName", cv.fullName);
   fData.append("exp", cv.exp);
   fData.append("fields", cv.fields);
   fData.append("position", cv.position);

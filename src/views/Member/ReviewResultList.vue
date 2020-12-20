@@ -2,7 +2,7 @@
   <v-container class="pt-0">
     <v-row>
       <v-col cols="9">
-        <v-sheet class="pa-4">
+        <v-sheet class="pa-4" min-height="100vh">
           <h2 class="font-weight-medium">Danh sách kết quả review CV</h2>
           <v-divider></v-divider>
           <v-row>
@@ -43,7 +43,7 @@
         </v-sheet>
       </v-col>
       <v-col cols="3" class="pl-0">
-        <v-sheet min-height="70vh"></v-sheet>
+        <v-sheet min-height="100vh"></v-sheet>
       </v-col>
     </v-row>
   </v-container>

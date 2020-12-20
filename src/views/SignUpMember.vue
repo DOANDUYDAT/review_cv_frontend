@@ -11,6 +11,21 @@
         <v-form>
           <ValidationProvider
             mode="aggressive"
+            name="Fullname"
+            rules="required"
+            v-slot="{ errors }"
+            :bails="false"
+          >
+            <v-text-field
+              v-model="form.fullName"
+              label="Fullname"
+              type="text"
+              prepend-icon="mdi-account"
+            ></v-text-field>
+            <span class="red--text text--lighten-1">{{ errors[0] }}</span>
+          </ValidationProvider>
+          <ValidationProvider
+            mode="aggressive"
             name="Username"
             rules="required"
             v-slot="{ errors }"
@@ -114,6 +129,7 @@ export default {
   },
   data: () => ({
     form: {
+      fullName: "",
       userName: "",
       email: "",
       phone: "",
@@ -143,8 +159,9 @@ export default {
   },
   methods: {
     SignUpMember() {
-      const { userName, password, email, phone } = this.form;
+      const { fullName, userName, password, email, phone } = this.form;
       const data = {
+        fullName,
         userName,
         password,
         email,
@@ -153,7 +170,7 @@ export default {
       memberService
         .createMember(data)
         .then(response => {
-          // this.$router.push({ name: "About" });
+          this.$router.push({ name: "Login" });
           console.log(response);
           this.$swal({
             position: "center",

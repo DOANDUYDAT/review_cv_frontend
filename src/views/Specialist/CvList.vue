@@ -7,7 +7,6 @@
       :heart-status="heart(item)"
     >
     </cv-item>
-    <v-divider></v-divider>
   </v-container>
 </template>
 <script>
