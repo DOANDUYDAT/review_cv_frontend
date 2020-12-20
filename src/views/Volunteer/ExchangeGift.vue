@@ -36,13 +36,20 @@
                 eager
               ></v-img> -->
               <v-img
+                v-if="item.image"
                 :height="heightImage"
-                src="../../assets/voucher.png"
+                :src="'http://localhost:3030/uploads/' + item.image"
+              ></v-img>
+              <v-img
+                v-else
+                :height="heightImage"
+                src="../../assets/gift.png"
               ></v-img>
               <v-row>
                 <v-col class="pb-0"
-                  >Số lượng còn lại: {{ item.quantity }}</v-col
-                >
+                  >Số lượng còn lại:
+                  <span class="red--text">{{ item.quantity }}</span>
+                </v-col>
               </v-row>
               <v-divider></v-divider>
               <!-- <v-img
@@ -114,6 +121,10 @@ export default {
       } catch (error) {
         console.log(error);
       }
+    },
+    getImageFromBase64() {
+      let image = new Image();
+      return image;
     }
   },
   created() {

@@ -1,6 +1,6 @@
 <template>
   <v-sheet class="pa-4">
-    <h2 class="font-weight-medium">Danh sách CV đã nhận để review</h2>
+    <h2 class="font-weight-medium">Danh sách CV đã nhận review</h2>
     <v-divider></v-divider>
     <v-row>
       <v-col cols="2" class="text-center">
@@ -44,7 +44,7 @@
                     >
                     </v-file-input>
                   </v-img>
-                  <v-btn color="#0da1ec" small outlined @click="upLoadCv">
+                  <v-btn color="#0da1ec" small outlined @click="upLoadReview">
                     Submit
                   </v-btn>
                 </form>
@@ -58,7 +58,7 @@
   </v-sheet>
 </template>
 <script>
-import cvService from "@/api/cv";
+import reviewService from "@/api/review";
 export default {
   data() {
     return {
@@ -66,9 +66,27 @@ export default {
     };
   },
   methods: {
-    async upLoadCv() {
-      const res = await cvService.uploadCv(this.file);
-      console.log(res);
+    async upLoadReview() {
+      const { file } = this.file;
+      const data = {
+        file
+      };
+      reviewService
+        .createReview(data)
+        .then(response => {
+          console.log(response);
+          this.$swal({
+            position: "center",
+            icon: "success",
+            title: "Thêm review thành công",
+            showConfirmButton: false,
+            timer: 1500
+          });
+        })
+        .catch(err => {
+          console.log(err);
+          this.$swal("error: ", err.message, "error");
+        });
     }
   }
 };
