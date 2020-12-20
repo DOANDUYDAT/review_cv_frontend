@@ -10,44 +10,129 @@
             <v-row class="px-8">
               <v-col cols="4">Họ và tên</v-col>
               <v-col cols="8">
-                <v-text-field
-                  placeholder="Họ và tên"
-                  outlined
-                  dense
-                ></v-text-field
-              ></v-col>
+                <ValidationProvider
+                  mode="aggressive"
+                  name="fullName"
+                  rules="required"
+                  v-slot="{ errors }"
+                  :bails="false"
+                >
+                  <v-text-field
+                    v-model="cv.fullName"
+                    placeholder="Họ và tên"
+                    outlined
+                    dense
+                  ></v-text-field>
+                  <span class="red--text text--lighten-1">{{ errors[0] }}</span>
+                </ValidationProvider>
+              </v-col>
               <v-col cols="4">Kinh nghiệm</v-col>
               <v-col cols="8">
-                <v-text-field
+                <v-select
+                  v-model="cv.exp"
+                  placeholder="Kinh nghiệm"
+                  :items="exps"
+                  outlined
+                ></v-select>
+                <!-- <v-text-field
+                  v-model="cv.exp"
                   placeholder="Kinh nghiệm"
                   outlined
                   dense
-                ></v-text-field
-              ></v-col>
+                ></v-text-field -->
+              </v-col>
               <v-col cols="4">Lĩnh vực làm việc</v-col>
               <v-col cols="8">
-                <v-text-field
-                  placeholder="Lĩnh vực làm việc"
-                  outlined
-                  dense
-                ></v-text-field
-              ></v-col>
+                <ValidationProvider>
+                  <v-select
+                    v-model="cv.fields"
+                    :items="fieldsData"
+                    filled
+                    chips
+                    outlined
+                    background-color="white"
+                    label="Lĩnh vực làm việc"
+                    item-text="name"
+                    item-value="name"
+                    multiple
+                  >
+                    <template v-slot:selection="data">
+                      <v-chip
+                        :input-value="data.selected"
+                        close
+                        @click="data.select"
+                        @click:close="remove(data.item)"
+                      >
+                        {{ data.item.name }}
+                      </v-chip>
+                    </template>
+                    <template v-slot:item="data">
+                      <template v-if="typeof data.item !== 'object'">
+                        <v-list-item-content
+                          v-text="data.item"
+                        ></v-list-item-content>
+                      </template>
+                      <template v-else>
+                        <v-list-item-content>
+                          <v-list-item-title
+                            v-html="data.item.name"
+                          ></v-list-item-title>
+                        </v-list-item-content>
+                      </template>
+                    </template>
+                  </v-select>
+                </ValidationProvider>
+              </v-col>
               <v-col cols="4">Cấp bậc</v-col>
               <v-col cols="8">
-                <v-text-field
+                <v-select
+                  v-model="cv.position"
+                  placeholder="Kinh nghiệm"
+                  :items="positions"
+                  outlined
+                ></v-select>
+                <!-- <v-text-field
+                  v-model="cv.position"
                   placeholder="Cấp bậc"
                   outlined
                   dense
-                ></v-text-field
-              ></v-col>
+                ></v-text-field -->
+              </v-col>
               <v-col cols="4">Địa điểm làm việc</v-col>
               <v-col cols="8">
-                <v-text-field
-                  placeholder="Địa điểm làm việc"
+                <ValidationProvider
+                  mode="aggressive"
+                  name="fullName"
+                  rules="required"
+                  v-slot="{ errors }"
+                  :bails="false"
+                >
+                  <v-text-field
+                    v-model="cv.location"
+                    placeholder="Địa điểm làm việc"
+                    outlined
+                    dense
+                  ></v-text-field
+                  ><span class="red--text text--lighten-1">{{
+                    errors[0]
+                  }}</span>
+                </ValidationProvider>
+              </v-col>
+              <v-col cols="4">Thời gian làm việc</v-col>
+              <v-col cols="8">
+                <v-select
+                  v-model="cv.timeType"
+                  placeholder="Thời gian làm việc"
+                  :items="timeTypes"
+                  outlined
+                ></v-select>
+                <!-- <v-text-field
+                  v-model="cv.timeType"
+                  placeholder="Thời gian làm việc"
                   outlined
                   dense
-                ></v-text-field
-              ></v-col>
+                ></v-text-field -->
+              </v-col>
             </v-row>
           </div>
           <!-- <v-form>
@@ -114,7 +199,7 @@
                     accept=".doc,.docx,application/pdf"
                     color="#3f51b5"
                     style="position: absolute; top: 30px; left: 60px; z-index: 10"
-                    v-model="file"
+                    v-model="cv.file"
                   >
                   </v-file-input>
                 </v-img>
@@ -148,22 +233,72 @@ import cvService from "@/api/cv";
 export default {
   data: () => {
     return {
+      exps: [
+        "Chưa có",
+        "Dưới 1 năm",
+        "1 năm",
+        "2 năm",
+        "3 năm",
+        "4 năm",
+        "5 năm"
+      ],
+      positions: [
+        "Nhân viên",
+        "Trưởng nhóm",
+        "Quản lý/Giám sát",
+        "Trưởng/Phó phòng",
+        "Trưởng chi nhánh",
+        "Phó giám đốc",
+        "Giám đốc",
+        "Thực tập sinh"
+      ],
+      timeTypes: ["Full-time", "Part-time"],
       file: null,
-      form: {
+      fieldsData: [
+        { name: "An toàn lao động" },
+        { name: "Bất động sản" },
+        { name: "Bưu chính - Viễn thông" },
+        { name: "Công nghệ thông tin" },
+        { name: "Dệt may/Da giày" },
+        { name: "Điện tử viễn thông" },
+        { name: "Du lịch" },
+        { name: "Kế toán/Kiểm toán" },
+        { name: "Luật/Pháp lý" },
+        { name: "Quản lý điều hành" }
+      ],
+      cv: {
+        file: null,
         fullName: "",
-        showPassword: false,
-        password: ""
+        exp: "",
+        fields: [],
+        position: "",
+        location: "",
+        timeType: ""
       }
     };
   },
   methods: {
     async upLoadCv() {
-      const res = await cvService.uploadCv(this.file);
-      console.log(res);
+      if (this.cv.file) {
+        const res = await cvService.uploadCv(this.cv);
+        console.log(res);
+      } else {
+        this.$swal({
+          position: "center",
+          icon: "warning",
+          title: "File không được bỏ trống",
+          showConfirmButton: false,
+          timer: 1500
+        });
+      }
     },
     handleFileUpload(file) {
       console.log(file);
       this.file = file;
+    },
+    remove(item) {
+      const index = this.cv.fields.indexOf(item.name);
+      if (index >= 0) this.cv.fields.splice(index, 1);
     }
   }
 };

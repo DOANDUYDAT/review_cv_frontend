@@ -70,16 +70,14 @@
 </template>
 
 <script>
-import _ from "lodash";
-// import { supplierService, filterService } from "@/_api";
 export default {
   data() {
     return {
       filter: {
-        field: [],
-        experience: [],
-        level: [],
-        time: []
+        fields: [],
+        exp: [],
+        position: [],
+        timeType: []
       },
       loading: false,
       items: [
@@ -87,19 +85,16 @@ export default {
           text: "Lĩnh vực làm việc",
           model: "field",
           children: [
-            { text: "IT" },
-            { text: "Kế toán/Kiểm toán" },
-            { text: "Luật" },
-            { text: "Bảo hiểm" },
+            { text: "An toàn lao động" },
             { text: "Bất động sản" },
-            { text: "Marketing/Truyền thông" },
-            { text: "Nhà hàng/Khách sạn" },
-            { text: "Xây dựng" },
-            { text: "Ngân hàng" },
-            { text: "Nhân sự" },
-            { text: "Thiết kế/ Kiến trúc" },
-            { text: "Thời trang" },
-            { text: "Du lịch" }
+            { text: "Bưu chính - Viễn thông" },
+            { text: "Công nghệ thông tin" },
+            { text: "Dệt may/Da giày" },
+            { text: "Điện tử viễn thông" },
+            { text: "Du lịch" },
+            { text: "Kế toán/Kiểm toán" },
+            { text: "Luật/Pháp lý" },
+            { text: "Quản lý điều hành" }
           ]
         },
         {
@@ -143,29 +138,14 @@ export default {
       this.loading = true;
       setTimeout(() => (this.loading = false), 1000);
     },
-    async submit() {
-      const filter = this.filter;
-      const oldFilter = this.$route.query;
-      let query = {};
-      if (filter.field.length) {
-        query = { ...query, field: filter.field };
-      }
-      if (filter.experience.length) {
-        query = { ...query, experience: filter.experience };
-      }
-      if (filter.level.length) {
-        query = { ...query, level: filter.level };
-      }
-      if (filter.time.length) {
-        query = { ...query, time: filter.time };
-      }
-      if (!_.isEmpty(query) && !_.isEqual(query, oldFilter)) {
-        this.$router.push({ path: "/filter", query: query });
-      }
-
-      // if (!_.isEmpty(filter) && !_.isEqual(filter, oldFilter)) {
-      //   this.$router.push({ path: "/filter", query: filter });
-      // }
+    submit() {
+      const { fields, exp, timeType, position } = this.filter;
+      this.$emit("filter-cv", {
+        fields,
+        exp,
+        timeType,
+        position
+      });
     },
     resetFilter() {
       this.filter.field = [];

@@ -4,9 +4,15 @@ import feathers from "../services/socketClient";
 const cvService = feathers.service("cvs");
 const interestService = feathers.service("cvs/interest");
 
-async function uploadCv(cvUpload) {
+async function uploadCv(cv) {
   const fData = new FormData();
-  fData.append("uri", cvUpload);
+  fData.append("uri", cv.file);
+  fData.append("fullName", cv.fullName);
+  fData.append("exp", cv.exp);
+  fData.append("fields", cv.fields);
+  fData.append("position", cv.position);
+  fData.append("location", cv.location);
+  fData.append("timeType", cv.timeType);
   let myHeaders = new Headers();
   let token = "Bearer " + (await feathers.authentication.getAccessToken());
   myHeaders.append("Authorization", token);
@@ -36,9 +42,21 @@ async function getCvById(id) {
   return cv;
 }
 
+async function getListCvById(listCvId) {
+  const { data } = await cvService.find({
+    query: {
+      _id: {
+        $in: listCvId
+      }
+    }
+  });
+  return data;
+}
+
 export default {
   uploadCv,
   interestedCv,
   getAllCvs,
-  getCvById
+  getCvById,
+  getListCvById
 };

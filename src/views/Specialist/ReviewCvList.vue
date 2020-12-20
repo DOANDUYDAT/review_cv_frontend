@@ -1,6 +1,6 @@
 <template>
   <v-sheet class="pa-4">
-    <h2 class="font-weight-medium">Danh sách CV đã nhận để review</h2>
+    <h2 class="font-weight-medium">Danh sách CV đã nhận review</h2>
     <v-divider></v-divider>
     <v-row>
       <v-col cols="2" class="text-center">
@@ -59,6 +59,7 @@
 </template>
 <script>
 import reviewService from "@/api/review";
+// import cvService from "@/api/cv";
 export default {
   data() {
     return {

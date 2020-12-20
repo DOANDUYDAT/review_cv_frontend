@@ -2,7 +2,7 @@
   <v-container>
     <v-row>
       <v-col cols="3">
-        <filter-cv></filter-cv>
+        <filter-cv @filter-cv="onFilter"></filter-cv>
       </v-col>
       <v-col cols="9">
         <cv-list></cv-list>
@@ -19,6 +19,11 @@ export default {
   components: {
     CvList,
     FilterCv
+  },
+  methods: {
+    onFilter(e) {
+      console.log(e);
+    }
   }
 };
 </script>

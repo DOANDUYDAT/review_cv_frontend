@@ -8,7 +8,7 @@
     <v-col cols="10">
       <v-row>
         <v-col cols="9">
-          <h3>{{ cv.author.user.userName }}</h3>
+          <h3>{{ cv.author.user.fullName }}</h3>
           <div>
             Lĩnh vực làm việc:
             <span v-for="(fi, i) in cv.fields" :key="i">{{ fi }}</span>

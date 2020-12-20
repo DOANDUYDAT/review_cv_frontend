@@ -80,7 +80,8 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "CV" */ "../views/Layout/CvLayout.vue"),
     meta: {
-      requiresAuth: false
+      requiresAuth: true,
+      roles: ["member"]
     },
     children: [
       {
@@ -91,7 +92,7 @@ const routes = [
             /* webpackChunkName: "CV" */ "../views/Quan_Ly_CV/Quan_Ly.vue"
           ),
         meta: {
-          requiresAuth: false,
+          requiresAuth: true,
           roles: ["member"]
         }
       },
@@ -101,7 +102,7 @@ const routes = [
         component: () =>
           import(/* webpackChunkName: "CV" */ "../views/Quan_Ly_CV/MauCV.vue"),
         meta: {
-          requiresAuth: false,
+          requiresAuth: true,
           roles: ["member"]
         }
       },
@@ -113,7 +114,7 @@ const routes = [
             /* webpackChunkName: "CV" */ "../views/Quan_Ly_CV/InforCV.vue"
           ),
         meta: {
-          requiresAuth: false,
+          requiresAuth: true,
           roles: ["member"]
         }
       },
@@ -123,7 +124,7 @@ const routes = [
         component: () =>
           import(/* webpackChunkName: "CV" */ "../views/Quan_Ly_CV/EditCV.vue"),
         meta: {
-          requiresAuth: false,
+          requiresAuth: true,
           roles: ["member"]
         }
       },
@@ -135,7 +136,7 @@ const routes = [
             /* webpackChunkName: "CV" */ "../views/Quan_Ly_CV/CV_content.vue"
           ),
         meta: {
-          requiresAuth: false,
+          requiresAuth: true,
           roles: ["member"]
         }
       },
@@ -145,7 +146,7 @@ const routes = [
         component: () =>
           import(/* webpackChunkName: "CV" */ "../views/Quan_Ly_CV/Add_CV.vue"),
         meta: {
-          requiresAuth: false,
+          requiresAuth: true,
           roles: ["member"]
         }
       }

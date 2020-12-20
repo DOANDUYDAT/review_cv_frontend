@@ -28,10 +28,10 @@
                       Công ty Viettel
                     </v-col>
                     <v-col cols="1" class="py-0">
-                      <v-icon small>mdi-map-marker</v-icon>
+                      <v-icon small>mdi-web</v-icon>
                     </v-col>
                     <v-col cols="11" class="py-0">
-                      Hà Nội
+                      viettel.vn
                     </v-col>
                   </v-row>
                 </v-col>
