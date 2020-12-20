@@ -296,7 +296,7 @@ const routes = [
         }
       },
       {
-        path: "review-result",
+        path: "review-result/:reviewId",
         name: "Review Result",
         component: () =>
           import(

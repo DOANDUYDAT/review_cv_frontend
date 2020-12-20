@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container v-if="review">
     <v-sheet class="pa-4">
       <v-row>
         <v-col cols="9"> </v-col>
@@ -117,12 +117,17 @@
             <span
               >Hãy cho chúng tôi biết các vấn đề với kết quả review này.</span
             >
-            <v-chip-group class="mt-2" column active-class="primary">
+            <v-chip-group
+              v-model="reportContent"
+              class="mt-2"
+              column
+              active-class="primary"
+            >
               <!-- <v-chip class="ma-2" color="primary">
                 Primary
               </v-chip> -->
-              <v-chip class="mx-1" v-for="tag in tags" :key="tag">
-                {{ tag }}
+              <v-chip class="mx-1" v-for="tag in tags" :key="tag.value">
+                {{ tag.text }}
               </v-chip>
             </v-chip-group>
             <v-row>
@@ -201,6 +206,7 @@
   </v-container>
 </template>
 <script>
+import reviewService from "../../api/review";
 export default {
   data() {
     return {
@@ -209,12 +215,30 @@ export default {
       dialog2: false,
       radioGroup: null,
       tags: [
-        "Review không chính xác",
-        "Không có ý định review",
-        "Ngôn từ gây thù ghét",
-        "Review sơ sài",
-        "Spam",
-        "Vấn đề khác"
+        {
+          text: "Review không chính xác",
+          value: "Review không chính xác"
+        },
+        {
+          text: "Không có ý định review",
+          value: "Không có ý định review"
+        },
+        {
+          text: "Ngôn từ gây thù ghét",
+          value: "Ngôn từ gây thù ghét"
+        },
+        {
+          text: "Review sơ sài",
+          value: "Review sơ sài"
+        },
+        {
+          text: "Spam",
+          value: "Spam"
+        },
+        {
+          text: "Vấn đề khác",
+          value: "Vấn đề khác"
+        }
       ],
       logs: [
         {
@@ -229,7 +253,9 @@ export default {
       msg: {
         content: "",
         me: true
-      }
+      },
+      review: null,
+      reportContent: ""
     };
   },
   methods: {
@@ -259,7 +285,32 @@ export default {
         }
       }
     },
-    report() {
+    async report() {
+      try {
+        console.log(this.tags[this.reportContent].value);
+        await reviewService.reportReview(
+          this.review._id,
+          this.tags[this.reportContent].value
+        );
+        this.dialog = false;
+        this.$swal({
+          toast: true,
+          position: "top-end",
+          icon: "success",
+          title: "Báo cáo kết quả review thành công",
+          showConfirmButton: false,
+          timer: 1500
+        });
+      } catch (err) {
+        this.$swal({
+          toast: true,
+          position: "top-end",
+          icon: "error",
+          title: "Báo cáo kết quả review thất bại",
+          showConfirmButton: false,
+          timer: 1500
+        });
+      }
       this.$swal({
         toast: true,
         position: "top-end",
@@ -286,6 +337,10 @@ export default {
       const data = Object.assign({}, this.msg);
       this.logs.push(data);
       this.msg.content = "";
+    },
+    async getData() {
+      let reviewId = this.$route.params.reviewId;
+      this.review = await reviewService.getReview(reviewId);
     }
   },
   watch: {
