@@ -58,21 +58,24 @@
         </v-row>
         <v-row>
           <v-col cols="6" class="text-center">
-            <v-btn @click="reviewCv" depressed outlined color="red">
+            <v-btn
+              :disabled="status"
+              @click="reviewCv"
+              depressed
+              outlined
+              color="red"
+            >
               Review cv
             </v-btn>
           </v-col>
           <v-col cols="6" class="text-center">
             <v-btn
               @click="downloadCv"
-              v-if="!status"
               depressed
               outlined
-              disabled
+              color="blue"
+              :disabled="!status"
             >
-              Download
-            </v-btn>
-            <v-btn @click="downloadCv" v-else depressed outlined color="blue">
               Download
             </v-btn>
           </v-col>
@@ -83,12 +86,15 @@
 </template>
 <script>
 import cvService from "../../api/cv";
+import specialistService from "../../api/specialist";
+import authService from "../../api/authentication";
 
 export default {
   data() {
     return {
       status: false,
-      cv: null
+      cv: null,
+      currentUser: null
     };
   },
   methods: {
@@ -105,6 +111,7 @@ export default {
         cancelButtonText: "Hủy"
       });
       if (result.isConfirmed) {
+        await cvService.reviewCv(this.cv._id);
         this.status = !this.status;
         try {
           await this.$swal({
@@ -127,6 +134,10 @@ export default {
     async getData() {
       const cvId = this.$route.params.cvId;
       this.cv = await cvService.getCvById(cvId);
+      const userId = await authService.getCurrentUserId();
+      const specialist = await specialistService.getSpecialist(userId);
+      this.currentUser = specialist;
+      this.status = specialist.listReceivedCv.includes(cvId);
     }
   },
   created() {
