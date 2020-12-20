@@ -4,8 +4,8 @@ import feathers from "../services/socketClient";
 export const userService = feathers.service("users");
 export const activeService = feathers.service("users/active");
 export const deactiveService = feathers.service("users/deactive");
-export const turnOnService = feathers.service("users/turn-on-notification");
-export const turnOffService = feathers.service("users/turn-off-notification");
+export const turnOnService = feathers.service("users/turn-on");
+export const turnOffService = feathers.service("users/turn-off");
 
 async function getUser(userId) {
   const user = await userService.get(userId);

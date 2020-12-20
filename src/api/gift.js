@@ -19,7 +19,7 @@ async function createGift(data) {
   let myHeaders = new Headers();
   let token = "Bearer " + (await feathers.authentication.getAccessToken());
   myHeaders.append("Authorization", token);
-  console.log(token);
+
   const res = await fetch("http://localhost:3030/gifts", {
     method: "POST",
     body: myForm,
