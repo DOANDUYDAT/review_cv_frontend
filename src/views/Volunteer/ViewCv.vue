@@ -1,5 +1,5 @@
 <template>
-  <v-sheet class="pa-4">
+  <v-sheet class="pa-4" v-if="cv">
     <v-row>
       <v-col cols="9"></v-col>
       <v-col cols="3">
@@ -9,12 +9,12 @@
               <v-img src="../../assets/avatar.jpg"></v-img>
             </v-avatar>
           </v-col>
-          <v-col cols="9">
-            <h3>{{ cv.author.user.userName }}</h3>
+          <v-col cols="9" align-self="center">
+            <h3>{{ cv.author.user.fullName }}</h3>
             <!-- <span>Thực tập sinh</span> -->
           </v-col>
         </v-row>
-        <v-row align="end">
+        <v-row align="start">
           <v-col cols="1" class="py-0">
             <v-icon small>mdi-briefcase-variant</v-icon>
           </v-col>
@@ -46,33 +46,36 @@
             <h3>Bạn có muốn</h3>
           </v-col>
           <v-col cols="12" class="text-center py-0">
-            <h4>Xem thông tin liên hệ?</h4>
+            <h4>Những phần thưởng hấp dẫn?</h4>
           </v-col>
 
           <v-col cols="1">
             <v-icon small>mdi-information</v-icon>
           </v-col>
           <v-col cols="11" class="pl-4">
-            Bạn hãy review CV này để có thể xem thông tin liên hệ của ứng viên
+            Bạn hãy review CV này để có thể nhận những phần thưởng hấp dẫn
           </v-col>
         </v-row>
         <v-row>
           <v-col cols="6" class="text-center">
-            <v-btn @click="reviewCv" depressed outlined color="red">
+            <v-btn
+              :disabled="status"
+              @click="reviewCv"
+              depressed
+              outlined
+              color="red"
+            >
               Review cv
             </v-btn>
           </v-col>
           <v-col cols="6" class="text-center">
             <v-btn
               @click="downloadCv"
-              v-if="!status"
               depressed
               outlined
-              disabled
+              color="blue"
+              :disabled="!status"
             >
-              Download
-            </v-btn>
-            <v-btn @click="downloadCv" v-else depressed outlined color="blue">
               Download
             </v-btn>
           </v-col>
@@ -83,12 +86,15 @@
 </template>
 <script>
 import cvService from "../../api/cv";
+import volunteerService from "../../api/volunteer";
+import authService from "../../api/authentication";
 
 export default {
   data() {
     return {
       status: false,
-      cv: null
+      cv: null,
+      currentUser: null
     };
   },
   methods: {
@@ -105,6 +111,7 @@ export default {
         cancelButtonText: "Hủy"
       });
       if (result.isConfirmed) {
+        await cvService.reviewCv(this.cv._id);
         this.status = !this.status;
         try {
           await this.$swal({
@@ -127,6 +134,10 @@ export default {
     async getData() {
       const cvId = this.$route.params.cvId;
       this.cv = await cvService.getCvById(cvId);
+      const userId = await authService.getCurrentUserId();
+      const volunteer = await volunteerService.getVolunteer(userId);
+      this.currentUser = volunteer;
+      this.status = volunteer.listReceivedCv.includes(cvId);
     }
   },
   created() {

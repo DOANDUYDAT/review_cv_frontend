@@ -138,7 +138,7 @@
           <v-divider></v-divider>
           <v-card-actions class="px-6">
             <v-spacer></v-spacer>
-            <v-btn color="primary" dark @click="dialog = false">
+            <v-btn color="primary" dark @click.stop="report">
               Gửi
             </v-btn>
           </v-card-actions>
@@ -258,6 +258,16 @@ export default {
           });
         }
       }
+    },
+    report() {
+      this.$swal({
+        toast: true,
+        position: "top-end",
+        icon: "success",
+        title: "Báo cáo kết quả review thành công",
+        showConfirmButton: false,
+        timer: 1500
+      });
     },
     rating() {
       this.$swal({

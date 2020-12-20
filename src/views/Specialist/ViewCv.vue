@@ -16,8 +16,8 @@
               <v-img src="../../assets/avatar.jpg"></v-img>
             </v-avatar>
           </v-col>
-          <v-col cols="9">
-            <h3>{{ cv.author.user.userName }}</h3>
+          <v-col cols="9" align-self="center">
+            <h3>{{ cv.author.user.fullName }}</h3>
             <!-- <span>Thực tập sinh</span> -->
           </v-col>
         </v-row>
