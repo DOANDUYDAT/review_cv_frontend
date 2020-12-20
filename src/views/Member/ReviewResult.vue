@@ -2,7 +2,31 @@
   <v-container>
     <v-sheet class="pa-4">
       <v-row>
-        <v-col cols="9"></v-col>
+        <v-col cols="9">
+          <v-card class="elevation-4">
+            <v-toolbar>
+              <v-toolbar-title>Chat</v-toolbar-title>
+            </v-toolbar>
+            <v-card-text>
+              <v-list ref="chat" id="logs">
+                <template v-for="(item, index) in logs">
+                  <v-subheader v-if="item" :key="index">{{ item }}</v-subheader>
+                </template>
+              </v-list>
+            </v-card-text>
+            <v-card-actions>
+              <v-text-field
+                placeholder="Nhập vào đây để trò chuyện"
+                outlined
+                v-model="msg"
+                append-outer-icon="mdi-send"
+                @keyup.enter="submit"
+                @click:append-outer="submit"
+              >
+              </v-text-field>
+            </v-card-actions>
+          </v-card>
+        </v-col>
         <v-col cols="3">
           <v-row>
             <v-col cols="4" class="text-center" align-self="center">
@@ -79,14 +103,6 @@
           <v-divider></v-divider>
           <v-row>
             <v-col cols="2" class="py-0">
-              <!-- <v-tooltip bottom>
-                <template v-slot:activator="{ on, attrs }">
-                  <v-icon v-bind="attrs" v-on="on">
-                    mdi-message-text
-                  </v-icon>
-                </template>
-                <span>Bắt đầu trò chuyện</span>
-              </v-tooltip> -->
               <v-btn small text fab>
                 <v-icon>mdi-message-text</v-icon>
               </v-btn>
@@ -95,7 +111,7 @@
               <h4>Bắt đầu trò chuyện</h4>
             </v-col>
             <v-col cols="2" class="py-0">
-              <v-btn small text fab>
+              <v-btn @click.stop="dialog = true" small text fab>
                 <v-icon>mdi-message-alert-outline</v-icon>
               </v-btn>
             </v-col>
@@ -105,6 +121,56 @@
           </v-row>
         </v-col>
       </v-row>
+      <v-dialog v-model="dialog" max-width="450">
+        <v-card>
+          <v-card-title>
+            <!-- <v-col></v-col>
+            <v-col></v-col> -->
+            <div class="flex-grow-1 text-center headline">Báo cáo</div>
+            <!-- <v-spacer></v-spacer> -->
+            <div class="float-right">
+              <v-btn fab small elevation="0" @click="dialog = false">
+                <v-icon>
+                  mdi-close
+                </v-icon>
+              </v-btn>
+            </div>
+          </v-card-title>
+          <v-divider></v-divider>
+          <v-card-text class="py-4">
+            <h2 class="mb-2 font-weight-regular">
+              Cho chúng tôi biết chuyện gì đang xảy ra
+            </h2>
+            <span
+              >Hãy cho chúng tôi biết các vấn đề với kết quả review này.</span
+            >
+            <v-chip-group class="mt-2" column active-class="primary">
+              <!-- <v-chip class="ma-2" color="primary">
+                Primary
+              </v-chip> -->
+              <v-chip class="mx-1" v-for="tag in tags" :key="tag">
+                {{ tag }}
+              </v-chip>
+            </v-chip-group>
+            <v-row>
+              <v-col cols="1" class="pb-0"> <v-icon>mdi-alert</v-icon></v-col>
+              <v-col cols="11" class="pb-0"
+                ><span>
+                  Nếu bạn nhận thấy review kém chất lượng, đừng chần chừ mà hãy
+                  báo cáo ngay.
+                </span></v-col
+              >
+            </v-row>
+          </v-card-text>
+          <v-divider></v-divider>
+          <v-card-actions class="px-6">
+            <v-spacer></v-spacer>
+            <v-btn color="primary" dark @click="dialog = false">
+              Gửi
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-sheet>
   </v-container>
 </template>
@@ -113,7 +179,18 @@ export default {
   data() {
     return {
       status: false,
-      radioGroup: null
+      dialog: false,
+      radioGroup: null,
+      tags: [
+        "Review không chính xác",
+        "Không có ý định review",
+        "Ngôn từ gây thù ghét",
+        "Review sơ sài",
+        "Spam",
+        "Vấn đề khác"
+      ],
+      logs: [],
+      msg: null
     };
   },
   methods: {
@@ -155,8 +232,24 @@ export default {
     },
     downloadCv() {
       console.log("download CV");
+    },
+    submit() {
+      this.logs.push(this.msg);
+      this.msg = "";
+    }
+  },
+  watch: {
+    logs() {
+      setTimeout(() => {
+        this.$refs.chat.$el.scrollTop = this.$refs.chat.$el.scrollHeight;
+      }, 500);
     }
   }
 };
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+#logs {
+  height: 100px;
+  overflow: auto;
+}
+</style>
