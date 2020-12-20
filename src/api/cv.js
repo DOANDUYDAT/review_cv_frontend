@@ -59,11 +59,25 @@ async function reviewCv(cvId) {
   return res;
 }
 
+async function getListCvByFilter(filter) {
+  let query = {};
+  for (let [key, value] of Object.entries(filter)) {
+    if (value.length) {
+      query[key] = { $in: value };
+    }
+  }
+  const { data } = await cvService.find({
+    query
+  });
+  return data;
+}
+
 export default {
   uploadCv,
   interestedCv,
   getAllCvs,
   getCvById,
   getListCvById,
-  reviewCv
+  reviewCv,
+  getListCvByFilter
 };

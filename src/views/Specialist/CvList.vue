@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container v-if="listCv && listCv.length">
     <cv-item
       v-for="item in listCv"
       :key="item._id"
@@ -7,6 +7,9 @@
       :heart-status="heart(item)"
     >
     </cv-item>
+  </v-container>
+  <v-container v-else>
+    Không có Cv phù hợp
   </v-container>
 </template>
 <script>
@@ -24,6 +27,18 @@ export default {
   },
   components: {
     CvItem
+  },
+  props: {
+    listCvData: {
+      type: Array,
+      required: true,
+      default: function() {
+        return null;
+      }
+    }
+  },
+  watch: {
+    listCvData: "getData"
   },
   computed: {},
   methods: {
@@ -86,7 +101,8 @@ export default {
       const userId = await authService.getCurrentUserId();
       const specialist = await specialistService.getSpecialist(userId);
       this.currentUser = specialist;
-      this.listCv = await cvService.getAllCvs();
+      // this.listCv = await cvService.getAllCvs();
+      this.listCv = this.listCvData;
     }
   },
   created() {

@@ -83,7 +83,7 @@ export default {
       items: [
         {
           text: "Lĩnh vực làm việc",
-          model: "field",
+          model: "fields",
           children: [
             { text: "An toàn lao động" },
             { text: "Bất động sản" },
@@ -99,7 +99,7 @@ export default {
         },
         {
           text: "Kinh nghiệm",
-          model: "experience",
+          model: "exp",
           children: [
             { text: "Chưa có" },
             { text: "Dưới 1 năm" },
@@ -113,7 +113,7 @@ export default {
         },
         {
           text: "Cấp bậc",
-          model: "level",
+          model: "position",
           children: [
             { text: "Nhân viên" },
             { text: "Trưởng nhóm" },
@@ -127,7 +127,7 @@ export default {
         },
         {
           text: "Thời gian",
-          model: "time",
+          model: "timeType",
           children: [{ text: "Fulltime" }, { text: "Parttime" }]
         }
       ]
@@ -148,10 +148,10 @@ export default {
       });
     },
     resetFilter() {
-      this.filter.field = [];
-      this.filter.experience = [];
-      this.filter.level = [];
-      this.filter.time = [];
+      this.filter.fields = [];
+      this.filter.exp = [];
+      this.filter.position = [];
+      this.filter.timeType = [];
     },
     async getData() {}
   },
