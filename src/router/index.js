@@ -356,7 +356,7 @@ const routes = [
         }
       },
       {
-        path: "view-cv",
+        path: "view-cv/:cvId",
         name: "View Cv",
         component: () =>
           import(

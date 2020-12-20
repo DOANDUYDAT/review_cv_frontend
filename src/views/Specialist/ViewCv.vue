@@ -1,5 +1,5 @@
 <template>
-  <v-sheet class="pa-4">
+  <v-sheet class="pa-4" v-if="cv">
     <v-row>
       <v-col cols="9"></v-col>
       <v-col cols="3">
@@ -10,34 +10,34 @@
             </v-avatar>
           </v-col>
           <v-col cols="9">
-            <h3>Nguyễn Văn A</h3>
-            <span>Thực tập sinh</span>
+            <h3>{{ cv.author.user.userName }}</h3>
+            <!-- <span>Thực tập sinh</span> -->
           </v-col>
         </v-row>
-        <v-row align="end">
+        <v-row align="start">
           <v-col cols="1" class="py-0">
             <v-icon small>mdi-briefcase-variant</v-icon>
           </v-col>
           <v-col cols="5" class="body-2 py-0">
-            1 năm
+            {{ cv.exp }}
           </v-col>
           <v-col cols="1" class="py-0">
             <v-icon small>mdi-sort-descending</v-icon>
           </v-col>
           <v-col cols="5" class="body-2 py-0">
-            Thực tập sinh
+            {{ cv.position }}
           </v-col>
           <v-col cols="1" class="py-0">
             <v-icon small>mdi-briefcase-account</v-icon>
           </v-col>
           <v-col cols="5" class="body-2 py-0">
-            IT
+            <span v-for="(fi, i) in cv.fields" :key="i">{{ fi }}</span>
           </v-col>
           <v-col cols="1" class="py-0">
             <v-icon small>mdi-map-marker</v-icon>
           </v-col>
           <v-col cols="5" class="body-2 py-0">
-            Hà Nội
+            {{ cv.location }}
           </v-col>
         </v-row>
         <v-divider></v-divider>
@@ -82,10 +82,13 @@
   </v-sheet>
 </template>
 <script>
+import cvService from "../../api/cv";
+
 export default {
   data() {
     return {
-      status: false
+      status: false,
+      cv: null
     };
   },
   methods: {
@@ -120,7 +123,14 @@ export default {
     },
     downloadCv() {
       console.log("download CV");
+    },
+    async getData() {
+      const cvId = this.$route.params.cvId;
+      this.cv = await cvService.getCvById(cvId);
     }
+  },
+  created() {
+    this.getData();
   }
 };
 </script>

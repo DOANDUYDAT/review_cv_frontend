@@ -1,61 +1,45 @@
 <template>
   <v-container>
-    <v-row @click="goToCv">
-      <v-col cols="2" class="text-center" align-self="center">
-        <v-avatar color="grey darken-1" size="100">
-          <v-img src="../../assets/avatar.jpg"></v-img>
-        </v-avatar>
-      </v-col>
-      <v-col cols="10">
-        <v-row>
-          <v-col cols="9">
-            <h3>Nguyễn Văn A</h3>
-            <span>Lĩnh vực làm việc: IT</span><br />
-            <span>Cấp bậc: Trưởng/Phó phòng</span>
-          </v-col>
-          <v-col cols="3" class="text-right">
-            <v-btn icon @click="interestedCv">
-              <v-icon v-if="!heart">mdi-heart-outline</v-icon>
-              <v-icon color="red" v-else>mdi-heart</v-icon>
-            </v-btn>
-            <span class="body-2" :class="{ 'red--text': heart }">Quan tâm</span>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col cols="6" class="pt-0 text-left"
-            >Kinh nghiệm:
-            <span class="green--text">Dưới 1 năm</span>
-          </v-col>
-          <v-col cols="6" class="pt-0 text-right">Cập nhật 6 ngày trước</v-col>
-        </v-row>
-      </v-col>
-    </v-row>
+    <cv-item
+      v-for="item in listCv"
+      :key="item._id"
+      :cv-data="item"
+      :heart-status="heart(item)"
+    >
+    </cv-item>
     <v-divider></v-divider>
   </v-container>
-  <!-- <v-row>
-    <v-col v-for="n in 24" :key="n" cols="12">
-      <v-card height="200"></v-card>
-    </v-col>
-  </v-row> -->
 </template>
 <script>
+import cvService from "../../api/cv";
+import CvItem from "./CvItem";
+import specialistService from "../../api/specialist";
+import authService from "../../api/authentication";
+
 export default {
   data() {
     return {
-      heart: false
+      listCv: null,
+      currentUser: null
     };
   },
+  components: {
+    CvItem
+  },
+  computed: {},
   methods: {
-    goToCv() {
-      this.$router.push({
-        name: "View Cv"
-      });
+    heart(cv) {
+      const { listInterester } = cv;
+      return this.currentUser
+        ? listInterester.includes(this.currentUser.userId)
+        : false;
     },
-    async interestedCv() {
+    async interestedCv(item) {
+      cvService.interestedCv(item._id);
       if (!this.heart) {
         this.heart = !this.heart;
         try {
-          await this.$swal({
+          this.$swal({
             toast: true,
             position: "top-end",
             title: "Quan tâm CV thành công!",
@@ -64,7 +48,7 @@ export default {
             timer: 1500
           });
         } catch (err) {
-          await this.$swal({
+          this.$swal({
             toast: true,
             position: "top-end",
             title: "Quan tâm CV thất bại!",
@@ -77,7 +61,7 @@ export default {
       } else {
         this.heart = !this.heart;
         try {
-          await this.$swal({
+          this.$swal({
             toast: true,
             position: "top-end",
             title: "Bỏ quan tâm CV thành công!",
@@ -86,7 +70,7 @@ export default {
             timer: 1500
           });
         } catch (err) {
-          await this.$swal({
+          this.$swal({
             toast: true,
             position: "top-end",
             title: "Bỏ quan tâm CV thất bại!",
@@ -98,7 +82,16 @@ export default {
         }
       }
       // this.heart = !this.heart;
+    },
+    async getData() {
+      const userId = await authService.getCurrentUserId();
+      const specialist = await specialistService.getSpecialist(userId);
+      this.currentUser = specialist;
+      this.listCv = await cvService.getAllCvs();
     }
+  },
+  created() {
+    this.getData();
   }
 };
 </script>

@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars */
 import feathers from "../services/socketClient";
 
-const uploadService = feathers.service("uploads");
 const cvService = feathers.service("cvs");
+const interestService = feathers.service("cvs/interest");
 
 async function uploadCv(cvUpload) {
   const fData = new FormData();
@@ -24,6 +24,21 @@ async function getAllCvs() {
   return data;
 }
 
+async function interestedCv(cvId) {
+  const res = await interestService.create({
+    cvId
+  });
+  return res;
+}
+
+async function getCvById(id) {
+  const cv = await cvService.get(id);
+  return cv;
+}
+
 export default {
-  uploadCv
+  uploadCv,
+  interestedCv,
+  getAllCvs,
+  getCvById
 };
