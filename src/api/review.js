@@ -4,9 +4,10 @@ import feathers from "../services/socketClient";
 const reviewService = feathers.service("reviews");
 const reportService = feathers.service("reports");
 
-async function uploadReview(reviewUpload) {
+async function uploadReview(cvId, reviewUpload) {
   const fData = new FormData();
   fData.append("uri", reviewUpload);
+  fData.append("cvId", cvId);
   let myHeaders = new Headers();
   let token = "Bearer " + (await feathers.authentication.getAccessToken());
   myHeaders.append("Authorization", token);

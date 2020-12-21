@@ -1,5 +1,5 @@
 <template>
-  <v-sheet class="pa-4" v-if="listCv">
+  <v-sheet class="pa-4" v-if="listCv && listCv.length">
     <h2 class="font-weight-medium">Danh sách CV đã nhận review</h2>
     <v-divider></v-divider>
     <div v-for="cv in listCv" :key="cv._id">
@@ -9,7 +9,7 @@
             <v-img src="../../assets/avatar.jpg"></v-img>
           </v-avatar>
         </v-col>
-        <v-col cols="10">
+        <v-col cols="10" @click.stop="goToCv(cv)">
           <v-row>
             <v-col cols="9" class="py-0">
               <h3>{{ cv.author.user.fullName }}</h3>
@@ -51,7 +51,12 @@
                       >
                       </v-file-input>
                     </v-img>
-                    <v-btn color="#0da1ec" small outlined @click="upLoadReview">
+                    <v-btn
+                      color="#0da1ec"
+                      small
+                      outlined
+                      @click.stop="upLoadReview(cv)"
+                    >
                       Submit
                     </v-btn>
                   </form>
@@ -64,11 +69,16 @@
       <v-divider></v-divider>
     </div>
   </v-sheet>
+  <v-sheet class="pa-4" v-else>
+    <h2 class="font-weight-medium">Danh sách CV đã nhận review</h2>
+    <v-divider></v-divider>
+    <div class="pt-4">Bạn chưa nhận review Cv nào</div>
+  </v-sheet>
 </template>
 <script>
 import reviewService from "@/api/review";
 import cvService from "../../api/cv";
-import volunteerService from "../../api/volunteer";
+import specialistService from "../../api/specialist";
 import authService from "../../api/authentication";
 export default {
   data() {
@@ -79,22 +89,41 @@ export default {
     };
   },
   methods: {
-    async upLoadReview() {
-      await reviewService.uploadReview(this.file);
-      this.$swal({
-        toast: true,
-        position: "top-end",
-        icon: "success",
-        title: "Upload review thành công",
-        showConfirmButton: false,
-        timer: 1500
+    async upLoadReview(cv) {
+      try {
+        await reviewService.uploadReview(cv._id, this.file);
+        this.file = null;
+        this.$swal({
+          toast: true,
+          position: "top-end",
+          icon: "success",
+          title: "Upload review thành công",
+          showConfirmButton: false,
+          timer: 1500
+        });
+      } catch (error) {
+        this.$swal({
+          toast: true,
+          position: "top-end",
+          icon: "error",
+          title: "Upload review thất bại",
+          showConfirmButton: false,
+          timer: 1500
+        });
+      }
+    },
+    goToCv(cv) {
+      this.$router.push({
+        path: `/specialistHome/view-cv/${cv._id}`
       });
     },
     async getData() {
       const userId = await authService.getCurrentUserId();
-      const volunteer = await volunteerService.getVolunteer(userId);
+      const volunteer = await specialistService.getSpecialist(userId);
       this.currentUser = volunteer;
-      this.listCv = await cvService.getAllCvs();
+      this.listCv = await cvService.getListCvById(
+        this.currentUser.listReceivedCv
+      );
     }
   },
   created() {
