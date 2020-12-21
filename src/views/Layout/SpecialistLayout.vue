@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-app-bar flat app color="white">
-      <v-row align="center" no-gutters class="mx-16">
+      <v-row align="center" no-gutters class="mx-16" v-if="currentUser">
         <v-col cols="2" class="py-2">
           <v-avatar
             size="50"
@@ -32,10 +32,10 @@
             Diễn đàn
           </v-btn>
           <v-btn text rounded dark>
-            Điểm uy tín: 50
+            Điểm uy tín: {{ currentUser.user.reputationPoint }}
           </v-btn>
         </v-col>
-        <v-menu offset-y v-if="currentUser">
+        <v-menu offset-y>
           <template v-slot:activator="{ on }">
             <v-btn text dark v-on="on">
               <v-icon left>mdi-account-circle</v-icon>

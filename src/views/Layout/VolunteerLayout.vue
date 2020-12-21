@@ -17,7 +17,7 @@
             Diễn đàn
           </v-btn>
           <v-btn rounded text dark v-if="currentUser">
-            Điểm uy tín: {{ currentUser.reputationPoint }}
+            Điểm uy tín: {{ currentUser.user.reputationPoint }}
           </v-btn>
         </v-col>
         <v-menu offset-y v-if="currentUser">

@@ -11,7 +11,7 @@
         </v-col>
         <v-col cols="10" class="pl-0">
           <v-row>
-            <v-col cols="9" class="py-0">
+            <v-col cols="9" class="py-0" @click.stop="goToCv(cv)">
               <h3>{{ cv.author.user.fullName }}</h3>
               <div>
                 Lĩnh vực làm việc:
@@ -51,7 +51,12 @@
                       >
                       </v-file-input>
                     </v-img>
-                    <v-btn color="#0da1ec" small outlined @click="upLoadReview">
+                    <v-btn
+                      color="#0da1ec"
+                      small
+                      outlined
+                      @click.stop="upLoadReview(cv)"
+                    >
                       Submit
                     </v-btn>
                   </form>
@@ -79,22 +84,41 @@ export default {
     };
   },
   methods: {
-    async upLoadReview() {
-      await reviewService.uploadReview(this.file);
-      this.$swal({
-        toast: true,
-        position: "top-end",
-        icon: "success",
-        title: "Upload review thành công",
-        showConfirmButton: false,
-        timer: 1500
-      });
+    async upLoadReview(cv) {
+      try {
+        await reviewService.uploadReview(cv._id, this.file);
+        this.file = null;
+        this.$swal({
+          toast: true,
+          position: "top-end",
+          icon: "success",
+          title: "Upload review thành công",
+          showConfirmButton: false,
+          timer: 1500
+        });
+      } catch (error) {
+        this.$swal({
+          toast: true,
+          position: "top-end",
+          icon: "error",
+          title: "Upload review thất bại",
+          showConfirmButton: false,
+          timer: 1500
+        });
+      }
     },
     async getData() {
       const userId = await authService.getCurrentUserId();
       const volunteer = await volunteerService.getVolunteer(userId);
       this.currentUser = volunteer;
-      this.listCv = await cvService.getAllCvs();
+      this.listCv = await cvService.getListCvById(
+        this.currentUser.listReceivedCv
+      );
+    },
+    goToCv(cv) {
+      this.$router.push({
+        path: `/volunteerHome/view-cv/${cv._id}`
+      });
     }
   },
   created() {

@@ -9,9 +9,9 @@
             <v-img src="../../assets/avatar.jpg"></v-img>
           </v-avatar>
         </v-col>
-        <v-col cols="10" @click.stop="goToCv(cv)">
+        <v-col cols="10">
           <v-row>
-            <v-col cols="9" class="py-0">
+            <v-col cols="9" class="py-0" @click.stop="goToCv(cv)">
               <h3>{{ cv.author.user.fullName }}</h3>
               <div>
                 Lĩnh vực làm việc:

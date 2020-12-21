@@ -71,6 +71,9 @@ export default {
         this.currentUser.listCv
       );
     }
+  },
+  created() {
+    this.getData();
   }
 };
 </script>
