@@ -117,10 +117,6 @@ export default {
             {
               text: "Thêm quà tặng",
               link: "/Admin/Add-Gift"
-            },
-            {
-              text: "Chỉnh sửa quà tặng",
-              link: "/Admin/Edit-Gift"
             }
           ]
         }

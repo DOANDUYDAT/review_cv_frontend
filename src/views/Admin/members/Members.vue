@@ -17,7 +17,7 @@
         <v-text-field
           v-model="search"
           append-icon="mdi-magnify"
-          label="Search"
+          label="Tìm kiếm"
           color="blue"
           single-line
           hide-details
@@ -35,7 +35,7 @@
                   <v-col cols="12" sm="6" md="6">
                     <v-text-field
                       v-model="userSelected.user.fullName"
-                      label="Id"
+                      label="Fullname"
                       disabled
                     ></v-text-field>
                   </v-col>
@@ -56,7 +56,7 @@
                   <v-col cols="12" sm="6" md="6">
                     <v-text-field
                       v-model="userSelected.user.phone"
-                      label="Phone"
+                      label="Số điện thoại"
                       disabled
                     ></v-text-field>
                   </v-col>
@@ -115,17 +115,17 @@ export default {
         sortable: false
       },
       {
-        text: "Phone",
+        text: "Số điện thoại",
         value: "user.phone",
         sortable: true
       },
       {
-        text: "State",
+        text: "Trạng thái",
         value: "user.isActive",
         sortable: false
       },
       {
-        text: "Actions",
+        text: "Hành động",
         align: "center",
         value: "action",
         sortable: false,

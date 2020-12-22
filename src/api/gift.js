@@ -8,6 +8,11 @@ async function getAllGifts() {
   return data;
 }
 
+async function getGiftById(id) {
+  const gift = await giftService.get(id);
+  return gift;
+}
+
 async function createGift(data) {
   let myForm = new FormData();
   myForm.append("name", data.name);
@@ -64,6 +69,7 @@ async function exchangeGift(_id) {
 
 export default {
   getAllGifts,
+  getGiftById,
   createGift,
   deleteGift,
   updateGift,

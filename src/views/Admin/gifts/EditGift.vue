@@ -48,7 +48,6 @@
                     v-model="gift.category"
                     outlined
                     hide-details
-                    :disabled="disabled"
                   ></v-select>
 
                   <span class="red--text">{{ errors[0] }}</span>
@@ -89,7 +88,7 @@
                 class="mx-auto"
                 @click="submit"
                 :disabled="invalid"
-                >Submit</v-btn
+                >Cập nhật</v-btn
               >
             </v-col>
           </v-row>
@@ -111,9 +110,9 @@ export default {
       listSelected: ["Thẻ điện thoại", "Voucher"],
       gift: {
         name: "",
-        value: 0,
+        value: "",
         category: "",
-        quantity: 0,
+        quantity: "",
         image: null
       },
       items: [
@@ -125,12 +124,12 @@ export default {
         {
           text: "Giá trị",
           model: "value",
-          type: "text"
+          type: "number"
         },
         {
           text: "Số lượng",
           model: "quantity",
-          type: "text"
+          type: "number"
         }
       ]
     };
@@ -149,6 +148,7 @@ export default {
       giftService
         .updateGift(data)
         .then(response => {
+          this.$router.push({ name: "Gifts" });
           console.log(response);
           this.$swal({
             position: "center",
@@ -162,7 +162,20 @@ export default {
           console.log(err);
           this.$swal("error: ", err.message, "error");
         });
+    },
+    async getData() {
+      const giftId = this.$route.params.giftId;
+      this.gift = await giftService.getGiftById(giftId);
+      // let image = await gift.image.map(e => {
+      //   return e.image;
+      // });
+      // this.gift = Object.assign({}, gift, {
+      //   image
+      // });
     }
+  },
+  created() {
+    this.getData();
   }
 };
 </script>

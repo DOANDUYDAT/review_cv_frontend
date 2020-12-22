@@ -31,9 +31,32 @@
                 </ValidationProvider>
               </v-col>
             </v-row>
+            <v-row justify="center">
+              <v-col cols="12" md="3">
+                <v-subheader class="text-size">Loại quà tặng</v-subheader>
+              </v-col>
+              <v-col cols="12" md="9">
+                <ValidationProvider
+                  name="category"
+                  rules="required"
+                  v-slot="{ errors }"
+                  :bails="false"
+                >
+                  <v-select
+                    :items="listSelected"
+                    placeholder="Loại quà tặng"
+                    v-model="gift.category"
+                    outlined
+                    hide-details
+                  ></v-select>
+
+                  <span class="red--text">{{ errors[0] }}</span>
+                </ValidationProvider>
+              </v-col>
+            </v-row>
           </v-col>
           <v-col cols="4">
-            <!-- <div class="my-avatar">
+            <div class="my-avatar">
               <div v-if="imagesShow.length">
                 <v-avatar
                   v-for="(image, i) in imagesShow"
@@ -46,7 +69,7 @@
                   <v-img :src="image"></v-img>
                 </v-avatar>
               </div>
-            </div> -->
+            </div>
             <v-file-input
               show-size
               prepend-icon="mdi-camera"
@@ -65,7 +88,7 @@
                 class="mx-auto"
                 @click="submit"
                 :disabled="invalid"
-                >Submit</v-btn
+                >Thêm</v-btn
               >
             </v-col>
           </v-row>
@@ -84,11 +107,12 @@ export default {
   data() {
     return {
       imagesShow: [],
+      listSelected: ["Thẻ điện thoại", "Voucher"],
       gift: {
         name: "",
-        value: 0,
+        value: "",
         category: "",
-        quantity: 0,
+        quantity: "",
         image: null
       },
       items: [
@@ -100,17 +124,12 @@ export default {
         {
           text: "Giá trị",
           model: "value",
-          type: "text"
-        },
-        {
-          text: "Loại quà tặng",
-          model: "category",
-          type: "text"
+          type: "number"
         },
         {
           text: "Số lượng",
           model: "quantity",
-          type: "text"
+          type: "number"
         }
       ]
     };
@@ -143,25 +162,25 @@ export default {
           this.$swal("error: ", err.message, "error");
         });
     },
-    // handleFileUpload(files) {
-    //   this.gift.images = [];
-    //   for (let i = 0; i < files.length; i++) {
-    //     // this.gift.images.push({ image: files[i]});
-    //     this.gift.images.push(files[i]);
-    //     let reader = new FileReader();
-    //     reader.onload = function() {
-    //       this.imagesShow.push({ image: reader.result });
-    //       // this.imagesShow.push(reader.result);
-    //     }.bind(this);
-    //     reader.readAsDataURL(files[i]);
-    //   }
-    // },
+    handleFileUpload(files) {
+      this.gift.image = [];
+      for (let i = 0; i < files.length; i++) {
+        // this.gift.images.push({ image: files[i]});
+        this.gift.image.push(files[i]);
+        let reader = new FileReader();
+        reader.onload = function() {
+          this.imagesShow.push({ image: reader.result });
+          // this.imagesShow.push(reader.result);
+        }.bind(this);
+        reader.readAsDataURL(files[i]);
+      }
+    },
     resetInput() {
       this.gift.name = "";
-      this.gift.value = 0;
+      this.gift.value = "";
       this.gift.category = "";
-      this.gift.quantity = 0;
-      this.gift.images = [];
+      this.gift.quantity = "";
+      this.gift.image = [];
     }
   }
 };

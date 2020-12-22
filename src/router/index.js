@@ -247,7 +247,7 @@ const routes = [
         }
       },
       {
-        path: "Edit-Gift",
+        path: "edit-gift/:giftId",
         name: "Edit-Gift",
         component: () =>
           import(

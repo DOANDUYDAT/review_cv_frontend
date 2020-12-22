@@ -25,12 +25,19 @@
       </v-toolbar>
     </template>
     <template v-slot:[`item.action`]="{ item }">
-      <v-icon small class="mr-2" @click.stop="goToEditProductPage" color="blue"
+      <v-icon
+        small
+        class="mr-2"
+        @click.stop="goToEditProductPage(item)"
+        color="blue"
         >mdi-pencil</v-icon
       >
       <v-icon small class="mr-2" @click.stop="deleteItem(item)" color="red"
         >mdi-trash-can-outline</v-icon
       >
+    </template>
+    <template v-slot:[`item.image`]="{ item }">
+      <v-img :src="item.image"></v-img>
     </template>
   </v-data-table>
 </template>
@@ -43,36 +50,36 @@ export default {
   data: () => ({
     headers: [
       {
-        text: "Gift Id",
-        value: "_id",
+        text: "Ảnh",
+        value: "image",
         sortable: false,
         filterable: true
       },
       {
-        text: "Name",
+        text: "Tên quà tặng",
         value: "name",
         sortable: true
       },
       {
-        text: "Value",
+        text: "Giá trị",
         value: "value",
         sortable: false,
         filterable: false
       },
       {
-        text: "Category",
+        text: "Loại quà tặng",
         value: "category",
         sortable: false,
         filterable: false
       },
       {
-        text: "Quatity",
+        text: "Số lượng",
         value: "quantity",
         sortable: false,
         filterable: false
       },
       {
-        text: "Actions",
+        text: "Hành động",
         align: "center",
         value: "action",
         sortable: false,
@@ -91,6 +98,9 @@ export default {
   },
 
   methods: {
+    goToEditProductPage(gift) {
+      this.$router.push({ path: `/admin/edit-gift/${gift._id}` });
+    },
     async getData() {
       this.gifts = await giftService.getAllGifts();
     },
@@ -110,9 +120,6 @@ export default {
         });
       }
       this.getData();
-    },
-    goToEditProductPage() {
-      this.$router.push({ name: "Edit-Gift" });
     }
   }
 };

@@ -17,7 +17,7 @@
         <v-text-field
           v-model="search"
           append-icon="mdi-magnify"
-          label="Search"
+          label="Tìm kiếm"
           color="blue"
           single-line
           hide-details
@@ -35,7 +35,7 @@
                   <v-col cols="12" sm="6" md="6">
                     <v-text-field
                       v-model="userSelected.user.fullName"
-                      label="Id"
+                      label="Fullname"
                       disabled
                     ></v-text-field>
                   </v-col>
@@ -59,6 +59,29 @@
                       label="Phone"
                       disabled
                     ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="6">
+                    <v-text-field
+                      v-model="userSelected.company"
+                      label="Công ty"
+                      disabled
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="6">
+                    <v-text-field
+                      v-model="userSelected.websiteCompany"
+                      label="Website công ty"
+                      disabled
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" class="grey--text pb-0">
+                    <span disabled>Lĩnh vực quan tâm</span>
+                  </v-col>
+                  <v-col cols="12" class="grey--text pt-0">
+                    <span v-for="(fi, i) in userSelected.fields" :key="i"
+                      >{{ fi }}
+                    </span>
+                    <v-divider></v-divider>
                   </v-col>
                 </v-row>
               </v-container>
@@ -98,7 +121,6 @@ export default {
   data: () => ({
     dialog: false,
     search: "",
-    isActive: ["Active", "Inactive"],
     headers: [
       {
         text: "Fullname",
@@ -116,17 +138,17 @@ export default {
         sortable: true
       },
       {
-        text: "Phone",
+        text: "Số điện thoại",
         value: "user.phone",
         sortable: true
       },
       {
-        text: "State",
+        text: "Trạng thái",
         value: "user.isActive",
         sortable: true
       },
       {
-        text: "Actions",
+        text: "Hành động",
         align: "center",
         value: "action",
         sortable: false
