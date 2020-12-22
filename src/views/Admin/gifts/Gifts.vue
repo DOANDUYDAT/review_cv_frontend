@@ -2,8 +2,6 @@
   <v-data-table
     :headers="headers"
     :items="gifts"
-    :sort-by="['id']"
-    gift-key="id"
     :sort-asc="[true]"
     :search="search"
     v-if="gifts"
@@ -27,6 +25,9 @@
       </v-toolbar>
     </template>
     <template v-slot:[`item.action`]="{ item }">
+      <v-icon small class="mr-2" @click.stop="goToEditProductPage" color="blue"
+        >mdi-pencil</v-icon
+      >
       <v-icon small class="mr-2" @click.stop="deleteItem(item)" color="red"
         >mdi-trash-can-outline</v-icon
       >
@@ -50,8 +51,7 @@ export default {
       {
         text: "Name",
         value: "name",
-        sortable: true,
-        filterable: false
+        sortable: true
       },
       {
         text: "Value",
@@ -80,7 +80,7 @@ export default {
       }
     ],
     gifts: null,
-    search: null
+    search: ""
   }),
 
   computed: {},
@@ -110,6 +110,9 @@ export default {
         });
       }
       this.getData();
+    },
+    goToEditProductPage() {
+      this.$router.push({ name: "Edit-Gift" });
     }
   }
 };

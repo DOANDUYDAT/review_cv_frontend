@@ -207,6 +207,8 @@
 </template>
 <script>
 import reviewService from "../../api/review";
+import memberService from "../../api/member";
+import authService from "../../api/authentication";
 export default {
   data() {
     return {
@@ -255,7 +257,8 @@ export default {
         me: true
       },
       review: null,
-      reportContent: ""
+      reportContent: "",
+      currentUser: null
     };
   },
   methods: {
@@ -339,6 +342,9 @@ export default {
       this.msg.content = "";
     },
     async getData() {
+      const userId = await authService.getCurrentUserId();
+      const member = await memberService.getMember(userId);
+      this.currentUser = member;
       let reviewId = this.$route.params.reviewId;
       this.review = await reviewService.getReview(reviewId);
     }

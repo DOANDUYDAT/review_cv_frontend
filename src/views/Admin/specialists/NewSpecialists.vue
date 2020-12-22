@@ -3,8 +3,6 @@
     <v-data-table
       :headers="headers"
       :items="users"
-      :sort-by="['_id']"
-      user-key="_id"
       :sort-asc="[true]"
       :search="search"
       v-if="users"
@@ -53,7 +51,7 @@
             <v-row>
               <v-col cols="12" sm="6" md="6">
                 <v-text-field
-                  v-model="editedItem._id"
+                  v-model="editedItem.user.fullName"
                   label="Id"
                   readonly
                 ></v-text-field>
@@ -124,41 +122,35 @@ export default {
     search: "",
     headers: [
       {
-        text: "Id",
-        value: "_id",
-        sortable: false,
-        filterable: true
+        text: "Fullname",
+        value: "user.fullName",
+        sortable: true
       },
       {
         text: "Username",
         value: "user.userName",
-        sortable: true,
-        filterable: false
+        sortable: true
       },
       {
         text: "Email",
         value: "user.email",
-        sortable: false,
-        filterable: false
+        sortable: true
       },
       {
         text: "Phone",
         value: "user.phone",
-        sortable: false,
-        filterable: false
+        sortable: true
       },
       {
         text: "State",
         value: "isAccept",
-        sortable: false,
-        filterable: false
+        sortable: false
       },
       {
         text: "Actions",
         align: "center",
         value: "action",
-        sortable: false,
-        filterable: false
+        sortable: false
       }
     ],
     users: null,
@@ -232,7 +224,7 @@ export default {
         })
         .catch(err => {
           this.$swal({
-            title: "Accept failed!",
+            title: "Phê duyệt thất bại!",
             text: err,
             icon: "error"
           });

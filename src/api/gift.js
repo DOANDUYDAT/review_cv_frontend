@@ -41,7 +41,7 @@ async function updateGift(data) {
   let token = "Bearer " + (await feathers.authentication.getAccessToken());
   myHeaders.append("Authorization", token);
   console.log(token);
-  const res = await fetch("http://localhost:3030/gifts", {
+  const res = await fetch(`http://localhost:3030/gifts/${data._id}`, {
     method: "PATCH",
     body: myForm,
     headers: myHeaders,
