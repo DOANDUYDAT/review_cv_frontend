@@ -183,7 +183,7 @@ export default {
         })
         .catch(err => {
           this.$swal({
-            title: "Decline failed!",
+            title: "Từ chối thất bại!",
             text: err,
             icon: "error"
           });

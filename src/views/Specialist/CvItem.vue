@@ -17,11 +17,21 @@
             <span>Cấp bậc: {{ cv.position }}</span>
           </v-col>
           <v-col cols="3" class="text-right">
-            <v-btn icon @click.stop="interestedCv(cv)">
-              <v-icon v-if="!heart">mdi-heart-outline</v-icon>
-              <v-icon color="red" v-else>mdi-heart</v-icon>
-            </v-btn>
-            <span class="body-2" :class="{ 'red--text': heart }">Quan tâm</span>
+            <v-row>
+              <v-col cols="12" class="py-0 text-right">
+                <v-btn icon @click.stop="interestedCv(cv)">
+                  <v-icon v-if="!heart">mdi-heart-outline</v-icon>
+                  <v-icon color="red" v-else>mdi-heart</v-icon>
+                </v-btn>
+                <span class="body-2" :class="{ 'red--text': heart }"
+                  >Quan tâm</span
+                >
+              </v-col>
+              <v-col cols="12" class="py-0 text-right" v-if="receivedStatus">
+                <v-icon small color="green">mdi-check-bold</v-icon>
+                <span class="body-2 green--text">Đã nhận</span>
+              </v-col>
+            </v-row>
           </v-col>
         </v-row>
         <v-row>
@@ -58,6 +68,11 @@ export default {
       }
     },
     heartStatus: {
+      type: Boolean,
+      required: true,
+      default: null
+    },
+    receivedStatus: {
       type: Boolean,
       required: true,
       default: null

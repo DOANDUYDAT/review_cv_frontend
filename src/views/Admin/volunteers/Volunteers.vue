@@ -177,19 +177,20 @@ export default {
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Yes"
+        confirmButtonText: "Đồng ý",
+        cancelButtonText: "Hủy bỏ"
       });
       if (result.isConfirmed) {
         if (volunteer.user.isActive) {
           try {
             await userService.activeUser(volunteer.user._id);
             await this.$swal({
-              title: "Active successfull!",
+              title: "Mở khóa tài khoản thành công!",
               icon: "success"
             });
           } catch (err) {
             await this.$swal({
-              title: "Active failed!",
+              title: "Mở khóa tài khoản thất bại!",
               text: err,
               icon: "error"
             });
@@ -199,12 +200,12 @@ export default {
           try {
             await userService.deactiveUser(volunteer.user._id);
             await this.$swal({
-              title: "Inactive successfull!",
+              title: "Khóa tài khoản thành công!",
               icon: "success"
             });
           } catch (err) {
             await this.$swal({
-              title: "Inactive failed!",
+              title: "Khóa tài khoản thất bại!",
               text: err,
               icon: "error"
             });
@@ -222,8 +223,8 @@ export default {
       }, 300);
     },
     getActiveLabel(isActive) {
-      if (isActive) return "Active";
-      else return "Inactive";
+      if (isActive) return "Hoạt động";
+      else return "Không hoạt động";
     }
   }
 };

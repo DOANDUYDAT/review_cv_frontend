@@ -9,11 +9,10 @@
     </cv-item>
   </v-container>
   <v-container v-else>
-    Không có Cv phù hợp
+    Không có CV phù hợp
   </v-container>
 </template>
 <script>
-// import cvService from "../../api/cv";
 import CvItem from "./CvItem";
 import volunteerService from "../../api/volunteer";
 import authService from "../../api/authentication";
@@ -43,20 +42,15 @@ export default {
   computed: {},
   methods: {
     received(cv) {
-      const { listInterester } = cv;
       return this.currentUser
-        ? listInterester.includes(this.currentUser.userId)
+        ? this.currentUser.listReceivedCv.includes(cv._id)
         : false;
     },
     async getData() {
       const userId = await authService.getCurrentUserId();
       const volunteer = await volunteerService.getVolunteer(userId);
       this.currentUser = volunteer;
-      // this.listCv = await cvService.getAllCvs();
       this.listCv = this.listCvData;
-      // this.listReceivedCv = await cvService.getListCvById(
-      //   this.currentUser.listReceivedCv
-      // );
     }
   },
   created() {

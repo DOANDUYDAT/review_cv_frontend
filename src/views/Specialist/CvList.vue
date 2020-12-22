@@ -5,11 +5,12 @@
       :key="item._id"
       :cv-data="item"
       :heart-status="heart(item)"
+      :received-status="received(item)"
     >
     </cv-item>
   </v-container>
   <v-container v-else>
-    Không có Cv phù hợp
+    Không có CV phù hợp
   </v-container>
 </template>
 <script>
@@ -46,6 +47,11 @@ export default {
       const { listInterester } = cv;
       return this.currentUser
         ? listInterester.includes(this.currentUser.userId)
+        : false;
+    },
+    received(cv) {
+      return this.currentUser
+        ? this.currentUser.listReceivedCv.includes(cv._id)
         : false;
     },
     async interestedCv(item) {
@@ -101,7 +107,6 @@ export default {
       const userId = await authService.getCurrentUserId();
       const specialist = await specialistService.getSpecialist(userId);
       this.currentUser = specialist;
-      // this.listCv = await cvService.getAllCvs();
       this.listCv = this.listCvData;
     }
   },

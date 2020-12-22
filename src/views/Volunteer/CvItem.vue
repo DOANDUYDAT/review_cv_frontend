@@ -16,7 +16,7 @@
             </div>
             <span>Cấp bậc: {{ cv.position }}</span>
           </v-col>
-          <v-col cols="3" class="text-right" v-if="receivedCv">
+          <v-col cols="3" class="text-right" v-if="receivedStatus">
             <v-icon small color="green">mdi-check-bold</v-icon>
             <span class="body-2 green--text">Đã nhận</span>
           </v-col>
@@ -36,15 +36,10 @@
   </div>
 </template>
 <script>
-import cvService from "../../api/cv";
-import volunteerService from "../../api/volunteer";
-import authService from "../../api/authentication";
-
 export default {
   data() {
     return {
       cv: null,
-      receivedCv: null,
       currentUser: null
     };
   },
@@ -56,6 +51,11 @@ export default {
       default: function() {
         return null;
       }
+    },
+    receivedStatus: {
+      type: Boolean,
+      required: true,
+      default: null
     }
   },
   methods: {
@@ -70,12 +70,6 @@ export default {
     },
     async getData() {
       this.cv = this.cvData;
-      const userId = await authService.getCurrentUserId();
-      const volunteer = await volunteerService.getVolunteer(userId);
-      this.currentUser = volunteer;
-      this.receivedCv = await cvService.getListCvById(
-        this.currentUser.listReceivedCv
-      );
     }
   },
   created() {

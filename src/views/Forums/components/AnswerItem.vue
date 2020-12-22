@@ -23,7 +23,7 @@
         >
           <v-icon color="primary">mdi-thumb-up</v-icon>
         </v-btn>
-        <span> {{ answer.likes.length }} likes </span>
+        <span> {{ answer.likes.length }} lượt thích </span>
       </v-col>
       <v-col cols="11" class="py-0">
         <div v-html="answer.content"></div>
@@ -37,7 +37,7 @@
         </v-btn>
       </v-col> -->
       <v-col offset="9" cols="3" class="text-right pb-0">
-        answed by {{ answer.user.userName }}
+        Trả lời bởi {{ answer.user.userName }}
       </v-col>
       <v-col cols="11" class="pl-4" offset="1" v-if="answer.comments">
         <v-row>
@@ -56,7 +56,7 @@
               <div v-html="comment.content"></div>
             </v-col>
             <v-col cols="3" class="text-right">
-              by {{ comment.user.userName }}
+              bởi {{ comment.user.userName }}
             </v-col>
           </v-row>
           <v-divider></v-divider>
@@ -64,13 +64,13 @@
       </v-col>
       <v-col cols="11" offset="1">
         <v-btn color="primary" text @click.stop="checkPoint"
-          >add a comment</v-btn
+          >Thêm bình luận</v-btn
         >
         <v-snackbar v-model="snackbar" top>
-          You must have 50 reputation to comment
+          Bạn phải có đủ 50 điểm uy tin để bình luận
           <template v-slot:action="{ attrs }">
             <v-btn color="pink" text v-bind="attrs" @click="snackbar = false">
-              Close
+              Đóng câu hỏi
             </v-btn>
           </template>
         </v-snackbar>
@@ -176,7 +176,7 @@ export default {
       };
       try {
         await commentService.createComment(data);
-        this.comment.content = "enter you comment";
+        this.comment.content = "Nhập bình luận của bạn";
         const updatedAnswer = await answerService.getAnswer(this.answer._id);
         this.answer = updatedAnswer;
       } catch (err) {

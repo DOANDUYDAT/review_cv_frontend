@@ -88,7 +88,7 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue" text @click="close">Cancel</v-btn>
+              <v-btn color="blue" text @click="close">Hủy bỏ</v-btn>
               <!-- <v-btn color="it-blue-lighten" text @click="save">Save</v-btn> -->
             </v-card-actions>
           </v-card>
@@ -186,24 +186,25 @@ export default {
     },
     async onSwitchChange(specialist) {
       const result = await this.$swal({
-        title: "Are you sure?",
+        title: "Bạn có chắc không?",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Yes"
+        confirmButtonText: "Đồng ý",
+        cancelButtonText: "Hủy bỏ"
       });
       if (result.isConfirmed) {
         if (specialist.user.isActive) {
           try {
             await userService.activeUser(specialist.user._id);
             await this.$swal({
-              title: "Active successfull!",
+              title: "Mở khóa tài khoản thành công!",
               icon: "success"
             });
           } catch (err) {
             await this.$swal({
-              title: "Active failed!",
+              title: "Mở khóa tài khoản thất bại!",
               text: err,
               icon: "error"
             });
@@ -213,12 +214,12 @@ export default {
           try {
             await userService.deactiveUser(specialist.user._id);
             await this.$swal({
-              title: "Inactive successfull!",
+              title: "Khóa tài khoản thành công!",
               icon: "success"
             });
           } catch (err) {
             await this.$swal({
-              title: "Inactive failed!",
+              title: "Khóa tài khoản thất bại!",
               text: err,
               icon: "error"
             });
@@ -236,8 +237,8 @@ export default {
       }, 300);
     },
     getActiveLabel(isActive) {
-      if (isActive) return "Active";
-      else return "Inactive";
+      if (isActive) return "Hoạt động";
+      else return "Không hoạt động";
     }
   }
 };

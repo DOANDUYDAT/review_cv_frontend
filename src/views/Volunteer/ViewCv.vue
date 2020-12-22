@@ -72,7 +72,7 @@
               outlined
               color="red"
             >
-              Review cv
+              Review CV
             </v-btn>
           </v-col>
           <v-col cols="6" class="text-center">

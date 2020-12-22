@@ -68,7 +68,7 @@
     <v-divider></v-divider>
     <v-row>
       <v-col cols="12">
-        <h3>Your Answer</h3>
+        <h3>Câu trả lời của bạn</h3>
       </v-col>
       <v-col>
         <div class="qa-editor">
@@ -108,7 +108,7 @@
           <editor-content class="editor__content" :editor="editor" />
         </div>
         <v-btn small color="primary" class="my-4" @click="postAnswer">
-          Post your answer
+          Đăng câu trả lời của bạn
         </v-btn>
       </v-col>
     </v-row>

@@ -159,7 +159,7 @@ export default {
           await this.$swal({
             toast: true,
             position: "top-end",
-            title: "Turn on notification successfull!",
+            title: "Bật thông báo thành công!",
             icon: "success",
             showConfirmButton: false,
             timer: 1500
@@ -168,7 +168,7 @@ export default {
           await this.$swal({
             toast: true,
             position: "top-end",
-            title: "Turn on notification failed!",
+            title: "Bật thông báo thất bại!",
             text: err,
             icon: "error",
             showConfirmButton: false,
@@ -182,7 +182,7 @@ export default {
           await this.$swal({
             toast: true,
             position: "top-end",
-            title: "Turn off notification successfull!",
+            title: "Tắt thông báo thành công!",
             icon: "success",
             showConfirmButton: false,
             timer: 1500
@@ -191,7 +191,7 @@ export default {
           await this.$swal({
             toast: true,
             position: "top-end",
-            title: "Turn off notification failed!",
+            title: "Tắt thông báo thất bại!",
             text: err,
             icon: "error",
             showConfirmButton: false,

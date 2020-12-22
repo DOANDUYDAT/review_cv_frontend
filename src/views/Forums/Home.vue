@@ -2,7 +2,7 @@
   <v-sheet min-height="70vh" rounded="lg">
     <v-row>
       <v-col cols="6">
-        <h2>Top Questions</h2>
+        <h2>Câu hỏi hàng đầu</h2>
       </v-col>
       <!-- <v-spacer></v-spacer> -->
       <v-col class="text-right">
@@ -11,7 +11,7 @@
           depressed
           color="primary"
           @click="goToQuestionAsk"
-          >Ask Question</v-btn
+          >Đặt câu hỏi</v-btn
         >
       </v-col>
     </v-row>
@@ -29,7 +29,7 @@
             >mdi-thumb-up</v-icon
           >
           <span :class="$vuetify.breakpoint.mobile ? 'mr-5' : 'mr-8'">
-            {{ item.likes.length }} likes
+            {{ item.likes.length }} lượt thích
           </span>
           <v-icon
             color="green"
@@ -38,7 +38,7 @@
             >mdi-reply</v-icon
           >
           <span :class="$vuetify.breakpoint.mobile ? 'mr-5' : 'mr-8'">
-            {{ item.listAnswers.length }} answers
+            {{ item.listAnswers.length }} Câu trả lời
           </span>
         </v-col>
         <v-col>
@@ -48,7 +48,7 @@
           {{ shortDate(item.createdAt) }}
         </v-col>
         <v-col class="text-right" md="2">
-          asked by {{ item.user.userName }}
+          Trả lời bởi {{ item.user.userName }}
         </v-col>
       </v-row>
       <v-divider></v-divider>

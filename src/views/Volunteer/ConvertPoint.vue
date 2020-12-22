@@ -160,13 +160,13 @@ export default {
         this.dialog = false;
         this.slider = 0;
         this.$swal({
-          title: "Exchange point successfully!",
+          title: "Đổi điểm thành công!",
           icon: "success"
         });
         this.getData();
       } catch (err) {
         this.$swal({
-          title: "Exchange point failed!",
+          title: "Đổi điểm thất bại!",
           text: err,
           icon: "error"
         });

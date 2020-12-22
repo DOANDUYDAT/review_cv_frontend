@@ -1,6 +1,6 @@
 <template>
   <v-sheet class="pa-4" v-if="listCv">
-    <h2 class="font-weight-medium">Danh sách CV đã nhận review</h2>
+    <h2 class="font-weight-medium">Danh sách CV đã nhận</h2>
     <v-divider></v-divider>
     <div v-for="cv in listCv" :key="cv._id">
       <v-row>
@@ -57,7 +57,7 @@
                       outlined
                       @click.stop="upLoadReview(cv)"
                     >
-                      Submit
+                      Gửi
                     </v-btn>
                   </form>
                 </v-col>

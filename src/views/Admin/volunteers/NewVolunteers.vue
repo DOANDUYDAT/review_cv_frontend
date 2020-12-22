@@ -154,7 +154,19 @@ export default {
 
   methods: {
     decline() {
-      this.close();
+      volunteerService
+        .decline(this.editedItem._id)
+        .then(volunteer => {
+          this.close();
+          this.getData();
+        })
+        .catch(err => {
+          this.$swal({
+            title: "Từ chối thất bại!",
+            text: err,
+            icon: "error"
+          });
+        });
     },
     getData() {
       volunteerService
@@ -190,7 +202,11 @@ export default {
           this.getData();
         })
         .catch(err => {
-          console.log(err);
+          this.$swal({
+            title: "Phê duyệt thất bại!",
+            text: err,
+            icon: "error"
+          });
         });
     }
   }

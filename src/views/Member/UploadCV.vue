@@ -120,10 +120,10 @@
         </v-col>
         <v-col cols="4" class="text-center pt-16">
           <h1 class="font-weight-medium white--text">
-            Getting a great job starts
+            Bắt đầu một công việc tuyệt vời
           </h1>
-          <h1 class="font-weight-medium white--text">with a great CV.</h1>
-          <h3 class="font-weight-regular white--text">Upload your CV</h3>
+          <h1 class="font-weight-medium white--text">với một CV tuyệt vời.</h1>
+          <h3 class="font-weight-regular white--text">Tải lên CV của bạn</h3>
 
           <form
             action="http://localhost:3030/uploads"
@@ -161,7 +161,7 @@
                       @click="upLoadCv"
                       :disabled="invalid"
                     >
-                      Get a free CV review
+                      Nhận review CV miễn phí
                     </v-btn>
                   </template>
                   <span>Bạn hãy cập nhật thông tin cá nhân</span>

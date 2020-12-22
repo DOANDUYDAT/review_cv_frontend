@@ -1,13 +1,13 @@
 <template>
   <v-sheet rounded="xs" class="pa-4">
-    <div class="subtitle-2">Title</div>
+    <div class="subtitle-2">Tiêu đề</div>
     <v-text-field
       label="Enter title"
       outlined
       dense
       v-model="question.title"
     ></v-text-field>
-    <div class="subtitle-2">Body</div>
+    <div class="subtitle-2">Nội dung</div>
     <div class="qa-editor">
       <editor-menu-bar :editor="editor" v-slot="{ commands, isActive }">
         <div class="menubar">
@@ -46,7 +46,7 @@
     </div>
     <!-- <pre><code v-html="question.content">{{ question.content }}</code></pre> -->
     <v-btn small color="primary" class="my-4" @click="postQuestion">
-      Post your question
+      Đăng câu hỏi của bạn
     </v-btn>
   </v-sheet>
 </template>
