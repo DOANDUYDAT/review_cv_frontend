@@ -8,6 +8,11 @@ async function getAllGifts() {
   return data;
 }
 
+async function getGiftById(id) {
+  const gift = await giftService.get(id);
+  return gift;
+}
+
 async function createGift(data) {
   let myForm = new FormData();
   myForm.append("name", data.name);
@@ -41,7 +46,7 @@ async function updateGift(data) {
   let token = "Bearer " + (await feathers.authentication.getAccessToken());
   myHeaders.append("Authorization", token);
   console.log(token);
-  const res = await fetch("http://localhost:3030/gifts", {
+  const res = await fetch(`http://localhost:3030/gifts/${data._id}`, {
     method: "PATCH",
     body: myForm,
     headers: myHeaders,
@@ -64,6 +69,7 @@ async function exchangeGift(_id) {
 
 export default {
   getAllGifts,
+  getGiftById,
   createGift,
   deleteGift,
   updateGift,

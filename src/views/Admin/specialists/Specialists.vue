@@ -2,8 +2,6 @@
   <v-data-table
     :headers="headers"
     :items="users"
-    :sort-by="['_id']"
-    user-key="_id"
     :sort-asc="[true]"
     :search="search"
     v-if="users"
@@ -19,7 +17,7 @@
         <v-text-field
           v-model="search"
           append-icon="mdi-magnify"
-          label="Search"
+          label="Tìm kiếm"
           color="blue"
           single-line
           hide-details
@@ -36,8 +34,8 @@
                 <v-row>
                   <v-col cols="12" sm="6" md="6">
                     <v-text-field
-                      v-model="userSelected._id"
-                      label="Id"
+                      v-model="userSelected.user.fullName"
+                      label="Fullname"
                       disabled
                     ></v-text-field>
                   </v-col>
@@ -61,6 +59,29 @@
                       label="Phone"
                       disabled
                     ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="6">
+                    <v-text-field
+                      v-model="userSelected.company"
+                      label="Công ty"
+                      disabled
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="6">
+                    <v-text-field
+                      v-model="userSelected.websiteCompany"
+                      label="Website công ty"
+                      disabled
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" class="grey--text pb-0">
+                    <span disabled>Lĩnh vực quan tâm</span>
+                  </v-col>
+                  <v-col cols="12" class="grey--text pt-0">
+                    <span v-for="(fi, i) in userSelected.fields" :key="i"
+                      >{{ fi }}
+                    </span>
+                    <v-divider></v-divider>
                   </v-col>
                 </v-row>
               </v-container>
@@ -100,44 +121,37 @@ export default {
   data: () => ({
     dialog: false,
     search: "",
-    isActive: ["Active", "Inactive"],
     headers: [
       {
-        text: "Id",
-        value: "_id",
-        sortable: false,
-        filterable: true
+        text: "Fullname",
+        value: "user.fullName",
+        sortable: true
       },
       {
         text: "Username",
         value: "user.userName",
-        sortable: true,
-        filterable: false
+        sortable: true
       },
       {
         text: "Email",
         value: "user.email",
-        sortable: false,
-        filterable: false
+        sortable: true
       },
       {
-        text: "Phone",
+        text: "Số điện thoại",
         value: "user.phone",
-        sortable: false,
-        filterable: false
+        sortable: true
       },
       {
-        text: "State",
+        text: "Trạng thái",
         value: "user.isActive",
-        sortable: false,
-        filterable: false
+        sortable: true
       },
       {
-        text: "Actions",
+        text: "Hành động",
         align: "center",
         value: "action",
-        sortable: false,
-        filterable: false
+        sortable: false
       }
     ],
     users: null,

@@ -2,8 +2,6 @@
   <v-data-table
     :headers="headers"
     :items="gifts"
-    :sort-by="['id']"
-    gift-key="id"
     :sort-asc="[true]"
     :search="search"
     v-if="gifts"
@@ -27,9 +25,19 @@
       </v-toolbar>
     </template>
     <template v-slot:[`item.action`]="{ item }">
+      <v-icon
+        small
+        class="mr-2"
+        @click.stop="goToEditProductPage(item)"
+        color="blue"
+        >mdi-pencil</v-icon
+      >
       <v-icon small class="mr-2" @click.stop="deleteItem(item)" color="red"
         >mdi-trash-can-outline</v-icon
       >
+    </template>
+    <template v-slot:[`item.image`]="{ item }">
+      <v-img :src="item.image"></v-img>
     </template>
   </v-data-table>
 </template>
@@ -42,37 +50,36 @@ export default {
   data: () => ({
     headers: [
       {
-        text: "Gift Id",
-        value: "_id",
+        text: "Ảnh",
+        value: "image",
         sortable: false,
         filterable: true
       },
       {
-        text: "Name",
+        text: "Tên quà tặng",
         value: "name",
-        sortable: true,
-        filterable: false
+        sortable: true
       },
       {
-        text: "Value",
+        text: "Giá trị",
         value: "value",
         sortable: false,
         filterable: false
       },
       {
-        text: "Category",
+        text: "Loại quà tặng",
         value: "category",
         sortable: false,
         filterable: false
       },
       {
-        text: "Quatity",
+        text: "Số lượng",
         value: "quantity",
         sortable: false,
         filterable: false
       },
       {
-        text: "Actions",
+        text: "Hành động",
         align: "center",
         value: "action",
         sortable: false,
@@ -80,7 +87,7 @@ export default {
       }
     ],
     gifts: null,
-    search: null
+    search: ""
   }),
 
   computed: {},
@@ -91,6 +98,9 @@ export default {
   },
 
   methods: {
+    goToEditProductPage(gift) {
+      this.$router.push({ path: `/admin/edit-gift/${gift._id}` });
+    },
     async getData() {
       this.gifts = await giftService.getAllGifts();
     },

@@ -1,8 +1,8 @@
 <template>
   <v-app>
     <v-app-bar flat app color="white">
-      <v-row align="center" no-gutters class="mx-16">
-        <v-col cols="8" class="py-2">
+      <v-row align="center" no-gutters class="mx-16" v-if="currentUser">
+        <v-col cols="2" class="py-2">
           <v-avatar
             size="50"
             @click="GoToVolunteerHomePage"
@@ -12,7 +12,21 @@
             <v-img src="../../assets/logo.png"></v-img>
           </v-avatar>
         </v-col>
-        <v-col cols="2">
+        <v-col cols="4">
+          <v-responsive min-width="150">
+            <v-text-field
+              dense
+              flat
+              dark
+              hide-details
+              rounded
+              solo-inverted
+              prepend-inner-icon="mdi-magnify"
+              label="Search"
+            ></v-text-field>
+          </v-responsive>
+        </v-col>
+        <v-col offset="2" cols="2">
           <v-btn text @click="GoToForumsPage" color="white">
             Diễn đàn
           </v-btn>
@@ -124,7 +138,7 @@ export default {
         this.$swal({
           position: "center",
           icon: "success",
-          title: "You are logged out!",
+          title: "Đăng xuất thành công!",
           showConfirmButton: false,
           timer: 1500
         });

@@ -26,8 +26,7 @@
             ></v-text-field>
           </v-responsive>
         </v-col>
-        <v-col cols="2"></v-col>
-        <v-col cols="2">
+        <v-col offset="2" cols="2">
           <v-btn text @click="GoToForumsPage" color="white">
             Diễn đàn
           </v-btn>
@@ -127,7 +126,7 @@ export default {
         this.$swal({
           position: "center",
           icon: "success",
-          title: "You are logged out!",
+          title: "Đăng xuất thành công!",
           showConfirmButton: false,
           timer: 1500
         });

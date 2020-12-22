@@ -3,8 +3,6 @@
     <v-data-table
       :headers="headers"
       :items="users"
-      :sort-by="['_id']"
-      user-key="_id"
       :sort-asc="[true]"
       :search="search"
       v-if="users"
@@ -20,7 +18,7 @@
           <v-text-field
             v-model="search"
             append-icon="mdi-magnify"
-            label="Search"
+            label="Tìm kiếm"
             color="blue"
             single-line
             hide-details
@@ -53,8 +51,8 @@
             <v-row>
               <v-col cols="12" sm="6" md="6">
                 <v-text-field
-                  v-model="editedItem._id"
-                  label="Id"
+                  v-model="editedItem.user.fullName"
+                  label="Fullname"
                   readonly
                 ></v-text-field>
               </v-col>
@@ -75,7 +73,7 @@
               <v-col cols="12" sm="6" md="6">
                 <v-text-field
                   v-model="editedItem.user.phone"
-                  label="Phone"
+                  label="Số điện thoại"
                   readonly
                 ></v-text-field>
               </v-col>
@@ -103,41 +101,35 @@ export default {
     search: "",
     headers: [
       {
-        text: "Id",
-        value: "_id",
-        sortable: false,
-        filterable: true
+        text: "Fullname",
+        value: "fullName",
+        sortable: true
       },
       {
         text: "Username",
         value: "user.userName",
-        sortable: true,
-        filterable: false
+        sortable: true
       },
       {
         text: "Email",
         value: "user.email",
-        sortable: false,
-        filterable: false
+        sortable: true
       },
       {
-        text: "Phone",
+        text: "Số điện thoại",
         value: "user.phone",
-        sortable: false,
-        filterable: false
+        sortable: true
       },
       {
-        text: "State",
+        text: "Trạng thái",
         value: "isAccept",
-        sortable: false,
-        filterable: false
+        sortable: false
       },
       {
-        text: "Actions",
+        text: "Hành động",
         align: "center",
         value: "action",
-        sortable: false,
-        filterable: false
+        sortable: false
       }
     ],
     users: null,

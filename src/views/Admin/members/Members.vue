@@ -2,10 +2,8 @@
   <v-data-table
     :headers="headers"
     :items="users"
-    :sort-by="['_id']"
-    user-key="_id"
-    :sort-asc="[true]"
     :search="search"
+    :sort-asc="[true]"
     v-if="users"
   >
     <template v-slot:top>
@@ -19,7 +17,7 @@
         <v-text-field
           v-model="search"
           append-icon="mdi-magnify"
-          label="Search"
+          label="Tìm kiếm"
           color="blue"
           single-line
           hide-details
@@ -36,8 +34,8 @@
                 <v-row>
                   <v-col cols="12" sm="6" md="6">
                     <v-text-field
-                      v-model="userSelected._id"
-                      label="Id"
+                      v-model="userSelected.user.fullName"
+                      label="Fullname"
                       disabled
                     ></v-text-field>
                   </v-col>
@@ -58,7 +56,7 @@
                   <v-col cols="12" sm="6" md="6">
                     <v-text-field
                       v-model="userSelected.user.phone"
-                      label="Phone"
+                      label="Số điện thoại"
                       disabled
                     ></v-text-field>
                   </v-col>
@@ -100,40 +98,34 @@ export default {
   data: () => ({
     dialog: false,
     search: "",
-    isActive: ["Active", "Inactive"],
     headers: [
       {
-        text: "Id",
-        value: "_id",
-        sortable: false,
-        filterable: true
+        text: "Fullname",
+        value: "user.fullName",
+        sortable: true
       },
       {
         text: "Username",
         value: "user.userName",
-        sortable: true,
-        filterable: false
+        sortable: true
       },
       {
         text: "Email",
         value: "user.email",
-        sortable: false,
-        filterable: false
+        sortable: false
       },
       {
-        text: "Phone",
+        text: "Số điện thoại",
         value: "user.phone",
-        sortable: false,
-        filterable: false
+        sortable: true
       },
       {
-        text: "State",
+        text: "Trạng thái",
         value: "user.isActive",
-        sortable: false,
-        filterable: false
+        sortable: false
       },
       {
-        text: "Actions",
+        text: "Hành động",
         align: "center",
         value: "action",
         sortable: false,

@@ -245,6 +245,18 @@ const routes = [
           requiresAuth: true,
           roles: ["admin"]
         }
+      },
+      {
+        path: "edit-gift/:giftId",
+        name: "Edit-Gift",
+        component: () =>
+          import(
+            /* webpackChunkName: "admin" */ "../views/Admin/gifts/EditGift.vue"
+          ),
+        meta: {
+          requiresAuth: true,
+          roles: ["admin"]
+        }
       }
     ]
   },

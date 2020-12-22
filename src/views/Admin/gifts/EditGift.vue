@@ -4,7 +4,7 @@
       <v-card flat>
         <v-toolbar color="primary" dark flat>
           <v-card-title>
-            <span class="headline">Thêm quà tặng</span>
+            <span class="headline">Chỉnh sửa quà tặng</span>
           </v-card-title>
         </v-toolbar>
         <v-row>
@@ -56,7 +56,7 @@
             </v-row>
           </v-col>
           <v-col cols="4">
-            <div class="my-avatar">
+            <!-- <div class="my-avatar">
               <div v-if="imagesShow.length">
                 <v-avatar
                   v-for="(image, i) in imagesShow"
@@ -69,7 +69,7 @@
                   <v-img :src="image"></v-img>
                 </v-avatar>
               </div>
-            </div>
+            </div> -->
             <v-file-input
               show-size
               prepend-icon="mdi-camera"
@@ -88,7 +88,7 @@
                 class="mx-auto"
                 @click="submit"
                 :disabled="invalid"
-                >Thêm</v-btn
+                >Cập nhật</v-btn
               >
             </v-col>
           </v-row>
@@ -137,8 +137,9 @@ export default {
   computed: {},
   methods: {
     async submit() {
-      const { name, value, category, quantity, image } = this.gift;
+      const { _id, name, value, category, quantity, image } = this.gift;
       const data = {
+        _id,
         name,
         value,
         category,
@@ -146,13 +147,14 @@ export default {
         image
       };
       giftService
-        .createGift(data)
+        .updateGift(data)
         .then(response => {
+          this.$router.push({ name: "Gifts" });
           console.log(response);
           this.$swal({
             position: "center",
             icon: "success",
-            title: "Thêm quà tặng thành công",
+            title: "Chỉnh sửa quà tặng thành công",
             showConfirmButton: false,
             timer: 1500
           });
@@ -162,26 +164,19 @@ export default {
           this.$swal("error: ", err.message, "error");
         });
     },
-    handleFileUpload(files) {
-      this.gift.image = [];
-      for (let i = 0; i < files.length; i++) {
-        // this.gift.images.push({ image: files[i]});
-        this.gift.image.push(files[i]);
-        let reader = new FileReader();
-        reader.onload = function() {
-          this.imagesShow.push({ image: reader.result });
-          // this.imagesShow.push(reader.result);
-        }.bind(this);
-        reader.readAsDataURL(files[i]);
-      }
-    },
-    resetInput() {
-      this.gift.name = "";
-      this.gift.value = "";
-      this.gift.category = "";
-      this.gift.quantity = "";
-      this.gift.image = [];
+    async getData() {
+      const giftId = this.$route.params.giftId;
+      this.gift = await giftService.getGiftById(giftId);
+      // let image = await gift.image.map(e => {
+      //   return e.image;
+      // });
+      // this.gift = Object.assign({}, gift, {
+      //   image
+      // });
     }
+  },
+  created() {
+    this.getData();
   }
 };
 </script>
