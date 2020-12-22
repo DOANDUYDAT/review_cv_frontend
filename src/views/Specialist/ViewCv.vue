@@ -3,7 +3,7 @@
     <v-row>
       <v-col cols="9">
         <iframe
-          :src="linkex"
+          :src="fileCv"
           width="100%"
           height="800px"
           frameborder="0"
@@ -102,8 +102,7 @@ export default {
       status: false,
       cv: null,
       currentUser: null,
-      file: null,
-      linkex: null
+      fileCv: null
     };
   },
   methods: {
@@ -147,9 +146,10 @@ export default {
       const specialist = await specialistService.getSpecialist(userId);
       this.currentUser = specialist;
       this.status = specialist.listReceivedCv.includes(cvId);
-      let myUrl = "http://localhost:3030/cv/" + this.cv.link;
-      this.file = await (await fetch(myUrl)).blob();
-      this.linkex = URL.createObjectURL(this.file);
+      let file = await (
+        await fetch(`http://localhost:3030/cv/${this.cv.link}`)
+      ).blob();
+      this.fileCv = URL.createObjectURL(file);
     }
   },
   created() {

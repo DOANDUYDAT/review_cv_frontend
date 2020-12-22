@@ -19,19 +19,23 @@
                 </v-col>
                 <v-col cols="9" class="pl-0 py-0">
                   <h5>CV được review bởi</h5>
-                  <h4>Chuyên gia Nguyễn Văn A</h4>
+                  <h4>
+                    <span v-if="isSpecialist(item.author)">Chuyên gia</span>
+                    <span v-else>Cộng tác viên</span>
+                    {{ item.author.user.userName }}
+                  </h4>
                   <v-row align="end">
                     <v-col cols="1" class="py-0">
                       <v-icon small>mdi-domain</v-icon>
                     </v-col>
                     <v-col cols="11" class="py-0">
-                      Công ty Viettel
+                      {{ item.author.company }}
                     </v-col>
                     <v-col cols="1" class="py-0">
                       <v-icon small>mdi-web</v-icon>
                     </v-col>
                     <v-col cols="11" class="py-0">
-                      viettel.vn
+                      {{ item.author.websiteCompany }}
                     </v-col>
                   </v-row>
                 </v-col>
@@ -67,9 +71,12 @@ export default {
       const userId = await authService.getCurrentUserId();
       const member = await memberService.getMember(userId);
       this.currentUser = member;
-      this.listReview = await reviewService.getListReviewByCvId(
+      this.listReview = await reviewService.getListReviewByListCvId(
         this.currentUser.listCv
       );
+    },
+    isSpecialist(author) {
+      return author.user.role === "specialist";
     }
   },
   created() {

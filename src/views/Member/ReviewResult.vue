@@ -2,7 +2,14 @@
   <v-container v-if="review">
     <v-sheet class="pa-4">
       <v-row>
-        <v-col cols="9"> </v-col>
+        <v-col cols="9">
+          <iframe
+            :src="fileReview"
+            width="100%"
+            height="800px"
+            frameborder="0"
+          ></iframe>
+        </v-col>
         <v-col cols="3">
           <v-row>
             <v-col cols="4" class="text-center" align-self="center">
@@ -12,8 +19,9 @@
             </v-col>
             <v-col cols="8">
               <h4>CV được review bởi</h4>
-              <h4>Chuyên gia</h4>
-              <h3>Nguyễn Văn A</h3>
+              <h4 v-if="isSpecialist">Chuyên gia</h4>
+              <h4 v-else>Cộng tác viên</h4>
+              <h3>{{ review.author.user.userName }}</h3>
             </v-col>
           </v-row>
           <v-row align="end">
@@ -21,13 +29,13 @@
               <v-icon small>mdi-domain</v-icon>
             </v-col>
             <v-col cols="5" class="body-2">
-              Công ty Viettel
+              {{ review.author.company }}
             </v-col>
             <v-col cols="1">
               <v-icon small>mdi-web</v-icon>
             </v-col>
             <v-col cols="5" class="body-2">
-              viettel.vn
+              {{ review.author.websiteCompany }}
             </v-col>
           </v-row>
           <v-divider></v-divider>
@@ -64,15 +72,31 @@
               <h4>Đánh giá kết quả review</h4>
             </v-col>
             <v-col cols="12" class="py-0">
-              <v-radio-group v-model="radioGroup" class="mt-0">
-                <v-radio label="Hài lòng" value="radio-1"></v-radio>
-                <v-radio label="Bình thường" value="radio-2"></v-radio>
-                <v-radio label="Không hài lòng" value="radio-3"></v-radio>
+              <v-radio-group
+                v-model="radioGroup"
+                class="mt-0"
+                :disabled="isRating"
+              >
+                <v-radio label="Hài lòng" value="Hài lòng"></v-radio>
+                <v-radio label="Bình thường" value="Bình thường"></v-radio>
+                <v-radio
+                  label="Không hài lòng"
+                  value="Không hài lòng"
+                ></v-radio>
               </v-radio-group>
             </v-col>
             <v-col cols="12" class="pt-0 text-center">
-              <v-btn @click="rating" depressed outlined color="blue">
+              <v-btn
+                @click="rating"
+                depressed
+                outlined
+                color="primary"
+                v-if="!isRating"
+              >
                 Đánh giá
+              </v-btn>
+              <v-btn v-else color="primary" depressed outlined>
+                Đã gửi đánh giá
               </v-btn>
             </v-col>
           </v-row>
@@ -255,8 +279,19 @@ export default {
         me: true
       },
       review: null,
-      reportContent: ""
+      reportContent: "",
+      fileReview: null
     };
+  },
+  computed: {
+    isSpecialist() {
+      return this.review
+        ? this.review.author.user.role === "specialist"
+        : false;
+    },
+    isRating() {
+      return this.review.rating ? true : false;
+    }
   },
   methods: {
     async publicCv() {
@@ -311,24 +346,30 @@ export default {
           timer: 1500
         });
       }
-      this.$swal({
-        toast: true,
-        position: "top-end",
-        icon: "success",
-        title: "Báo cáo kết quả review thành công",
-        showConfirmButton: false,
-        timer: 1500
-      });
     },
-    rating() {
-      this.$swal({
-        toast: true,
-        position: "top-end",
-        icon: "success",
-        title: "Đánh giá kết quả review thành công",
-        showConfirmButton: false,
-        timer: 1500
-      });
+    async rating() {
+      try {
+        await reviewService.ratingReview(this.review._id, this.radioGroup);
+        this.$swal({
+          toast: true,
+          position: "top-end",
+          icon: "success",
+          title: "Gửi đánh giá thành công",
+          showConfirmButton: false,
+          timer: 1500
+        });
+        let reviewId = this.$route.params.reviewId;
+        this.review = await reviewService.getReview(reviewId);
+      } catch (err) {
+        this.$swal({
+          toast: true,
+          position: "top-end",
+          icon: "error",
+          title: "Gửi đánh giá thất bại",
+          showConfirmButton: false,
+          timer: 1500
+        });
+      }
     },
     downloadCv() {
       console.log("download CV");
@@ -341,6 +382,11 @@ export default {
     async getData() {
       let reviewId = this.$route.params.reviewId;
       this.review = await reviewService.getReview(reviewId);
+      this.radioGroup = this.review.rating;
+      let file = await (
+        await fetch(`http://localhost:3030/review/${this.review.link}`)
+      ).blob();
+      this.fileReview = URL.createObjectURL(file);
     }
   },
   watch: {
@@ -349,6 +395,9 @@ export default {
         this.$refs.chat.$el.scrollTop = this.$refs.chat.$el.scrollHeight;
       }, 500);
     }
+  },
+  created() {
+    this.getData();
   }
 };
 </script>
