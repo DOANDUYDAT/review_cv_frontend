@@ -137,8 +137,9 @@ export default {
   computed: {},
   methods: {
     async submit() {
-      const { name, value, category, quantity, image } = this.gift;
+      const { _id, name, value, category, quantity, image } = this.gift;
       const data = {
+        _id,
         name,
         value,
         category,

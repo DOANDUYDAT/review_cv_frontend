@@ -130,7 +130,7 @@ export default {
         this.$swal({
           position: "center",
           icon: "success",
-          title: "You are logged out!",
+          title: "Đăng xuất thành công!",
           showConfirmButton: false,
           timer: 1500
         });
