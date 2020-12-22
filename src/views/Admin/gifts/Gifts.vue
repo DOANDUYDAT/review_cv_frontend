@@ -37,7 +37,11 @@
       >
     </template>
     <template v-slot:[`item.image`]="{ item }">
-      <v-img :src="item.image"></v-img>
+      <v-img
+        :src="`http://localhost:3030/uploads/${item.image}`"
+        height="50px"
+        width="50px"
+      ></v-img>
     </template>
   </v-data-table>
 </template>
@@ -98,11 +102,76 @@ export default {
   },
 
   methods: {
+    async ResizeImage(fileUrl) {
+      let originImage = await (
+        await fetch(`http://localhost:3030/uploads/${fileUrl}`)
+      ).blob();
+      let url = await this.getResizeImageUrl(originImage);
+      return url;
+    },
+    getResizeImageUrl(originImage) {
+      return new Promise((resolve, reject) => {
+        let resizeImageUrl = null;
+        // Create an image
+        // Create a file reader
+        let reader = new FileReader();
+        // Set the image once loaded into file reader
+        reader.onload = async () => {
+          // img.src = e.target.result;
+          let img = await getLoadedImage(reader.result);
+          let canvas = document.createElement("canvas");
+          //let canvas = $("<canvas>", {"id":"testing"})[0];
+          let ctx = canvas.getContext("2d");
+          ctx.drawImage(img, 0, 0);
+
+          let MAX_WIDTH = 50;
+          let MAX_HEIGHT = 50;
+          let width = img.width;
+          let height = img.height;
+
+          function getLoadedImage(src) {
+            return new Promise((resolve, reject) => {
+              let img = new Image();
+              img.src = src;
+              img.onload = () => {
+                resolve(img);
+              };
+              img.onerror = e => reject(e);
+            });
+          }
+
+          if (width > height) {
+            if (width > MAX_WIDTH) {
+              height *= MAX_WIDTH / width;
+              width = MAX_WIDTH;
+            }
+          } else {
+            if (height > MAX_HEIGHT) {
+              width *= MAX_HEIGHT / height;
+              height = MAX_HEIGHT;
+            }
+          }
+          canvas.width = width;
+          canvas.height = height;
+          ctx = canvas.getContext("2d");
+          ctx.drawImage(img, 0, 0, width, height);
+
+          resizeImageUrl = canvas.toDataURL("image/png");
+          resolve(resizeImageUrl);
+        };
+        reader.onerror = e => reject(e);
+        reader.readAsDataURL(originImage);
+      });
+    },
     goToEditProductPage(gift) {
       this.$router.push({ path: `/admin/edit-gift/${gift._id}` });
     },
     async getData() {
       this.gifts = await giftService.getAllGifts();
+      // for (let i = 0; i < this.gifts.length; i++) {
+      //   let urlImage = this.gifts[i].image;
+      //   this.gifts[i].image = await this.ResizeImage(urlImage);
+      // }
     },
     async deleteItem(item) {
       const giftId = item._id;
