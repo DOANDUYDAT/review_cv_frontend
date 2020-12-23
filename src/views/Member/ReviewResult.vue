@@ -101,19 +101,38 @@
             </v-col>
           </v-row>
           <v-divider></v-divider>
-          <v-row>
+          <v-row @click.stop="dialog2 = true">
             <v-col cols="2" class="py-0">
-              <v-btn @click.stop="dialog2 = true" small text fab>
+              <v-btn small text fab>
                 <v-icon>mdi-message-text</v-icon>
               </v-btn>
             </v-col>
             <v-col cols="10" class="py-0 text-uppercase" align-self="center">
               <h4>Bắt đầu trò chuyện</h4>
             </v-col>
+          </v-row>
+          <v-row v-if="!isExpired" @click.stop="dialog = true">
             <v-col cols="2" class="py-0">
-              <v-btn @click.stop="dialog = true" small text fab>
+              <v-btn small text fab>
                 <v-icon>mdi-message-alert-outline</v-icon>
               </v-btn>
+            </v-col>
+            <v-col cols="10" class="py-0 text-uppercase" align-self="center">
+              <h4>Báo cáo</h4>
+            </v-col>
+          </v-row>
+          <v-row v-else>
+            <v-col cols="2" class="py-0">
+              <v-tooltip top>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn color="primary" dark v-bind="attrs" v-on="on">
+                    > Báo cáo
+                  </v-btn>
+                </template>
+                <span
+                  >Hết hạn gửi report. Bạn chỉ có thể gửi report sau 24h</span
+                >
+              </v-tooltip>
             </v-col>
             <v-col cols="10" class="py-0 text-uppercase" align-self="center">
               <h4>Báo cáo</h4>
@@ -293,6 +312,9 @@ export default {
     },
     isRating() {
       return this.review.rating ? true : false;
+    },
+    isExpired() {
+      return Date.now() - this.review.createdAt > 86400000 ? true : false;
     }
   },
   methods: {
@@ -391,7 +413,7 @@ export default {
       let file = await (
         await fetch(`http://localhost:3030/review/${this.review.link}`)
       ).blob();
-      this.fileReview = URL.createObjectURL(file);
+      this.fileReview = URL.createObjectURL(file).toString() + "#toolbar=0";
     }
   },
   watch: {

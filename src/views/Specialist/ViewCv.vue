@@ -92,6 +92,7 @@
   </v-sheet>
 </template>
 <script>
+/* eslint-disable no-unused-vars */
 import cvService from "../../api/cv";
 import specialistService from "../../api/specialist";
 import authService from "../../api/authentication";
@@ -149,7 +150,7 @@ export default {
       let file = await (
         await fetch(`http://localhost:3030/cv/${this.cv.link}`)
       ).blob();
-      this.fileCv = URL.createObjectURL(file);
+      this.fileCv = URL.createObjectURL(file).toString() + "#toolbar=0";
     }
   },
   created() {

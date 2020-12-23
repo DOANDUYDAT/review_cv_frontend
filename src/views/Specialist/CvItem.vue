@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-row v-if="cv" @click="goToCv()">
+    <v-row v-if="cv" @click.stop="goToCv()">
       <v-col cols="2" class="text-center" align-self="center">
         <v-avatar color="grey darken-1" size="100">
           <v-img src="../../assets/avatar.jpg"></v-img>

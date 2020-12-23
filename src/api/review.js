@@ -3,7 +3,7 @@ import feathers from "../services/socketClient";
 
 const reviewService = feathers.service("reviews");
 const reportService = feathers.service("reports");
-const ratingService = feathers.service("reviews/rating");
+const ratingService = feathers.service("rates");
 
 async function uploadReview(cvId, reviewUpload) {
   const fData = new FormData();
@@ -35,6 +35,21 @@ async function getListReviewByListCvId(listCvId) {
     query: {
       cvId: {
         $in: listCvId
+      },
+      $sort: {
+        createdAt: -1
+      }
+    }
+  });
+  return data;
+}
+
+async function getListReviewByCvId(cvId) {
+  const { data } = await reviewService.find({
+    query: {
+      cvId,
+      $sort: {
+        createdAt: -1
       }
     }
   });
@@ -59,5 +74,6 @@ export default {
   reportReview,
   getListReviewByListCvId,
   getReview,
-  ratingReview
+  ratingReview,
+  getListReviewByCvId
 };
