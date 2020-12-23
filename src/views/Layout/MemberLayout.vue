@@ -101,7 +101,7 @@ export default {
       this.$router.push({ name: "Review Result List" });
     },
     GoToQuanLyCVPage() {
-      this.$router.push({ name: "Quan Ly" });
+      this.$router.push({ name: "CV Management" });
     },
     async getData() {
       const userId = await authService.getCurrentUserId();

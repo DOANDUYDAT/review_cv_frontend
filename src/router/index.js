@@ -318,6 +318,18 @@ const routes = [
           requiresAuth: false,
           roles: ["member"]
         }
+      },
+      {
+        path: "cv-management",
+        name: "CV Management",
+        component: () =>
+          import(
+            /* webpackChunkName: "memberHome" */ "../views/Member/CVManagement.vue"
+          ),
+        meta: {
+          requiresAuth: false,
+          roles: ["member"]
+        }
       }
     ]
   },

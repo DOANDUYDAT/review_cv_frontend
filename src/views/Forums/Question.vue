@@ -1,7 +1,7 @@
 <template>
   <v-sheet min-height="70vh" rounded="lg" v-if="question">
     <v-row>
-      <v-col cols="12" sm="6" class="pb-0">
+      <v-col cols="12" sm="10" class="pb-0">
         <h2>{{ question.title }}</h2>
       </v-col>
       <!-- <v-spacer></v-spacer> -->
@@ -11,11 +11,11 @@
           depressed
           color="primary"
           @click="goToQuestionAsk"
-          >Ask Question</v-btn
+          >Đặt câu hỏi</v-btn
         >
       </v-col>
       <v-col cols="12" sm="6" class="py-0">
-        {{ shortDate(question.createdAt) }}
+        {{ shortDateTime(question.createdAt) }}
       </v-col>
     </v-row>
     <v-divider></v-divider>
@@ -35,11 +35,11 @@
           <v-icon color="primary">mdi-thumb-up</v-icon>
         </v-btn>
         <span :class="$vuetify.breakpoint.mobile ? 'mr-5' : 'mr-8'">
-          {{ question.likes.length }} likes
+          {{ question.likes.length }} lượt thích
         </span>
       </v-col>
       <v-col class="text-right py-0" md="3">
-        asked by {{ question.user.userName }}
+        Được hỏi bởi {{ question.user.userName }}
       </v-col>
     </v-row>
     <v-row>
@@ -49,13 +49,13 @@
           v-if="isOwner && !question.isClose"
           color="warning"
           @click="closeQuestion"
-          >close</v-btn
+          >Đóng câu hỏi</v-btn
         >
       </v-col>
     </v-row>
     <v-row>
       <v-col cols="12">
-        <h3>{{ totalAnswer }} Answers</h3>
+        <h3>{{ totalAnswer }} Câu trả lời</h3>
       </v-col>
     </v-row>
     <answer-list
@@ -66,7 +66,7 @@
       v-if="question && currentUser"
     ></answer-list>
     <v-divider></v-divider>
-    <v-row>
+    <v-row v-if="!question.isClose">
       <v-col cols="12">
         <h3>Câu trả lời của bạn</h3>
       </v-col>
@@ -198,9 +198,9 @@ export default {
     }
   },
   methods: {
-    shortDate: timeStamp => {
+    shortDateTime: timeStamp => {
       let d = new Date(timeStamp);
-      return d.toLocaleDateString();
+      return d.toLocaleString();
     },
     setContent() {
       // you can pass a json document
@@ -213,7 +213,7 @@ export default {
               content: [
                 {
                   type: "text",
-                  text: "enter your answer"
+                  text: "Nhập câu trả lời của bạn"
                 }
               ]
             }

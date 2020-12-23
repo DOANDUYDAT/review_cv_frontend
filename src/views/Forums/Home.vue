@@ -44,8 +44,8 @@
         <v-col>
           {{ item.title }}
         </v-col>
-        <v-col md="1">
-          {{ shortDate(item.createdAt) }}
+        <v-col md="3" class="text-right">
+          {{ shortDateTime(item.createdAt) }}
         </v-col>
         <v-col class="text-right" md="2">
           Trả lời bởi {{ item.user.userName }}
@@ -70,9 +70,9 @@ export default {
   },
   computed: {},
   methods: {
-    shortDate: timeStamp => {
+    shortDateTime: timeStamp => {
       let d = new Date(timeStamp);
-      return d.toLocaleDateString();
+      return d.toLocaleString();
     },
     goToQuestion(item) {
       this.$router.push({

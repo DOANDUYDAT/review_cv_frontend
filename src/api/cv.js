@@ -4,6 +4,7 @@ import feathers from "../services/socketClient";
 const cvService = feathers.service("cvs");
 const interestService = feathers.service("cvs/interest");
 const reviewCvService = feathers.service("cvs/review-cv");
+const publicService = feathers.service("cvs/public");
 
 async function uploadCv(cv) {
   const fData = new FormData();
@@ -70,6 +71,14 @@ async function getListCvByFilter(filter) {
     query
   });
   return data;
+}
+
+async function publicCv(cvId, toUserId) {
+  const cv = await publicService.create({
+    cvId,
+    toUserId
+  });
+  return cv;
 }
 
 export default {

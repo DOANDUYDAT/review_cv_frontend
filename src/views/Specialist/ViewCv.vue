@@ -106,6 +106,13 @@ export default {
       fileCv: null
     };
   },
+  computed: {
+    isPublic() {
+      return this.cv
+        ? this.cv.listViewer.includes(this.currentUser._id)
+        : false;
+    }
+  },
   methods: {
     async reviewCv() {
       const result = await this.$swal({

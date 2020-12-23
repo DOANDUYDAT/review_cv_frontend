@@ -1,7 +1,7 @@
 <template>
   <v-app id="inspire">
     <v-app-bar app color="white" flat>
-      <v-row align="center" no-gutters class="mx-16">
+      <v-row align="center" no-gutters class="mx-16" v-if="currentUser">
         <v-col cols="2" class="py-2">
           <!-- <v-container class="py-0 fill-height" fluid> -->
           <!-- <v-container fluid> -->
@@ -31,7 +31,10 @@
           ></v-text-field>
         </v-responsive>
         <v-spacer></v-spacer>
-        <v-btn @click="goToHomeForums" text color="white">Forums</v-btn>
+        <v-btn @click="goToHomeForums" text color="white">Diễn đàn</v-btn>
+        <v-btn text rounded dark>
+          Điểm uy tín: {{ currentUser.user.reputationPoint }}
+        </v-btn>
         <!-- <v-btn text v-show="!$vuetify.breakpoint.mobile">
           <span>Đần Thúi</span>
           <v-icon right>mdi-account-circle</v-icon>

@@ -252,6 +252,7 @@
 import reviewService from "../../api/review";
 import memberService from "../../api/member";
 import authService from "../../api/authentication";
+import cvService from "../../api/cv";
 export default {
   data() {
     return {
@@ -317,6 +318,13 @@ export default {
       return Date.now() - this.review.createdAt > 86400000 ? true : false;
     }
   },
+  watch: {
+    logs() {
+      setTimeout(() => {
+        this.$refs.chat.$el.scrollTop = this.$refs.chat.$el.scrollHeight;
+      }, 500);
+    }
+  },
   methods: {
     async publicCv() {
       const result = await this.$swal({
@@ -331,12 +339,13 @@ export default {
       if (result.isConfirmed) {
         this.status = !this.status;
         try {
-          await this.$swal({
+          await cvService.publicCv(this.review.cvId, this.review.userId);
+          this.$swal({
             title: "Public CV thành công",
             icon: "success"
           });
         } catch (err) {
-          await this.$swal({
+          this.$swal({
             title: "Thất bại",
             text: err,
             icon: "error"
@@ -414,13 +423,6 @@ export default {
         await fetch(`http://localhost:3030/review/${this.review.link}`)
       ).blob();
       this.fileReview = URL.createObjectURL(file).toString() + "#toolbar=0";
-    }
-  },
-  watch: {
-    logs() {
-      setTimeout(() => {
-        this.$refs.chat.$el.scrollTop = this.$refs.chat.$el.scrollHeight;
-      }, 500);
     }
   },
   created() {

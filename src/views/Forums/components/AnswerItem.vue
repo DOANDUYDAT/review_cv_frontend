@@ -23,7 +23,7 @@
         >
           <v-icon color="primary">mdi-thumb-up</v-icon>
         </v-btn>
-        <span> {{ answer.likes.length }} lượt thích </span>
+        <span class="text-center"> {{ answer.likes.length }} lượt thích </span>
       </v-col>
       <v-col cols="11" class="py-0">
         <div v-html="answer.content"></div>
@@ -36,8 +36,9 @@
           Chỉnh sửa
         </v-btn>
       </v-col> -->
-      <v-col offset="9" cols="3" class="text-right pb-0">
-        Trả lời bởi {{ answer.user.userName }}
+      <v-col offset="9" cols="3" class="text-right py-0">
+        Trả lời bởi {{ answer.user.userName }}<br />
+        {{ shortDateTime(answer.createdAt) }}
       </v-col>
       <v-col cols="11" class="pl-4" offset="1" v-if="answer.comments">
         <v-row>
@@ -63,17 +64,29 @@
         </div>
       </v-col>
       <v-col cols="11" offset="1">
-        <v-btn color="primary" text @click.stop="checkPoint"
+        <v-btn
+          color="primary"
+          text
+          @click="openComment = true"
+          v-if="isAllowComment"
           >Thêm bình luận</v-btn
         >
-        <v-snackbar v-model="snackbar" top>
+        <v-tooltip top v-else :open-on-click="true" :open-on-hover="false">
+          <template v-slot:activator="{ on: { click }, attrs }">
+            <v-btn color="primary" text dark v-bind="attrs" @click="click">
+              Thêm bình luận
+            </v-btn>
+          </template>
+          <span>Bạn phải có đủ 50 điểm uy tin để bình luận</span>
+        </v-tooltip>
+        <!-- <v-snackbar v-model="snackbar" top>
           Bạn phải có đủ 50 điểm uy tin để bình luận
           <template v-slot:action="{ attrs }">
             <v-btn color="pink" text v-bind="attrs" @click="snackbar = false">
               Đóng câu hỏi
             </v-btn>
           </template>
-        </v-snackbar>
+        </v-snackbar> -->
       </v-col>
     </v-row>
     <v-row v-if="isAllowComment">
@@ -114,8 +127,8 @@ export default {
   data() {
     return {
       answer: null,
-      isAllowComment: false,
       snackbar: false,
+      openComment: false,
       edit: false,
       comment: {
         content: ""
@@ -157,6 +170,9 @@ export default {
       } else {
         return false;
       }
+    },
+    isAllowComment() {
+      return this.currentUserData.reputationPoint > 75 ? true : false;
     }
   },
   watch: {
@@ -166,6 +182,10 @@ export default {
     }
   },
   methods: {
+    shortDateTime: timeStamp => {
+      let d = new Date(timeStamp);
+      return d.toLocaleString();
+    },
     getData() {
       this.answer = JSON.parse(JSON.stringify(this.answerData));
     },
