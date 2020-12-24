@@ -49,8 +49,11 @@
             <v-list-item @click="GoToChangeStatusNotifyPage">
               <v-list-item-title>Cài đặt thông báo email</v-list-item-title>
             </v-list-item>
-            <v-list-item @click="GoToReviewCvListPage">
-              <v-list-item-title>Danh sách CV review</v-list-item-title>
+            <v-list-item @click="GoToReceivedCvListPage">
+              <v-list-item-title>Danh sách CV đã nhận</v-list-item-title>
+            </v-list-item>
+            <v-list-item @click="GoToReviewHistoryPage">
+              <v-list-item-title>Lịch sử review</v-list-item-title>
             </v-list-item>
             <v-list-item @click="LogOut">
               <v-list-item-title>Đăng xuất</v-list-item-title>
@@ -109,8 +112,11 @@ export default {
     GoToChangeStatusNotifyPage() {
       this.$router.push({ name: "Update Specialist Profile" });
     },
-    GoToReviewCvListPage() {
-      this.$router.push({ name: "Review CV List" });
+    GoToReceivedCvListPage() {
+      this.$router.push({ name: "Received CV List" });
+    },
+    GoToReviewHistoryPage() {
+      this.$router.push({ name: "Reviewed CV List" });
     },
     GoToForumsPage() {
       this.$router.push({ name: "Forums Home" });

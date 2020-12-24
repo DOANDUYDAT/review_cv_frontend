@@ -24,7 +24,7 @@
               <h3>{{ review.author.user.userName }}</h3>
             </v-col>
           </v-row>
-          <v-row align="end">
+          <v-row align="end" v-if="isSpecialist">
             <v-col cols="1">
               <v-icon small>mdi-domain</v-icon>
             </v-col>
@@ -121,12 +121,14 @@
               <h4>Báo cáo</h4>
             </v-col>
           </v-row>
-          <v-row v-else>
-            <v-col cols="2" class="py-0">
+          <v-row class="" v-else>
+            <v-col class="py-0">
               <v-tooltip top>
                 <template v-slot:activator="{ on, attrs }">
-                  <v-btn color="primary" dark v-bind="attrs" v-on="on">
-                    > Báo cáo
+                  <v-btn text v-bind="attrs" v-on="on">
+                    <v-icon class="mr-4" left>mdi-message-alert-outline</v-icon>
+                    <h3 class="font-weight-bold">Báo cáo</h3>
+                    <!-- <h3>Báo cáo</h3> -->
                   </v-btn>
                 </template>
                 <span
@@ -134,9 +136,9 @@
                 >
               </v-tooltip>
             </v-col>
-            <v-col cols="10" class="py-0 text-uppercase" align-self="center">
+            <!-- <v-col cols="10" class="py-0 text-uppercase" align-self="center">
               <h4>Báo cáo</h4>
-            </v-col>
+            </v-col> -->
           </v-row>
         </v-col>
       </v-row>
@@ -399,6 +401,7 @@ export default {
           position: "top-end",
           icon: "error",
           title: "Gửi đánh giá thất bại",
+          text: err,
           showConfirmButton: false,
           timer: 1500
         });
@@ -418,7 +421,7 @@ export default {
       this.currentUser = member;
       let reviewId = this.$route.params.reviewId;
       this.review = await reviewService.getReview(reviewId);
-      this.radioGroup = this.review.rating;
+      this.radioGroup = this.review.rating.content;
       let file = await (
         await fetch(`http://localhost:3030/review/${this.review.link}`)
       ).blob();

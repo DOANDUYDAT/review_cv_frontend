@@ -369,11 +369,11 @@ const routes = [
         }
       },
       {
-        path: "review-cv-list",
-        name: "Review CV List",
+        path: "received-cv-list",
+        name: "Received CV List",
         component: () =>
           import(
-            /* webpackChunkName: "specialistHome" */ "../views/Specialist/ReviewCvList.vue"
+            /* webpackChunkName: "specialistHome" */ "../views/Specialist/ReceivedCvList.vue"
           ),
         meta: {
           requiresAuth: false,
@@ -386,6 +386,30 @@ const routes = [
         component: () =>
           import(
             /* webpackChunkName: "specialistHome" */ "../views/Specialist/ViewCv.vue"
+          ),
+        meta: {
+          requiresAuth: false,
+          roles: ["specialist"]
+        }
+      },
+      {
+        path: "reviewed-cv-list",
+        name: "Reviewed CV List",
+        component: () =>
+          import(
+            /* webpackChunkName: "specialistHome" */ "../views/Specialist/ReviewedCvList.vue"
+          ),
+        meta: {
+          requiresAuth: false,
+          roles: ["specialist"]
+        }
+      },
+      {
+        path: "view-review-result/:cvId",
+        name: "View Review Result",
+        component: () =>
+          import(
+            /* webpackChunkName: "specialistHome" */ "../views/Specialist/ViewReviewResult.vue"
           ),
         meta: {
           requiresAuth: false,

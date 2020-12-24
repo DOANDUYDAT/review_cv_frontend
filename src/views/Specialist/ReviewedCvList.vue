@@ -1,6 +1,6 @@
 <template>
   <v-sheet class="pa-4" v-if="listCv && listCv.length">
-    <h2 class="font-weight-medium">Danh sách CV đã nhận</h2>
+    <h2 class="font-weight-medium">Danh sách CV đã được review</h2>
     <v-divider></v-divider>
     <div v-for="cv in listCv" :key="cv._id">
       <v-row>
@@ -24,45 +24,7 @@
               <span>Kinh nghiệm: </span>
               <span class="green--text">{{ cv.exp }}</span>
             </v-col>
-            <v-col cols="3" class="py-0 text-center">
-              <v-row>
-                <v-col cols="12" class="py-0 text-center">
-                  <h4>Upload kết quả review</h4>
-                </v-col>
-                <v-col class="py-0">
-                  <form
-                    action="http://localhost:3030/uploads"
-                    method="post"
-                    enctype="multipart/form-data"
-                  >
-                    <v-img
-                      class="mx-auto mb-2"
-                      src="../../assets/cv1.png"
-                      hight="35%"
-                      width="35%"
-                      style="position: relative;"
-                    >
-                      <v-file-input
-                        hide-input
-                        accept="application/pdf"
-                        prepend-icon="mdi-card-outline"
-                        style="position: absolute; top: 7px; left: 26px; z-index: 10"
-                        v-model="file"
-                      >
-                      </v-file-input>
-                    </v-img>
-                    <v-btn
-                      color="#0da1ec"
-                      small
-                      outlined
-                      @click.stop="upLoadReview(cv)"
-                    >
-                      Gửi
-                    </v-btn>
-                  </form>
-                </v-col>
-              </v-row>
-            </v-col>
+            <v-col cols="3" class="py-0 text-center"> </v-col>
           </v-row>
         </v-col>
       </v-row>
@@ -70,9 +32,9 @@
     </div>
   </v-sheet>
   <v-sheet class="pa-4" v-else>
-    <h2 class="font-weight-medium">Danh sách CV đã nhận review</h2>
+    <h2 class="font-weight-medium">Danh sách CV đã review</h2>
     <v-divider></v-divider>
-    <div class="pt-4">Bạn chưa nhận review CV nào</div>
+    <div class="pt-4">Bạn chưa review CV nào</div>
   </v-sheet>
 </template>
 <script>
@@ -112,9 +74,9 @@ export default {
         });
       }
     },
-    goToCv(cv) {
+    goToReviewResult(cv) {
       this.$router.push({
-        path: `/specialistHome/view-cv/${cv._id}`
+        path: `/specialistHome/view-review-result/${cv._id}`
       });
     },
     async getData() {
@@ -122,7 +84,7 @@ export default {
       const volunteer = await specialistService.getSpecialist(userId);
       this.currentUser = volunteer;
       this.listCv = await cvService.getListCvById(
-        this.currentUser.listReceivedCv
+        this.currentUser.listReviewedCv
       );
     }
   },

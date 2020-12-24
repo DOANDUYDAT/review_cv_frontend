@@ -74,7 +74,7 @@
                         class="mx-2 grey--text"
                         depressed
                       >
-                        <v-icon left> mdi-lead-pencil </v-icon>Sửa</v-btn
+                        <v-icon left> mdi-lead-pencil </v-icon>Chỉnh sửa</v-btn
                       >
 
                       <v-btn
