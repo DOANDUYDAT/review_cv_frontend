@@ -119,8 +119,8 @@ export default {
     },
     async getData() {
       const userId = await authService.getCurrentUserId();
-      const volunteer = await specialistService.getSpecialist(userId);
-      this.currentUser = volunteer;
+      const specialist = await specialistService.getSpecialist(userId);
+      this.currentUser = specialist;
       this.listCv = await cvService.getListCvById(
         this.currentUser.listReceivedCv
       );

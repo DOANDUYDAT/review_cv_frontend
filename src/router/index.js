@@ -296,11 +296,11 @@ const routes = [
         }
       },
       {
-        path: "review-result-list",
-        name: "Review Result List",
+        path: "recent-review-result-list",
+        name: "Recent Review Result List",
         component: () =>
           import(
-            /* webpackChunkName: "memberHome" */ "../views/Member/ReviewResultList.vue"
+            /* webpackChunkName: "memberHome" */ "../views/Member/RecentReviewResultList.vue"
           ),
         meta: {
           requiresAuth: false,
@@ -490,11 +490,35 @@ const routes = [
         }
       },
       {
-        path: "review-cv-list",
-        name: "Volunteer Review CV List",
+        path: "received-cv-list",
+        name: "Volunteer Received CV List",
         component: () =>
           import(
-            /* webpackChunkName: "volunteerHome" */ "../views/Volunteer/ReviewCvList.vue"
+            /* webpackChunkName: "volunteerHome" */ "../views/Volunteer/ReceivedCvList.vue"
+          ),
+        meta: {
+          requiresAuth: false,
+          roles: ["volunteer"]
+        }
+      },
+      {
+        path: "reviewed-cv-list",
+        name: "Volunteer Reviewed CV List",
+        component: () =>
+          import(
+            /* webpackChunkName: "volunteerHome" */ "../views/Specialist/ReviewedCvList.vue"
+          ),
+        meta: {
+          requiresAuth: false,
+          roles: ["volunteer"]
+        }
+      },
+      {
+        path: "view-review-result/:cvId",
+        name: "Volunteer View Review Result",
+        component: () =>
+          import(
+            /* webpackChunkName: "volunteerHome" */ "../views/Specialist/ViewReviewResult.vue"
           ),
         meta: {
           requiresAuth: false,

@@ -50,7 +50,10 @@
               <v-list-item-title>Cài đặt thông báo email</v-list-item-title>
             </v-list-item>
             <v-list-item @click="GoToReviewCvListPage">
-              <v-list-item-title>Danh sách CV review</v-list-item-title>
+              <v-list-item-title>Danh sách CV đã nhận</v-list-item-title>
+            </v-list-item>
+            <v-list-item @click="GoToReviewHistoryPage">
+              <v-list-item-title>Lịch sử review</v-list-item-title>
             </v-list-item>
             <v-list-item @click="GoToConvertPointPage">
               <v-list-item-title>Đổi điểm tích lũy</v-list-item-title>
@@ -120,8 +123,11 @@ export default {
     GoToExchangeGiftPage() {
       this.$router.push({ name: "Exchange Gift" });
     },
-    GoToReviewCvListPage() {
-      this.$router.push({ name: "Volunteer Review CV List" });
+    GoToReceivedCvListPage() {
+      this.$router.push({ name: "Volunteer Received CV List" });
+    },
+    GoToReviewHistoryPage() {
+      this.$router.push({ name: "Volunteer Reviewed CV List" });
     },
     GoToForumsPage() {
       this.$router.push({ name: "Forums Home" });

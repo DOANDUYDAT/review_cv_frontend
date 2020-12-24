@@ -1,5 +1,5 @@
 <template>
-  <v-sheet class="pa-4" v-if="listCv">
+  <v-sheet class="pa-4" v-if="listCv && listCv.length">
     <h2 class="font-weight-medium">Danh sách CV đã nhận</h2>
     <v-divider></v-divider>
     <div v-for="cv in listCv" :key="cv._id">
@@ -68,6 +68,11 @@
       </v-row>
       <v-divider></v-divider>
     </div>
+  </v-sheet>
+  <v-sheet class="pa-4" v-else>
+    <h2 class="font-weight-medium">Danh sách CV đã nhận</h2>
+    <v-divider></v-divider>
+    <div class="pt-4">Bạn chưa nhận review CV nào</div>
   </v-sheet>
 </template>
 <script>
