@@ -101,25 +101,25 @@
             </v-col>
           </v-row>
           <v-divider></v-divider>
-          <v-row @click.stop="dialog2 = true">
-            <v-col cols="2" class="py-0">
+          <v-row class="pt-2" @click.stop="dialog2 = true">
+            <!-- <v-col cols="2" class="py-0">
               <v-btn small text fab>
                 <v-icon>mdi-message-text</v-icon>
               </v-btn>
             </v-col>
             <v-col cols="10" class="py-0 text-uppercase" align-self="center">
               <h4>Bắt đầu trò chuyện</h4>
-            </v-col>
+            </v-col> -->
+            <v-btn text>
+              <v-icon class="mr-4" left>mdi-message-text</v-icon>
+              <h3 class="font-weight-bold">Bắt đầu trò chuyện</h3>
+            </v-btn>
           </v-row>
           <v-row v-if="!isExpired" @click.stop="dialog = true">
-            <v-col cols="2" class="py-0">
-              <v-btn small text fab>
-                <v-icon>mdi-message-alert-outline</v-icon>
-              </v-btn>
-            </v-col>
-            <v-col cols="10" class="py-0 text-uppercase" align-self="center">
-              <h4>Báo cáo</h4>
-            </v-col>
+            <v-btn text>
+              <v-icon class="mr-4" left>mdi-message-alert-outline</v-icon>
+              <h3 class="font-weight-bold">Báo cáo</h3>
+            </v-btn>
           </v-row>
           <v-row class="" v-else>
             <v-col class="py-0">
@@ -421,7 +421,7 @@ export default {
       this.currentUser = member;
       let reviewId = this.$route.params.reviewId;
       this.review = await reviewService.getReview(reviewId);
-      this.radioGroup = this.review.rating.content;
+      this.radioGroup = this.review.rating ? this.review.rating.content : null;
       let file = await (
         await fetch(`http://localhost:3030/review/${this.review.link}`)
       ).blob();

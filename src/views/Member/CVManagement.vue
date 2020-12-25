@@ -20,7 +20,7 @@
               </v-col>
             </v-row>
 
-            <v-card>
+            <v-card @click="goToReviewResultList">
               <v-row class="px-6 py-3">
                 <v-col cols="2">
                   <v-img
@@ -94,18 +94,37 @@
         </v-tab-item>
         <v-tab-item>
           <v-container fluid>
-            <v-row>
-              <v-col cols="12" md="4"
-                >vnn
-                <!-- <v-img
-                  :src="`https://picsum.photos/500/300?image=${i * n * 5 + 10}`"
-                  :lazy-src="
-                    `https://picsum.photos/10/6?image=${i * n * 5 + 10}`
-                  "
-                  aspect-ratio="1"
-                ></v-img> -->
-              </v-col>
-            </v-row>
+            <v-card @click="goToReviewResultList">
+              <v-row class="px-6 py-3">
+                <v-col cols="2">
+                  <v-img
+                    src="https://picsum.photos/350/165?random"
+                    height="125"
+                    class="grey darken-4"
+                  ></v-img>
+                </v-col>
+                <v-col cols="10" class="pb-0">
+                  <v-row>
+                    <v-col cols="9">
+                      <h2 class="teal--text font-weight-medium">
+                        CV lập trình VueJS
+                      </h2>
+                    </v-col>
+                    <v-col cols="3" class="text-right">
+                      12/22/2020, 5:07:38 PM
+                      <!-- {{ shortDateTime(item.createdAt) }} -->
+                    </v-col>
+                    <v-col cols="12">
+                      <v-input hide-details="auto">
+                        <span class="ma-2"
+                          >https://i.topcv.vn/duongthithoa?ref=3389360</span
+                        >
+                      </v-input>
+                    </v-col>
+                  </v-row>
+                </v-col>
+              </v-row>
+            </v-card>
           </v-container>
         </v-tab-item>
       </v-tabs>
@@ -118,6 +137,9 @@ export default {
     shortDateTime: timeStamp => {
       let d = new Date(timeStamp);
       return d.toLocaleString();
+    },
+    goToReviewResultList() {
+      this.$router.push({ name: "Review Result List" });
     }
   }
 };

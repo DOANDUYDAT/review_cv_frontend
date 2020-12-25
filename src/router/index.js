@@ -308,6 +308,18 @@ const routes = [
         }
       },
       {
+        path: "review-result-list",
+        name: "Review Result List",
+        component: () =>
+          import(
+            /* webpackChunkName: "memberHome" */ "../views/Member/ReviewResultList.vue"
+          ),
+        meta: {
+          requiresAuth: false,
+          roles: ["member"]
+        }
+      },
+      {
         path: "review-result/:reviewId",
         name: "Review Result",
         component: () =>
@@ -514,7 +526,7 @@ const routes = [
         }
       },
       {
-        path: "view-review-result/:cvId",
+        path: "view-review-result/:reviewId",
         name: "Volunteer View Review Result",
         component: () =>
           import(

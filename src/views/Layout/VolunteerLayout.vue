@@ -49,7 +49,7 @@
             <v-list-item @click="GoToChangeStatusNotifyPage">
               <v-list-item-title>Cài đặt thông báo email</v-list-item-title>
             </v-list-item>
-            <v-list-item @click="GoToReviewCvListPage">
+            <v-list-item @click="GoToReceivedCvListPage">
               <v-list-item-title>Danh sách CV đã nhận</v-list-item-title>
             </v-list-item>
             <v-list-item @click="GoToReviewHistoryPage">
