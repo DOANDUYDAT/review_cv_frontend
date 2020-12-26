@@ -149,7 +149,7 @@ export default {
       this.status = volunteer.listReceivedCv.includes(cvId);
       let myUrl = "http://localhost:3030/cv/" + this.cv.link;
       this.file = await (await fetch(myUrl)).blob();
-      this.linkex = URL.createObjectURL(this.file);
+      this.linkex = URL.createObjectURL(this.file).toString() + "#toolbar=0";
     }
   },
   created() {

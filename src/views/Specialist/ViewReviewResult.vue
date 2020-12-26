@@ -1,9 +1,9 @@
 <template>
-  <v-sheet class="pa-4" v-if="cv">
+  <v-sheet class="pa-4" v-if="review">
     <v-row>
       <v-col cols="9">
         <iframe
-          :src="fileCv"
+          :src="fileReview"
           width="100%"
           height="800px"
           frameborder="0"
@@ -11,7 +11,7 @@
       </v-col>
       <v-col cols="3">
         <v-row>
-          <v-col cols="12" class="py-0 text-center">
+          <v-col cols="12" class="py-0 text-center" v-if="isPublic">
             <h3 style="color: white; background-color: rgb(92, 184, 92);">
               <v-icon dark>mdi-checkbox-marked-circle</v-icon> Đã public
             </h3>
@@ -25,7 +25,7 @@
             <h2>{{ cv.author.user.fullName }}</h2>
             <!-- <span>Thực tập sinh</span> -->
           </v-col>
-          <v-col cols="12">
+          <v-col cols="12" v-if="isPublic">
             <v-card flat style="padding: inherit;border: 2px dashed grey;">
               <v-row>
                 <h3 class="ml-3">Thông tin liên lạc</h3>
@@ -41,7 +41,7 @@
             </v-card>
           </v-col>
         </v-row>
-        <v-row align="start" class="pb-2">
+        <v-row align="start" class="py-2">
           <v-col cols="1" class="py-0">
             <v-icon small>mdi-briefcase-variant</v-icon>
           </v-col>
@@ -162,18 +162,18 @@
 </template>
 <script>
 /* eslint-disable no-unused-vars */
-import cvService from "../../api/cv";
+import reviewService from "../../api/review";
 import specialistService from "../../api/specialist";
 import authService from "../../api/authentication";
+// import review from "../../api/review";
 
 export default {
   data() {
     return {
       status: false,
       dialog2: false,
-      cv: null,
       currentUser: null,
-      fileCv: null,
+      fileReview: null,
       logs: [
         {
           content: "lorem ipsum",
@@ -187,7 +187,8 @@ export default {
       msg: {
         content: "",
         me: true
-      }
+      },
+      review: null
     };
   },
   watch: {
@@ -199,9 +200,12 @@ export default {
   },
   computed: {
     isPublic() {
-      return this.cv
+      return this.cv && this.currentUser
         ? this.cv.listViewer.includes(this.currentUser._id)
         : false;
+    },
+    cv() {
+      return this.review.cv;
     }
   },
   methods: {
@@ -211,16 +215,16 @@ export default {
       this.msg.content = "";
     },
     async getData() {
-      const cvId = this.$route.params.cvId;
-      this.cv = await cvService.getCvById(cvId);
+      const reviewId = this.$route.params.reviewId;
+      this.review = await reviewService.getReview(reviewId);
       const userId = await authService.getCurrentUserId();
       const specialist = await specialistService.getSpecialist(userId);
       this.currentUser = specialist;
-      this.status = specialist.listReceivedCv.includes(cvId);
+      // this.status = specialist.listReceivedCv.includes(cvId);
       let file = await (
         await fetch(`http://localhost:3030/cv/${this.cv.link}`)
       ).blob();
-      this.fileCv = URL.createObjectURL(file).toString() + "#toolbar=0";
+      this.fileReview = URL.createObjectURL(file).toString() + "#toolbar=0";
     }
   },
   created() {
