@@ -56,28 +56,15 @@
             </v-row>
           </v-col>
           <v-col cols="4">
-            <!-- <div class="my-avatar">
-              <div v-if="imagesShow.length">
-                <v-avatar
-                  v-for="(image, i) in imagesShow"
-                  class="profile ma-1"
-                  color="grey"
-                  size="164"
-                  tile
-                  :key="i"
-                >
-                  <v-img :src="image"></v-img>
-                </v-avatar>
-              </div>
-            </div> -->
             <v-file-input
               show-size
               prepend-icon="mdi-camera"
-              accept="image"
+              accept="image/*"
               full-width
               label="Thêm ảnh"
-              v-model="gift.image"
+              @change="handleFileUpload"
             ></v-file-input>
+            <v-img height="150px" width="150px" :src="previewImage"></v-img>
           </v-col>
         </v-row>
         <v-card-actions>
@@ -106,8 +93,8 @@ export default {
 
   data() {
     return {
-      imagesShow: [],
       listSelected: ["Thẻ điện thoại", "Voucher"],
+      previewImage: null,
       gift: {
         name: "",
         value: "",
@@ -146,33 +133,37 @@ export default {
         quantity,
         image
       };
-      giftService
-        .updateGift(data)
-        .then(response => {
-          this.$router.push({ name: "Gifts" });
-          console.log(response);
-          this.$swal({
-            position: "center",
-            icon: "success",
-            title: "Chỉnh sửa quà tặng thành công",
-            showConfirmButton: false,
-            timer: 1500
-          });
-        })
-        .catch(err => {
-          console.log(err);
-          this.$swal("error: ", err.message, "error");
+      try {
+        await giftService.updateGift(data);
+        this.$router.push({ name: "Gifts" });
+        this.$swal({
+          position: "center",
+          icon: "success",
+          title: "Chỉnh sửa quà tặng thành công",
+          showConfirmButton: false,
+          timer: 1500
         });
+      } catch (err) {
+        this.$swal("error: ", err.message, "error");
+      }
+    },
+    handleFileUpload(image) {
+      this.gift.image = image;
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.previewImage = reader.result;
+      };
+
+      if (image) {
+        reader.readAsDataURL(image);
+      }
     },
     async getData() {
       const giftId = this.$route.params.giftId;
       this.gift = await giftService.getGiftById(giftId);
-      // let image = await gift.image.map(e => {
-      //   return e.image;
-      // });
-      // this.gift = Object.assign({}, gift, {
-      //   image
-      // });
+      this.previewImage = this.gift.image
+        ? `http://localhost:3030/uploads/${this.gift.image}`
+        : "";
     }
   },
   created() {

@@ -36,6 +36,7 @@ async function createGift(data) {
 
 async function updateGift(data) {
   let myForm = new FormData();
+  myForm.append("_id", data._id);
   myForm.append("name", data.name);
   myForm.append("value", data.value);
   myForm.append("quantity", data.quantity);
@@ -45,9 +46,8 @@ async function updateGift(data) {
   let myHeaders = new Headers();
   let token = "Bearer " + (await feathers.authentication.getAccessToken());
   myHeaders.append("Authorization", token);
-  console.log(token);
-  const res = await fetch(`http://localhost:3030/gifts/${data._id}`, {
-    method: "PATCH",
+  const res = await fetch(`http://localhost:3030/gifts/update-info`, {
+    method: "POST",
     body: myForm,
     headers: myHeaders,
     redirect: "follow"

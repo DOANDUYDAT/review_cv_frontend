@@ -56,28 +56,15 @@
             </v-row>
           </v-col>
           <v-col cols="4">
-            <div class="my-avatar">
-              <div v-if="imagesShow.length">
-                <v-avatar
-                  v-for="(image, i) in imagesShow"
-                  class="profile ma-1"
-                  color="grey"
-                  size="164"
-                  tile
-                  :key="i"
-                >
-                  <v-img :src="image"></v-img>
-                </v-avatar>
-              </div>
-            </div>
             <v-file-input
               show-size
               prepend-icon="mdi-camera"
-              accept="image"
+              accept="image/*"
               full-width
               label="Thêm ảnh"
-              v-model="gift.image"
+              @change="handleFileUpload"
             ></v-file-input>
+            <v-img width="150px" height="150px" :src="previewImage"></v-img>
           </v-col>
         </v-row>
         <v-card-actions>
@@ -106,7 +93,7 @@ export default {
 
   data() {
     return {
-      imagesShow: [],
+      previewImage: null,
       listSelected: ["Thẻ điện thoại", "Voucher"],
       gift: {
         name: "",
@@ -156,23 +143,22 @@ export default {
             showConfirmButton: false,
             timer: 1500
           });
+          this.resetInput();
         })
         .catch(err => {
           console.log(err);
           this.$swal("error: ", err.message, "error");
         });
     },
-    handleFileUpload(files) {
-      this.gift.image = [];
-      for (let i = 0; i < files.length; i++) {
-        // this.gift.images.push({ image: files[i]});
-        this.gift.image.push(files[i]);
-        let reader = new FileReader();
-        reader.onload = function() {
-          this.imagesShow.push({ image: reader.result });
-          // this.imagesShow.push(reader.result);
-        }.bind(this);
-        reader.readAsDataURL(files[i]);
+    handleFileUpload(image) {
+      this.gift.image = image;
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.previewImage = reader.result;
+      };
+
+      if (image) {
+        reader.readAsDataURL(image);
       }
     },
     resetInput() {
