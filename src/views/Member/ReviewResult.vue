@@ -209,8 +209,8 @@
             </div>
           </v-toolbar>
           <v-card-text>
-            <v-list ref="chat" id="logs">
-              <template v-for="(item, index) in logs">
+            <v-list ref="chat" id="listMessage" v-if="listMessage">
+              <template v-for="(item, index) in listMessage">
                 <!-- <v-subheader v-if="item" :key="index">{{ item }}</v-subheader> -->
                 <div
                   v-if="item"
@@ -240,8 +240,8 @@
               outlined
               v-model="msg.content"
               append-outer-icon="mdi-send"
-              @keyup.enter="submit"
-              @click:append-outer="submit"
+              @keyup.enter="sendMessage"
+              @click:append-outer="sendMessage"
             >
             </v-text-field>
           </v-card-actions>
@@ -255,6 +255,8 @@ import reviewService from "../../api/review";
 import memberService from "../../api/member";
 import authService from "../../api/authentication";
 import cvService from "../../api/cv";
+import messageService from "../../api/message";
+import { messageServiceRoot } from "../../api/message";
 export default {
   data() {
     return {
@@ -288,20 +290,8 @@ export default {
           value: "Vấn đề khác"
         }
       ],
-      logs: [
-        {
-          content: "lorem ipsum",
-          me: true
-        },
-        {
-          content: "dolor",
-          me: false
-        }
-      ],
-      msg: {
-        content: "",
-        me: true
-      },
+      listMessage: null,
+      msg: "",
       review: null,
       reportContent: "",
       fileReview: null
@@ -321,7 +311,7 @@ export default {
     }
   },
   watch: {
-    logs() {
+    listMessage() {
       setTimeout(() => {
         this.$refs.chat.$el.scrollTop = this.$refs.chat.$el.scrollHeight;
       }, 500);
@@ -410,10 +400,22 @@ export default {
     downloadCv() {
       console.log("download CV");
     },
-    submit() {
-      const data = Object.assign({}, this.msg);
-      this.logs.push(data);
-      this.msg.content = "";
+    async sendMessage() {
+      const data = {
+        content: this.msg,
+        roomId: this.review.roomId
+      };
+      try {
+        const message = await messageService.sendMessage(data);
+        this.listMessage.push(message);
+        this.msg = "";
+      } catch (err) {
+        this.$swal({
+          icon: "error",
+          title: "Gửi tin nhắn thất bại",
+          text: err
+        });
+      }
     },
     async getData() {
       const userId = await authService.getCurrentUserId();
@@ -426,15 +428,21 @@ export default {
         await fetch(`http://localhost:3030/review/${this.review.link}`)
       ).blob();
       this.fileReview = URL.createObjectURL(file).toString() + "#toolbar=0";
+      this.listMessage = await messageService.findMessageByRoomId(
+        this.review.roomId
+      );
     }
   },
   created() {
     this.getData();
+    messageServiceRoot.on("created", message => {
+      this.listMessage.push(message);
+    });
   }
 };
 </script>
 <style lang="scss" scoped>
-#logs {
+#listMessage {
   height: 400px;
   overflow: auto;
 }

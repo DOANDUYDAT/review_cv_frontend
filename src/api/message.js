@@ -8,25 +8,28 @@ async function get(id, params) {
   return user;
 }
 
-async function create(data) {
+async function sendMessage(data) {
   const response = await messageService.create(data);
   return response;
 }
 
-async function FindMessagesByUserId() {
-  const messages = await messageService.find({
+async function findMessageByRoomId(roomId) {
+  const { data } = await messageService.find({
     query: {
-      isRead: true
+      roomId,
+      $sort: {
+        createAt: -1
+      },
+      $limit: 100
     }
   });
-  console.log(messages);
-  return messages;
+  return data;
 }
 
 export { messageService as messageServiceRoot };
 
 export default {
   get,
-  create,
-  FindMessagesByUserId
+  sendMessage,
+  findMessageByRoomId
 };
