@@ -44,6 +44,20 @@ async function getListReviewByListCvId(listCvId) {
   return data;
 }
 
+async function getListReviewByListReviewId(listReviewId) {
+  const { data } = await reviewService.find({
+    query: {
+      _id: {
+        $in: listReviewId
+      },
+      $sort: {
+        createdAt: -1
+      }
+    }
+  });
+  return data;
+}
+
 async function getListReviewByCvId(cvId) {
   const { data } = await reviewService.find({
     query: {
@@ -76,5 +90,6 @@ export default {
   getListReviewByListCvId,
   getReview,
   ratingReview,
-  getListReviewByCvId
+  getListReviewByCvId,
+  getListReviewByListReviewId
 };

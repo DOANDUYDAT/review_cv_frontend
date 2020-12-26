@@ -3,7 +3,9 @@
     <v-row>
       <v-col cols="9">
         <v-sheet class="pa-4" min-height="100vh">
-          <h2 class="font-weight-medium">Danh sách kết quả review CV</h2>
+          <h2 class="font-weight-medium">
+            Danh sách kết quả review CV gần đây
+          </h2>
           <v-divider></v-divider>
           <div v-for="item in listReview" :key="item._id">
             <v-row>
@@ -14,35 +16,49 @@
                   </v-avatar>
                 </v-col>
                 <v-col cols="10" @click="goToReviewResult(item)">
-                  <h4>CV được review bởi</h4>
-                  <h3 class="font-weight-medium">
-                    <span v-if="isSpecialist(item.author)">Chuyên gia</span>
-                    <span v-else>Cộng tác viên</span>
-                  </h3>
-                  <h3>{{ item.author.user.fullName }}</h3>
-                  <v-row align="end" v-if="isSpecialist(item.author)">
-                    <v-col cols="12" class="py-0 green--text">
-                      Điểm uy tín: {{ item.author.user.reputationPoint }}</v-col
-                    >
-                    <v-col cols="3" class="py-0 pr-0">
-                      <v-icon small>mdi-domain</v-icon>
-                      {{ item.author.company }}
-                    </v-col>
+                  <v-row>
+                    <v-col cols="6" class="py-0">
+                      <h4>CV được review bởi</h4>
+                      <h3 class="font-weight-medium">
+                        <span v-if="isSpecialist(item.author)">Chuyên gia</span>
+                        <span v-else>Cộng tác viên</span>
+                      </h3>
+                      <h3>{{ item.author.user.fullName }}</h3>
+                      <span class="green--text"
+                        >Điểm uy tín:
+                        {{ item.author.user.reputationPoint }}</span
+                      >
+                      <v-row v-if="isSpecialist(item.author)">
+                        <v-col cols="6" class="py-0 pr-0">
+                          <v-icon small>mdi-domain</v-icon>
+                          {{ item.author.company }}
+                        </v-col>
 
-                    <v-col cols="3" class="py-0 pl-0">
-                      <v-icon small>mdi-web</v-icon>
-                      {{ item.author.websiteCompany }}
+                        <v-col cols="6" class="py-0 pl-0">
+                          <v-icon small>mdi-web</v-icon>
+                          {{ item.author.websiteCompany }}
+                        </v-col>
+                      </v-row>
                     </v-col>
-                    <v-col cols="6" class="py-0 pr-4 text-right">
-                      Review ngày {{ shortDate(item.author.createdAt) }}
-                    </v-col>
-                  </v-row>
-                  <v-row v-else>
-                    <v-col cols="6" class="py-0 green--text">
-                      Điểm uy tín: {{ item.author.user.reputationPoint }}</v-col
+                    <v-col
+                      cols="6"
+                      class="py-0 pr-4 text-end"
+                      style="align-self: flex-end"
                     >
-                    <v-col cols="6" class="py-0 pr-4 text-right">
-                      Review ngày {{ shortDate(item.author.createdAt) }}
+                      <v-row>
+                        <v-col cols="12" class="py-0" v-if="item.rating">
+                          <v-icon small color="green"
+                            >mdi-checkbox-marked-circle</v-icon
+                          >
+                          <span class="body-2 green--text">Đã đánh giá</span>
+                        </v-col>
+                        <v-col cols="12" class="py-0">
+                          <span
+                            >Review ngày
+                            {{ shortDate(item.author.createdAt) }}</span
+                          >
+                        </v-col>
+                      </v-row>
                     </v-col>
                   </v-row>
                 </v-col>

@@ -21,7 +21,7 @@
               <h4>CV được review bởi</h4>
               <h4 v-if="isSpecialist">Chuyên gia</h4>
               <h4 v-else>Cộng tác viên</h4>
-              <h3>{{ review.author.user.userName }}</h3>
+              <h3>{{ review.author.user.fullName }}</h3>
             </v-col>
           </v-row>
           <v-row align="end" v-if="isSpecialist">
@@ -39,7 +39,7 @@
             </v-col>
           </v-row>
           <v-divider></v-divider>
-          <v-row>
+          <v-row v-if="isSpecialist">
             <v-col cols="12" class="text-center pb-0 text-uppercase">
               <h3>Bạn có muốn</h3>
             </v-col>
@@ -59,7 +59,7 @@
               </v-btn>
             </v-col>
           </v-row>
-          <v-divider></v-divider>
+          <v-divider v-if="isSpecialist"></v-divider>
           <v-row>
             <v-col cols="1">
               <v-icon color="amber">mdi-star</v-icon>
@@ -110,10 +110,12 @@
             <v-col cols="10" class="py-0 text-uppercase" align-self="center">
               <h4>Bắt đầu trò chuyện</h4>
             </v-col> -->
-            <v-btn text>
-              <v-icon class="mr-4" left>mdi-message-text</v-icon>
-              <h3 class="font-weight-bold">Bắt đầu trò chuyện</h3>
-            </v-btn>
+            <v-col class="py-0">
+              <v-btn text>
+                <v-icon class="mr-4" left>mdi-message-text</v-icon>
+                <h3 class="font-weight-bold">Bắt đầu trò chuyện</h3>
+              </v-btn>
+            </v-col>
           </v-row>
           <v-row v-if="!isExpired" @click.stop="dialog = true">
             <v-btn text>

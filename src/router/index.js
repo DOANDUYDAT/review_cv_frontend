@@ -417,7 +417,7 @@ const routes = [
         }
       },
       {
-        path: "view-review-result/:cvId",
+        path: "view-review-result/:reviewId",
         name: "View Review Result",
         component: () =>
           import(
@@ -518,7 +518,7 @@ const routes = [
         name: "Volunteer Reviewed CV List",
         component: () =>
           import(
-            /* webpackChunkName: "volunteerHome" */ "../views/Specialist/ReviewedCvList.vue"
+            /* webpackChunkName: "volunteerHome" */ "../views/Volunteer/ReviewedCvList.vue"
           ),
         meta: {
           requiresAuth: false,
@@ -530,7 +530,7 @@ const routes = [
         name: "Volunteer View Review Result",
         component: () =>
           import(
-            /* webpackChunkName: "volunteerHome" */ "../views/Specialist/ViewReviewResult.vue"
+            /* webpackChunkName: "volunteerHome" */ "../views/Volunteer/ViewReviewResult.vue"
           ),
         meta: {
           requiresAuth: false,
