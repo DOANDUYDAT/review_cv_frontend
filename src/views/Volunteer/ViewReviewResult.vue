@@ -22,7 +22,7 @@
             </v-avatar>
           </v-col>
           <v-col cols="9" class="pb-0" align-self="center">
-            <h2>{{ cv.author.user.fullName }}</h2>
+            <h2>{{ review.cv.author.user.fullName }}</h2>
             <!-- <span>Thực tập sinh</span> -->
           </v-col>
           <!-- <v-col cols="12" v-if="isPublic">
@@ -46,13 +46,13 @@
             <v-icon small>mdi-briefcase-variant</v-icon>
           </v-col>
           <v-col cols="5" class="body-2 py-0">
-            {{ cv.exp }}
+            {{ review.cv.exp }}
           </v-col>
           <v-col cols="1" class="py-0">
             <v-icon small>mdi-sort-descending</v-icon>
           </v-col>
           <v-col cols="5" class="body-2 py-0">
-            {{ cv.position }}
+            {{ review.cv.position }}
           </v-col>
           <v-col cols="1" class="py-0">
             <v-icon small>mdi-briefcase-account</v-icon>
@@ -64,39 +64,50 @@
             <v-icon small>mdi-map-marker</v-icon>
           </v-col>
           <v-col cols="5" class="body-2 py-0">
-            {{ cv.location }}
-          </v-col>
-        </v-row>
-        <v-divider></v-divider>
-        <v-row>
-          <v-col cols="12" class="pb-0 text-uppercase">
-            <h4>
-              <v-icon color="amber" class="mr-2">mdi-star</v-icon> Kết quả đánh
-              giá
-            </h4>
-          </v-col>
-          <v-col cols="12" class="py-0">
-            <p>
-              {{ cv.author.user.fullName }} hài lòng với kết quả review của bạn.
-            </p>
+            {{ review.cv.location }}
           </v-col>
         </v-row>
         <v-divider></v-divider>
         <v-row>
           <v-col cols="12" class="text-uppercase">
-            <h4><v-icon class="mr-2">mdi-alert</v-icon> Báo cáo</h4>
+            <h4>
+              <v-icon color="amber" class="mr-2">mdi-star</v-icon> Kết quả đánh
+              giá
+            </h4>
           </v-col>
-          <v-col cols="12" class="pt-0">
-            <span>
-              {{ cv.author.user.fullName }} đã báo cáo kết quả review của bạn.
-            </span>
-            <br />
-            <span>
-              Lý do: Review không chính xác
-            </span>
+          <v-col cols="12" class="py-0" v-if="review.rating">
+            <p>
+              {{ review.cv.author.user.fullName }}
+              <span class="red--text">
+                {{ review.rating.content.toLowerCase() + " " }}
+              </span>
+              với kết quả review của bạn.
+            </p>
+          </v-col>
+          <v-col cols="12" class="py-0" v-else>
+            <p>
+              Chưa có đánh giá
+            </p>
           </v-col>
         </v-row>
         <v-divider></v-divider>
+        <v-row v-if="review.report">
+          <v-col cols="12" class="text-uppercase">
+            <h4><v-icon class="mr-2">mdi-alert</v-icon> Báo cáo</h4>
+          </v-col>
+          <v-col cols="12" class="py-0">
+            <p class="mb-0">
+              {{ review.cv.author.user.fullName }}
+              đã
+              <span class="red--text">báo cáo</span> kết quả review của bạn.
+            </p>
+            <p>
+              Lý do:
+              <span class="red--text">{{ review.report.content }} </span>
+            </p>
+          </v-col>
+        </v-row>
+        <v-divider v-if="review.report"></v-divider>
         <v-row class="pt-2" @click.stop="dialog2 = true">
           <v-btn text>
             <v-icon class="mr-4" left>mdi-message-text</v-icon>
@@ -119,7 +130,7 @@
             </v-btn>
           </div>
         </v-toolbar>
-        <v-card-text>
+        <v-card-text style="height: 50vh">
           <v-list
             ref="chat"
             id="listMessage"
@@ -153,6 +164,7 @@
           <v-text-field
             placeholder="Nhập vào đây để trò chuyện"
             outlined
+            hide-details
             v-model="msg"
             append-outer-icon="mdi-send"
             @keyup.enter="sendMessage"

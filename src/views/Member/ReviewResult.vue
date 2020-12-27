@@ -118,10 +118,12 @@
             </v-col>
           </v-row>
           <v-row v-if="!isExpired" @click.stop="dialog = true">
-            <v-btn text>
-              <v-icon class="mr-4" left>mdi-message-alert-outline</v-icon>
-              <h3 class="font-weight-bold">Báo cáo</h3>
-            </v-btn>
+            <v-col class="py-0">
+              <v-btn text>
+                <v-icon class="mr-4" left>mdi-message-alert-outline</v-icon>
+                <h3 class="font-weight-bold">Báo cáo</h3>
+              </v-btn>
+            </v-col>
           </v-row>
           <v-row class="" v-else>
             <v-col class="py-0">
