@@ -212,7 +212,7 @@
               </v-btn>
             </div>
           </v-toolbar>
-          <v-card-text>
+          <v-card-text style="height: 50vh">
             <v-list
               ref="chat"
               id="listMessage"

@@ -22,7 +22,7 @@
             </v-avatar>
           </v-col>
           <v-col cols="9" class="pb-0" align-self="center">
-            <h2>{{ cv.author.user.fullName }}</h2>
+            <h2>{{ review.cv.author.user.fullName }}</h2>
             <!-- <span>Thực tập sinh</span> -->
           </v-col>
           <v-col cols="12" v-if="isPublic">
@@ -31,11 +31,11 @@
                 <h3 class="ml-3">Thông tin liên lạc</h3>
                 <v-col cols="12" class="py-0">
                   <v-icon class="mr-4" small>mdi-phone-in-talk</v-icon>
-                  <span class="body-2">{{ cv.author.user.phone }}</span>
+                  <span class="body-2">{{ review.cv.author.user.phone }}</span>
                 </v-col>
                 <v-col cols="12" class="py-0">
                   <v-icon class="mr-4" small>mdi-email-outline</v-icon>
-                  <span class="body-2">{{ cv.author.user.email }}</span>
+                  <span class="body-2">{{ review.cv.author.user.email }}</span>
                 </v-col>
               </v-row>
             </v-card>
@@ -46,25 +46,25 @@
             <v-icon small>mdi-briefcase-variant</v-icon>
           </v-col>
           <v-col cols="5" class="body-2 py-0">
-            {{ cv.exp }}
+            {{ review.cv.exp }}
           </v-col>
           <v-col cols="1" class="py-0">
             <v-icon small>mdi-sort-descending</v-icon>
           </v-col>
           <v-col cols="5" class="body-2 py-0">
-            {{ cv.position }}
+            {{ review.cv.position }}
           </v-col>
           <v-col cols="1" class="py-0">
             <v-icon small>mdi-briefcase-account</v-icon>
           </v-col>
           <v-col cols="5" class="body-2 py-0">
-            <span v-for="(fi, i) in cv.fields" :key="i">{{ fi }}</span>
+            <span v-for="(fi, i) in review.cv.fields" :key="i">{{ fi }}</span>
           </v-col>
           <v-col cols="1" class="py-0">
             <v-icon small>mdi-map-marker</v-icon>
           </v-col>
           <v-col cols="5" class="body-2 py-0">
-            {{ cv.location }}
+            {{ review.cv.location }}
           </v-col>
         </v-row>
         <v-divider></v-divider>
@@ -75,28 +75,39 @@
               giá
             </h4>
           </v-col>
-          <v-col cols="12" class="py-0">
+          <v-col cols="12" class="py-0" v-if="review.rating">
             <p>
-              {{ cv.author.user.fullName }} hài lòng với kết quả review của bạn.
+              {{ review.cv.author.user.fullName }} đã đánh giá
+              <span class="red--text">
+                {{ review.rating.content.toLowerCase() + " " }}
+              </span>
+              với kết quả review của bạn.
+            </p>
+          </v-col>
+          <v-col cols="12" class="py-0" v-else>
+            <p>
+              Chưa có đánh giá
             </p>
           </v-col>
         </v-row>
         <v-divider></v-divider>
-        <v-row>
+        <v-row v-if="review.report">
           <v-col cols="12" class="text-uppercase">
             <h4><v-icon class="mr-2">mdi-alert</v-icon> Báo cáo</h4>
           </v-col>
-          <v-col cols="12" class="pt-0">
-            <span>
-              {{ cv.author.user.fullName }} đã báo cáo kết quả review của bạn.
-            </span>
-            <br />
-            <span>
-              Lý do: Review không chính xác
-            </span>
+          <v-col cols="12" class="py-0">
+            <p class="mb-0">
+              {{ review.cv.author.user.fullName }}
+              đã
+              <span class="red--text">báo cáo</span> kết quả review của bạn.
+            </p>
+            <p>
+              Lý do:
+              <span class="red--text">{{ review.report.content }} </span>
+            </p>
           </v-col>
         </v-row>
-        <v-divider></v-divider>
+        <v-divider v-if="review.report"></v-divider>
         <v-row class="pt-2" @click.stop="dialog2 = true">
           <v-btn text>
             <v-icon class="mr-4" left>mdi-message-text</v-icon>
@@ -119,8 +130,12 @@
             </v-btn>
           </div>
         </v-toolbar>
-        <v-card-text>
-          <v-list ref="chat" id="listMessage">
+        <v-card-text style="height: 50vh">
+          <v-list
+            ref="chat"
+            id="listMessage"
+            v-if="listMessage && listMessage.length"
+          >
             <template v-for="msg in listMessage">
               <!-- <v-subheader v-if="item" :key="index">{{ item }}</v-subheader> -->
               <div
@@ -149,6 +164,7 @@
           <v-text-field
             placeholder="Nhập vào đây để trò chuyện"
             outlined
+            hide-details
             v-model="msg"
             append-outer-icon="mdi-send"
             @keyup.enter="sendMessage"
@@ -182,9 +198,11 @@ export default {
   },
   watch: {
     listMessage() {
-      setTimeout(() => {
-        this.$refs.chat.$el.scrollTop = this.$refs.chat.$el.scrollHeight;
-      }, 500);
+      if (this.$refs.chat) {
+        setTimeout(() => {
+          this.$refs.chat.$el.scrollTop = this.$refs.chat.$el.scrollHeight;
+        }, 500);
+      }
     }
   },
   computed: {
@@ -225,6 +243,9 @@ export default {
         await fetch(`http://localhost:3030/cv/${this.cv.link}`)
       ).blob();
       this.fileReview = URL.createObjectURL(file).toString() + "#toolbar=0";
+      this.listMessage = await messageService.findMessageByRoomId(
+        this.review.roomId
+      );
     },
     isMe(msg) {
       return this.currentUser.user._id === msg.userId ? true : false;

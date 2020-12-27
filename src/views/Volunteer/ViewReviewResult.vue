@@ -77,7 +77,7 @@
           </v-col>
           <v-col cols="12" class="py-0" v-if="review.rating">
             <p>
-              {{ review.cv.author.user.fullName }}
+              {{ review.cv.author.user.fullName }} đã đánh giá
               <span class="red--text">
                 {{ review.rating.content.toLowerCase() + " " }}
               </span>
