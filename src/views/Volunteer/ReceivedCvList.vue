@@ -101,6 +101,7 @@ export default {
           showConfirmButton: false,
           timer: 1500
         });
+        this.getData();
       } catch (error) {
         this.$swal({
           toast: true,
@@ -116,9 +117,8 @@ export default {
       const userId = await authService.getCurrentUserId();
       const volunteer = await volunteerService.getVolunteer(userId);
       this.currentUser = volunteer;
-      this.listCv = await cvService.getListCvById(
-        this.currentUser.listReceivedCv
-      );
+      let listReceivedCvId = this.currentUser.listReceivedCv.map(e => e.cvId);
+      this.listCv = await cvService.getListCvById(listReceivedCvId);
     },
     goToCv(cv) {
       this.$router.push({

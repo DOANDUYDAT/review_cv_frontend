@@ -120,24 +120,28 @@
           </div>
         </v-toolbar>
         <v-card-text>
-          <v-list ref="chat" id="listMessage" v-if="listMessage">
-            <template v-for="(item, index) in listMessage">
+          <v-list
+            ref="chat"
+            id="listMessage"
+            v-if="listMessage && listMessage.length"
+          >
+            <template v-for="msg in listMessage">
               <!-- <v-subheader v-if="item" :key="index">{{ item }}</v-subheader> -->
               <div
-                v-if="item"
-                :key="index"
-                :class="{ 'd-flex flex-row-reverse': item.me }"
+                v-if="msg"
+                :key="msg._id"
+                :class="{ 'd-flex flex-row-reverse': isMe(msg) }"
               >
                 <v-menu offset-y>
                   <template v-slot:activator="{ on }">
                     <v-chip
-                      :color="item.me ? 'primary' : 'grey'"
+                      :color="isMe(msg) ? 'primary' : 'grey'"
                       dark
                       style="height:auto;weight:220px;white-space: normal;"
                       class="pa-2 mb-2"
                       v-on="on"
                     >
-                      {{ item.content }}
+                      {{ msg.content }}
                     </v-chip>
                   </template>
                 </v-menu>
@@ -149,7 +153,7 @@
           <v-text-field
             placeholder="Nhập vào đây để trò chuyện"
             outlined
-            v-model="msg.content"
+            v-model="msg"
             append-outer-icon="mdi-send"
             @keyup.enter="sendMessage"
             @click:append-outer="sendMessage"
@@ -182,9 +186,11 @@ export default {
   },
   watch: {
     listMessage() {
-      setTimeout(() => {
-        this.$refs.chat.$el.scrollTop = this.$refs.chat.$el.scrollHeight;
-      }, 500);
+      if (this.$refs.chat) {
+        setTimeout(() => {
+          this.$refs.chat.$el.scrollTop = this.$refs.chat.$el.scrollHeight;
+        }, 500);
+      }
     }
   },
   computed: {
@@ -229,10 +235,12 @@ export default {
       this.listMessage = await messageService.findMessageByRoomId(
         this.review.roomId
       );
+    },
+    isMe(msg) {
+      return this.currentUser.user._id === msg.userId ? true : false;
     }
   },
   created() {
-    console.log("aaaa");
     this.getData();
     messageServiceRoot.on("created", message => {
       this.listMessage.push(message);

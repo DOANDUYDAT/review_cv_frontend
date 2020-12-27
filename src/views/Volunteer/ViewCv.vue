@@ -146,7 +146,8 @@ export default {
       const userId = await authService.getCurrentUserId();
       const volunteer = await volunteerService.getVolunteer(userId);
       this.currentUser = volunteer;
-      this.status = volunteer.listReceivedCv.includes(cvId);
+      let listReceivedCvId = volunteer.listReceivedCv.map(e => e.cvId);
+      this.status = listReceivedCvId.includes(cvId);
       let myUrl = "http://localhost:3030/cv/" + this.cv.link;
       this.file = await (await fetch(myUrl)).blob();
       this.linkex = URL.createObjectURL(this.file).toString() + "#toolbar=0";
