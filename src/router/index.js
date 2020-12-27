@@ -76,6 +76,16 @@ const routes = [
     ]
   },
   {
+    path: "/viet-cv",
+    name: "New Cv",
+    component: () =>
+      import(/* webpackChunkName: "CvOnline" */ "../views/CvOnline/NewCv"),
+    meta: {
+      requiresAuth: true,
+      roles: ["member"]
+    }
+  },
+  {
     path: "/cv",
     component: () =>
       import(/* webpackChunkName: "CV" */ "../views/Layout/CvLayout.vue"),

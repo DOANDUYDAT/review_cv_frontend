@@ -14,7 +14,7 @@
           <v-container fluid>
             <v-row>
               <v-col cols="12" class="text-right">
-                <v-btn color="teal" dark>
+                <v-btn color="teal" dark @click="goToWriteCvPage">
                   <v-icon left> mdi-plus-circle </v-icon>Tạo mới</v-btn
                 >
               </v-col>
@@ -140,6 +140,10 @@ export default {
     },
     goToReviewResultList() {
       this.$router.push({ name: "Review Result List" });
+    },
+    goToWriteCvPage() {
+      console.log("viet cv page");
+      // this.$router.push({ path: "/viet-cv" });
     }
   }
 };
