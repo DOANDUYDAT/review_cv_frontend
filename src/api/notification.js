@@ -8,8 +8,18 @@ async function getNotification(id) {
   return res;
 }
 
+async function getListNotifciationByToUserId(userId) {
+  const { data } = await notificationService.find({
+    query: {
+      to: userId
+    }
+  });
+  return data;
+}
+
 export { notificationService as notificationServiceRoot };
 
 export default {
-  getNotification
+  getNotification,
+  getListNotifciationByToUserId
 };
