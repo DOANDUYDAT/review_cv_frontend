@@ -76,6 +76,16 @@ const routes = [
     ]
   },
   {
+    path: "/viet-cv",
+    name: "New Cv",
+    component: () =>
+      import(/* webpackChunkName: "CvOnline" */ "../views/CvOnline/NewCv"),
+    meta: {
+      requiresAuth: true,
+      roles: ["member"]
+    }
+  },
+  {
     path: "/cv",
     component: () =>
       import(/* webpackChunkName: "CV" */ "../views/Layout/CvLayout.vue"),
@@ -641,6 +651,9 @@ router.beforeEach((to, from, next) => {
       }
     })
     .catch(err => {
+      // if (err.code == 404) {
+      //   localStorage.clear();
+      // }
       // TH5: chưa đăng nhập mà vào page yêu đăng nhập thì redirect tới /Login
       if (to.matched.some(record => record.meta.requiresAuth)) {
         next({
