@@ -121,9 +121,11 @@ export default {
       const userId = await authService.getCurrentUserId();
       const specialist = await specialistService.getSpecialist(userId);
       this.currentUser = specialist;
-      this.listCv = await cvService.getListCvById(
-        this.currentUser.listReceivedCv
+      let listReceivedCv = this.currentUser.listReceivedCv.filter(
+        e => e.isReviewed == false
       );
+      let listReceivedCvId = listReceivedCv.map(e => e.cvId);
+      this.listCv = await cvService.getListCvById(listReceivedCvId);
     }
   },
   created() {

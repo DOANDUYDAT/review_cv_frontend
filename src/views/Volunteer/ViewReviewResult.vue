@@ -223,7 +223,6 @@ export default {
       };
       try {
         const message = await messageService.sendMessage(data);
-        this.listMessage.push(message);
         this.msg = "";
       } catch (err) {
         this.$swal({

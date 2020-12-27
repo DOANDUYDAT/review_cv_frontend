@@ -50,8 +50,9 @@ export default {
         : false;
     },
     received(cv) {
-      return this.currentUser
-        ? this.currentUser.listReceivedCv.includes(cv._id)
+      return this.currentUser &&
+        this.currentUser.listReceivedCv.find(e => e.cvId === cv._id)
+        ? true
         : false;
     },
     async interestedCv(item) {

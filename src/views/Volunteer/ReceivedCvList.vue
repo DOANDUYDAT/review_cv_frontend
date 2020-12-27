@@ -3,7 +3,7 @@
     <h2 class="font-weight-medium">Danh sách CV đã nhận</h2>
     <v-divider></v-divider>
     <div v-for="cv in listCv" :key="cv._id">
-      <v-row>
+      <v-row v-if="!cv.isReviewed">
         <v-col cols="2" class="pr-0 text-center" align-self="center">
           <v-avatar color="grey darken-1" size="100">
             <v-img src="../../assets/avatar.jpg"></v-img>
@@ -117,7 +117,10 @@ export default {
       const userId = await authService.getCurrentUserId();
       const volunteer = await volunteerService.getVolunteer(userId);
       this.currentUser = volunteer;
-      let listReceivedCvId = this.currentUser.listReceivedCv.map(e => e.cvId);
+      let listReceivedCv = this.currentUser.listReceivedCv.filter(
+        e => e.isReviewed == false
+      );
+      let listReceivedCvId = listReceivedCv.map(e => e.cvId);
       this.listCv = await cvService.getListCvById(listReceivedCvId);
     },
     goToCv(cv) {

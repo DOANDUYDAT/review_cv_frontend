@@ -153,7 +153,8 @@ export default {
       const userId = await authService.getCurrentUserId();
       const specialist = await specialistService.getSpecialist(userId);
       this.currentUser = specialist;
-      this.status = specialist.listReceivedCv.includes(cvId);
+      let listReceivedCvId = specialist.listReceivedCv.map(e => e.cvId);
+      this.status = listReceivedCvId.includes(cvId);
       let file = await (
         await fetch(`http://localhost:3030/cv/${this.cv.link}`)
       ).blob();
