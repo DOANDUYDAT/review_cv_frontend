@@ -414,8 +414,7 @@ export default {
         roomId: this.review.roomId
       };
       try {
-        const message = await messageService.sendMessage(data);
-        this.listMessage.push(message);
+        await messageService.sendMessage(data);
         this.msg = "";
       } catch (err) {
         this.$swal({
