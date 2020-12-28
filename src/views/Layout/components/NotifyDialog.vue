@@ -104,7 +104,7 @@ export default {
   },
   created() {
     this.getData();
-    notificationServiceRoot.on("created", async notify => {
+    notificationServiceRoot.on("created", notify => {
       this.notifications++;
       this.listNotification.unshift(notify);
     });

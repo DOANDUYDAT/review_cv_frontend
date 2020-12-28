@@ -329,7 +329,7 @@ const routes = [
         }
       },
       {
-        path: "review-result-list",
+        path: "cv/:cvId/review-result-list",
         name: "Review Result List",
         component: () =>
           import(
@@ -663,10 +663,10 @@ router.beforeEach((to, from, next) => {
     })
     .catch(err => {
       // console.log(err);
-      // if (err.code == 404) {
-      //   // clear token cũ
-      //   localStorage.clear();
-      // }
+      if (err.code == 404) {
+        // clear token cũ
+        localStorage.clear();
+      }
       // TH5: chưa đăng nhập mà vào page yêu đăng nhập thì redirect tới /Login
       if (to.matched.some(record => record.meta.requiresAuth)) {
         next({

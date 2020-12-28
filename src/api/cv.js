@@ -90,6 +90,26 @@ async function getTotalCv() {
   return total;
 }
 
+async function getListOnlineCv(userId) {
+  const { data } = await cvService.find({
+    query: {
+      userId,
+      type: "online"
+    }
+  });
+  return data;
+}
+
+async function getListUploadCv(userId) {
+  const { data } = await cvService.find({
+    query: {
+      userId,
+      type: "upload"
+    }
+  });
+  return data;
+}
+
 export default {
   uploadCv,
   interestedCv,
@@ -99,5 +119,7 @@ export default {
   reviewCv,
   getListCvByFilter,
   getTotalCv,
-  publicCv
+  publicCv,
+  getListOnlineCv,
+  getListUploadCv
 };
