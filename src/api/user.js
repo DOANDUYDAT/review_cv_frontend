@@ -1,11 +1,12 @@
 /* eslint-disable no-unused-vars */
 import feathers from "../services/socketClient";
 
-export const userService = feathers.service("users");
-export const activeService = feathers.service("users/active");
-export const deactiveService = feathers.service("users/deactive");
-export const turnOnService = feathers.service("users/turn-on");
-export const turnOffService = feathers.service("users/turn-off");
+const userService = feathers.service("users");
+const activeService = feathers.service("users/active");
+const deactiveService = feathers.service("users/deactive");
+const turnOnService = feathers.service("users/turn-on");
+const turnOffService = feathers.service("users/turn-off");
+const addNotifyService = feathers.service("users/add-notify");
 
 async function getUser(userId) {
   const user = await userService.get(userId);
@@ -49,6 +50,13 @@ async function turnOffNotify(userId) {
   return user;
 }
 
+async function addNotify(notifyId) {
+  const user = await addNotifyService.create({
+    notifyId
+  });
+  return user;
+}
+
 export { userService as userServiceRoot };
 
 export default {
@@ -58,5 +66,6 @@ export default {
   activeUser,
   deactiveUser,
   turnOnNotify,
-  turnOffNotify
+  turnOffNotify,
+  addNotify
 };

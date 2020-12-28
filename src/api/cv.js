@@ -88,5 +88,6 @@ export default {
   getCvById,
   getListCvById,
   reviewCv,
-  getListCvByFilter
+  getListCvByFilter,
+  publicCv
 };

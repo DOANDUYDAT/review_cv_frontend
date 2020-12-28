@@ -8,10 +8,16 @@ async function getNotification(id) {
   return res;
 }
 
-async function getListNotifciationByToUserId(userId) {
+async function getListNotifciationByListId(listId) {
   const { data } = await notificationService.find({
     query: {
-      to: userId
+      _id: {
+        $in: listId
+      },
+      $sort: {
+        createdAt: -1
+      },
+      $limit: 20
     }
   });
   return data;
@@ -21,5 +27,5 @@ export { notificationService as notificationServiceRoot };
 
 export default {
   getNotification,
-  getListNotifciationByToUserId
+  getListNotifciationByListId
 };
