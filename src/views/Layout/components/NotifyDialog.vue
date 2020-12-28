@@ -1,12 +1,8 @@
 <template>
-  <v-menu open-on-hover bottom offset-y>
+  <v-menu bottom offset-y>
     <template v-slot:activator="{ on }">
-      <v-btn icon exact v-on="on">
-        <v-badge overlap color="red">
-          <template v-slot:badge>
-            <!-- <span v-if="numberNotification > 0">{{ numberNotification }}</span> -->
-            <span>10</span>
-          </template>
+      <v-btn icon exact v-on="on" @click="notifications = 0">
+        <v-badge :content="notifications" :value="notifications" color="green">
           <v-icon color="white">mdi-bell</v-icon>
         </v-badge>
       </v-btn>
@@ -15,91 +11,17 @@
       <v-card-title class="py-1">Thông báo</v-card-title>
       <v-divider></v-divider>
       <v-list three-line style="overflow: auto; height:50vh">
-        <!-- <v-list-item>
-          <v-list-item-title class="title">
-            Thông báo
-          </v-list-item-title>
-        </v-list-item> -->
-
-        <!-- <v-list-item-group color="primary"> -->
-        <!-- <v-list-item v-for="(item, i) in items" :key="i" link>
-          <v-list-item-icon>
-            <v-icon v-text="item.icon"></v-icon>
-          </v-list-item-icon>
-          <v-list-item-content>
-            <v-list-item-title v-text="item.title" link></v-list-item-title>
-          </v-list-item-content>
-        </v-list-item> -->
-        <!-- </v-list-item-group> -->
         <v-list-item-group>
-          <v-list-item link>
-            <v-list-item-avatar>
-              <v-icon color="red" large>mdi-heart</v-icon>
-            </v-list-item-avatar>
-            <v-list-item-content>
-              <v-list-item-subtitle class="subtitle-1 black--text"
-                >Chuyên gia Đạt Đần - công ty Viettel đã quan tâm đến CV của
-                bạn.</v-list-item-subtitle
-              >
-
-              <v-list-item-subtitle class="primary--text"
-                >Ngày 26/12/2020</v-list-item-subtitle
-              >
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-item link>
-            <v-list-item-avatar>
-              <v-icon color="primary" large>mdi-file-plus</v-icon>
-            </v-list-item-avatar>
-            <v-list-item-content>
-              <v-list-item-subtitle class="subtitle-1 black--text"
-                >Đạt Đần đã tải lên một CV mới.</v-list-item-subtitle
-              >
-              <v-list-item-subtitle class="primary--text"
-                >Ngày 26/12/2020</v-list-item-subtitle
-              >
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-item link>
-            <v-list-item-avatar>
-              <v-icon color="orange" large>mdi-file-document-edit</v-icon>
-            </v-list-item-avatar>
-            <v-list-item-content>
-              <v-list-item-subtitle class="subtitle-1 black--text"
-                >Chuyên gia Đạt Đần đã review CV của bạn.</v-list-item-subtitle
-              >
-              <v-list-item-subtitle class="primary--text"
-                >Ngày 26/12/2020</v-list-item-subtitle
-              >
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-item link>
-            <v-list-item-avatar>
-              <v-icon color="orange" large>mdi-file-document-edit</v-icon>
-            </v-list-item-avatar>
-            <v-list-item-content>
-              <v-list-item-subtitle class="subtitle-1 black--text"
-                >Cộng tác viên Đạt Đần đã review CV của
-                bạn.</v-list-item-subtitle
-              >
-              <v-list-item-subtitle class="primary--text"
-                >Ngày 26/12/2020</v-list-item-subtitle
-              >
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-item link>
-            <v-list-item-avatar>
-              <v-icon color="teal" large>mdi-account-check</v-icon>
-            </v-list-item-avatar>
-            <v-list-item-content>
-              <v-list-item-subtitle class="subtitle-1 black--text"
-                >Đạt Đần đã public thông tin liên hệ.</v-list-item-subtitle
-              >
-              <v-list-item-subtitle class="primary--text"
-                >Ngày 26/12/2020</v-list-item-subtitle
-              >
-            </v-list-item-content>
-          </v-list-item>
+          <notify-item
+            v-for="notify in listNotification"
+            :key="notify._id"
+            :data="notify"
+            :icon="getIcon(notify)"
+          >
+            <template v-slot:content>
+              {{ getContent(notify) }}
+            </template>
+          </notify-item>
         </v-list-item-group>
       </v-list>
     </v-card>
@@ -114,13 +36,21 @@ import authService from "@/api/authentication";
 import memberService from "@/api/member";
 import specialistService from "@/api/specialist";
 import volunteerService from "@/api/volunteer";
+import NotifyItem from "./NotifyItem.vue";
+import userService from "@/api/user";
+
 export default {
   data() {
     return {
       listNotification: null,
       dialog: false,
-      currentUser: null
+      currentUser: null,
+      // isNewStatus: false,
+      notifications: 0
     };
+  },
+  components: {
+    NotifyItem
   },
   computed: {},
   methods: {
@@ -133,13 +63,48 @@ export default {
     async getData() {
       const user = await authService.getUserByRole();
       this.currentUser = user;
-      this.listNotification = await notifyService.getListNotifciationByToUserId(
-        user._id
+      this.listNotification = await notifyService.getListNotifciationByListId(
+        this.currentUser.user.listNotifications
       );
+    },
+    getIcon(notify) {
+      if (notify.type === "interestCv") {
+        return {
+          color: "red",
+          text: "mdi-heart"
+        };
+      } else if (notify.type === "publicCv") {
+        return {
+          color: "primary",
+          text: "mdi-account-check"
+        };
+      } else if (notify.type === "newCv") {
+        return {
+          color: "success",
+          text: "mdi-file-plus"
+        };
+      } else if (notify.type === "newReview") {
+        return {
+          color: "info",
+          text: "mdi-file-document-edit"
+        };
+      }
+    },
+    getContent(notify) {
+      if (notify.type === "interestCv") {
+        return `Chuyên gia ${notify.fromUser.fullName} đã quan tâm Cv của bạn`;
+      } else if (notify.type === "publicCv") {
+        return `${notify.fromUser.fullName} đã public thông tin liên hệ`;
+      } else if (notify.type === "newCv") {
+        return `${notify.fromUser.fullName} vừa đăng 1 Cv mới`;
+      } else if (notify.type === "newReview") {
+        return `${notify.fromUser.fullName} đã review Cv của bạn`;
+      }
     }
   },
   created() {
-    notificationServiceRoot.on("created", notify => {
+    this.getData();
+    notificationServiceRoot.on("created", async notify => {
       // if (notify.from && notify.fromUser) {
       //   if (notify.fromUser.role === 'member') {
       //     this.listNotification.push({
@@ -147,7 +112,10 @@ export default {
       //     })
       //   }
       // }
-      console.log(notify);
+      // this.isNewStatus = true;
+      userService.addNotify(notify._id);
+      this.notifications++;
+      this.listNotification.unshift(notify);
     });
   }
 };
