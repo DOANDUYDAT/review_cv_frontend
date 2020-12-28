@@ -94,7 +94,7 @@
         </v-tab-item>
         <v-tab-item>
           <v-container fluid>
-            <v-card @click="goToReviewResultList">
+            <v-card>
               <v-row class="px-6 py-3">
                 <v-col cols="2">
                   <v-img
@@ -120,6 +120,29 @@
                           >https://i.topcv.vn/duongthithoa?ref=3389360</span
                         >
                       </v-input>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col class="pb-0 text-right" cols="12">
+                      <v-btn
+                        small
+                        color="#f6f6f6"
+                        class="mx-2 grey--text"
+                        depressed
+                      >
+                        <v-icon left> mdi-eye-outline </v-icon>Xem CV</v-btn
+                      >
+
+                      <v-btn
+                        small
+                        color="#f6f6f6"
+                        class="mx-2 grey--text"
+                        depressed
+                        @click.stop="goToReviewResultList"
+                      >
+                        <v-icon left> mdi-file-eye </v-icon>
+                        Xem danh sách kết quả review</v-btn
+                      >
                     </v-col>
                   </v-row>
                 </v-col>

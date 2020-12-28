@@ -83,7 +83,7 @@
               color="blue"
               :disabled="!status"
             >
-              Download
+              Tải xuống
             </v-btn>
           </v-col>
         </v-row>

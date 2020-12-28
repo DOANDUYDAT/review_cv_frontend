@@ -67,11 +67,21 @@ async function exchangeGift(_id) {
   return res;
 }
 
+async function getTotalGift() {
+  const { total } = await giftService.find({
+    query: {
+      $limit: 0
+    }
+  });
+  return total;
+}
+
 export default {
   getAllGifts,
   getGiftById,
   createGift,
   deleteGift,
   updateGift,
-  exchangeGift
+  exchangeGift,
+  getTotalGift
 };

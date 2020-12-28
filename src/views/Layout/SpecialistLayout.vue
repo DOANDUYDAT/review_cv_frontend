@@ -61,10 +61,6 @@
           </v-list>
         </v-menu>
         <v-spacer></v-spacer>
-        <!-- <v-btn icon exact>
-          <v-icon color="white">mdi-bell</v-icon>
-        </v-btn>
-        <v-badge offset-x="38" offset-y="7" color="red" overlap> </v-badge> -->
         <notify-dialog></notify-dialog>
       </v-row>
     </v-app-bar>

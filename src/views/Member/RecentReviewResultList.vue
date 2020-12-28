@@ -110,9 +110,4 @@ export default {
   }
 };
 </script>
-<style lang="scss" scoped>
-// @import "@/variables.scss";
-// .container {
-//   background-color: white;
-// }
-</style>
+<style lang="scss" scoped></style>

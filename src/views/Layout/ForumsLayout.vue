@@ -3,12 +3,6 @@
     <v-app-bar app color="white" flat>
       <v-row align="center" no-gutters class="mx-16" v-if="currentUser">
         <v-col cols="2" class="py-2">
-          <!-- <v-container class="py-0 fill-height" fluid> -->
-          <!-- <v-container fluid> -->
-
-          <!-- <v-btn v-for="link in links" :key="link" text>
-          {{ link }}
-        </v-btn> -->
           <v-avatar
             size="50"
             @click="GoToMemberHomePage"
@@ -32,22 +26,16 @@
             ></v-text-field>
           </v-responsive>
         </v-col>
-        <!-- <v-spacer></v-spacer> -->
         <v-col offset="1" cols="3">
           <v-btn @click="goToHomeForums" text color="white">Diễn đàn</v-btn>
           <v-btn text rounded dark>
             Điểm uy tín: {{ currentUser.user.reputationPoint }}
           </v-btn>
-          <!-- <v-btn text v-show="!$vuetify.breakpoint.mobile">
-          <span>Đần Thúi</span>
-          <v-icon right>mdi-account-circle</v-icon>
-        </v-btn> -->
           <v-menu offset-y v-if="currentUser">
             <template v-slot:activator="{ on }">
               <v-btn text dark v-on="on">
                 <v-icon left>mdi-account-circle</v-icon>
                 {{ currentUser.user.userName }}
-                <!-- Đần Thúi -->
                 <v-icon right>mdi-menu-down</v-icon>
               </v-btn>
             </template>
@@ -117,7 +105,6 @@
             </v-list>
           </v-menu>
         </v-col>
-        <!-- </v-container> -->
       </v-row>
     </v-app-bar>
 
@@ -130,7 +117,6 @@
 </template>
 
 <script>
-// import memberService from "../../api/member";
 import authService from "../../api/authentication";
 export default {
   data: () => ({

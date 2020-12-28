@@ -55,6 +55,15 @@ async function createSpecialist(info) {
   return specialist;
 }
 
+async function getTotalSpecialist() {
+  const { total } = await specialistService.find({
+    query: {
+      $limit: 0
+    }
+  });
+  return total;
+}
+
 export { updateInfoService };
 
 export default {
@@ -64,5 +73,6 @@ export default {
   updateSpecialistInfo,
   createSpecialist,
   getListAcceptedSpecialists,
-  decline
+  decline,
+  getTotalSpecialist
 };

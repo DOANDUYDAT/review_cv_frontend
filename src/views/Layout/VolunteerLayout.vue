@@ -85,9 +85,6 @@ import { updateInfoService, exchangePointService } from "../../api/volunteer";
 import authService from "../../api/authentication";
 export default {
   data: () => ({
-    // user: {
-    //   username: ""
-    // },
     currentUser: null
   }),
   components: {

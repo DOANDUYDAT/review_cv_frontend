@@ -8,24 +8,6 @@
               <h2 class="text-highlight ">Thông tin cá nhân</h2>
             </v-row>
             <v-row class="px-8">
-              <!-- <v-col cols="4">Họ và tên</v-col>
-              <v-col cols="8">
-                <ValidationProvider
-                  mode="aggressive"
-                  name="fullName"
-                  rules="required"
-                  v-slot="{ errors }"
-                  :bails="false"
-                >
-                  <v-text-field
-                    v-model="cv.fullName"
-                    placeholder="Họ và tên"
-                    outlined
-                    dense
-                  ></v-text-field>
-                  <span class="red--text text--lighten-1">{{ errors[0] }}</span>
-                </ValidationProvider>
-              </v-col> -->
               <v-col cols="4">Kinh nghiệm</v-col>
               <v-col cols="8">
                 <v-select
@@ -36,7 +18,7 @@
                 ></v-select>
               </v-col>
               <v-col cols="4">Lĩnh vực làm việc</v-col>
-              <v-col cols="8">
+              <!-- <v-col cols="8">
                 <ValidationProvider>
                   <v-select
                     v-model="cv.fields"
@@ -76,12 +58,20 @@
                     </template>
                   </v-select>
                 </ValidationProvider>
+              </v-col> -->
+              <v-col cols="8">
+                <v-select
+                  v-model="cv.field"
+                  placeholder="Lĩnh vực làm việc"
+                  :items="fields"
+                  outlined
+                ></v-select>
               </v-col>
               <v-col cols="4">Cấp bậc</v-col>
               <v-col cols="8">
                 <v-select
                   v-model="cv.position"
-                  placeholder="Kinh nghiệm"
+                  placeholder="Cấp bậc"
                   :items="positions"
                   outlined
                 ></v-select>
@@ -200,22 +190,22 @@ export default {
       ],
       timeTypes: ["Full-time", "Part-time"],
       file: null,
-      fieldsData: [
-        { name: "An toàn lao động" },
-        { name: "Bất động sản" },
-        { name: "Bưu chính - Viễn thông" },
-        { name: "Công nghệ thông tin" },
-        { name: "Dệt may/Da giày" },
-        { name: "Điện tử viễn thông" },
-        { name: "Du lịch" },
-        { name: "Kế toán/Kiểm toán" },
-        { name: "Luật/Pháp lý" },
-        { name: "Quản lý điều hành" }
+      fields: [
+        "An toàn lao động",
+        "Bất động sản",
+        "Bưu chính - Viễn thông",
+        "Công nghệ thông tin",
+        "Dệt may/Da giày",
+        "Điện tử viễn thông",
+        "Du lịch",
+        "Kế toán/Kiểm toán",
+        "Luật/Pháp lý",
+        "Quản lý điều hành"
       ],
       cv: {
         file: null,
         exp: "",
-        fields: [],
+        field: [],
         position: "",
         location: "",
         timeType: ""
@@ -228,7 +218,7 @@ export default {
         await cvService.uploadCv(this.cv);
         this.cv.file = null;
         this.cv.exp = "";
-        this.cv.fields = [];
+        this.cv.field = [];
         this.cv.position = "";
         this.cv.location = "";
         this.cv.timeType = "";
@@ -255,11 +245,11 @@ export default {
     handleFileUpload(file) {
       console.log(file);
       this.file = file;
-    },
-    remove(item) {
-      const index = this.cv.fields.indexOf(item.name);
-      if (index >= 0) this.cv.fields.splice(index, 1);
     }
+    // remove(item) {
+    //   const index = this.cv.fields.indexOf(item.name);
+    //   if (index >= 0) this.cv.fields.splice(index, 1);
+    // }
   }
 };
 </script>

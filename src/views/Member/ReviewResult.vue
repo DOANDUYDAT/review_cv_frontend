@@ -201,7 +201,7 @@
       <v-dialog v-model="dialog2" max-width="450">
         <v-card class="elevation-4">
           <v-toolbar>
-            <v-toolbar-title>Chat</v-toolbar-title>
+            <v-toolbar-title>Trò chuyện</v-toolbar-title>
             <v-spacer></v-spacer>
             <!-- <div class="flex-grow-1 text-center headline">Báo cáo</div> -->
             <div class="float-right">

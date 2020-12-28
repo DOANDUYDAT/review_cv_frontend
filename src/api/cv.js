@@ -10,7 +10,7 @@ async function uploadCv(cv) {
   const fData = new FormData();
   fData.append("uri", cv.file);
   fData.append("exp", cv.exp);
-  fData.append("fields", cv.fields);
+  fData.append("field", cv.field);
   fData.append("position", cv.position);
   fData.append("location", cv.location);
   fData.append("timeType", cv.timeType);
@@ -81,6 +81,15 @@ async function publicCv(cvId, toUserId) {
   return cv;
 }
 
+async function getTotalCv() {
+  const { total } = await cvService.find({
+    query: {
+      $limit: 0
+    }
+  });
+  return total;
+}
+
 export default {
   uploadCv,
   interestedCv,
@@ -88,5 +97,6 @@ export default {
   getCvById,
   getListCvById,
   reviewCv,
-  getListCvByFilter
+  getListCvByFilter,
+  getTotalCv
 };

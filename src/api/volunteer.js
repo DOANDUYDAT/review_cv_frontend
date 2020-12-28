@@ -60,6 +60,15 @@ async function exchangePoint(_id, amount, category) {
   return res;
 }
 
+async function getTotalVolunteer() {
+  const { total } = await volunteerService.find({
+    query: {
+      $limit: 0
+    }
+  });
+  return total;
+}
+
 export { updateInfoService, exchangePointService };
 
 export default {
@@ -69,5 +78,6 @@ export default {
   updateVolunteerInfo,
   createVolunteer,
   getListAcceptedVolunteers,
-  exchangePoint
+  exchangePoint,
+  getTotalVolunteer
 };

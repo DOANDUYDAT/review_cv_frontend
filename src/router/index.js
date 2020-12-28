@@ -164,7 +164,6 @@ const routes = [
   },
   {
     path: "/admin",
-    name: "admin",
     component: () =>
       import(/* webpackChunkName: "admin" */ "../views/Layout/AdminLayout.vue"),
     meta: {
@@ -172,6 +171,18 @@ const routes = [
       roles: ["admin"]
     },
     children: [
+      {
+        path: "",
+        name: "Admin-chart",
+        component: () =>
+          import(
+            /* webpackChunkName: "admin" */ "../views/Admin/AdminChart.vue"
+          ),
+        meta: {
+          requiresAuth: true,
+          roles: ["admin"]
+        }
+      },
       {
         path: "Members",
         name: "Members",

@@ -8,7 +8,7 @@
   >
     <template v-slot:top>
       <v-toolbar flat color="white">
-        <v-toolbar-title>Danh sách tài khoản người dùng</v-toolbar-title>
+        <v-toolbar-title>Danh sách tài khoản thành viên</v-toolbar-title>
         <v-divider class="mx-4" inset vertical></v-divider>
         <v-spacer></v-spacer>
         <v-spacer></v-spacer>
@@ -26,7 +26,7 @@
           <v-card>
             <v-toolbar color="blue" dark flat>
               <v-card-title class="layout justify-center">
-                <span class="headline">Thông tin tài khoản người dùng</span>
+                <span class="headline">Thông tin tài khoản thành viên</span>
               </v-card-title>
             </v-toolbar>
             <v-card-text>
@@ -65,7 +65,7 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue" text @click="close">Hủy bỏ</v-btn>
+              <v-btn color="blue" text @click="close">Đóng</v-btn>
               <!-- <v-btn color="it-blue-lighten" text @click="save">Save</v-btn> -->
             </v-card-actions>
           </v-card>
@@ -170,7 +170,7 @@ export default {
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
         confirmButtonText: "Đồng ý",
-        cancelButtonText: "Hủy bỏ"
+        cancelButtonText: "Hủy"
       });
       if (result.isConfirmed) {
         if (member.user.isActive) {

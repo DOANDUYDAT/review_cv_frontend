@@ -3,18 +3,18 @@
     <v-app-bar
       color="#43a047"
       dark
-      src="https://picsum.photos/1920/1080?random"
+      src="../../assets/profile.png"
       clipped-left
       app
     >
-      <v-toolbar-title>Admin</v-toolbar-title>
+      <v-toolbar-title class="headline">Trang quản trị</v-toolbar-title>
 
       <v-spacer></v-spacer>
       <v-menu offset-y>
         <template v-slot:activator="{ on }">
           <v-btn text dark v-on="on">
             <v-icon left>mdi-account-circle</v-icon>
-            Admin
+            Quản trị viên
             <v-icon right>mdi-menu-down</v-icon>
           </v-btn>
         </template>
@@ -69,11 +69,11 @@ export default {
     return {
       items: [
         {
-          text: "Quản lý tài khoản người dùng",
+          text: "Quản lý tài khoản thành viên",
           icon: "mdi-account",
           children: [
             {
-              text: "Danh sách người dùng",
+              text: "Danh sách thành viên",
               link: "/Admin/Members"
             }
           ]

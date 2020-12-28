@@ -88,7 +88,7 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue" text @click="close">Hủy bỏ</v-btn>
+              <v-btn color="blue" text @click="close">Đóng</v-btn>
               <!-- <v-btn color="it-blue-lighten" text @click="save">Save</v-btn> -->
             </v-card-actions>
           </v-card>
@@ -192,7 +192,7 @@ export default {
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
         confirmButtonText: "Đồng ý",
-        cancelButtonText: "Hủy bỏ"
+        cancelButtonText: "Hủy"
       });
       if (result.isConfirmed) {
         if (specialist.user.isActive) {

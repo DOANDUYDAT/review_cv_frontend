@@ -30,11 +30,21 @@ async function getAllMembers() {
   return data;
 }
 
+async function getTotalMember() {
+  const { total } = await memberService.find({
+    query: {
+      $limit: 0
+    }
+  });
+  return total;
+}
+
 export { updateInfoService };
 
 export default {
   getMember,
   updateInfo,
   createMember,
-  getAllMembers
+  getAllMembers,
+  getTotalMember
 };
