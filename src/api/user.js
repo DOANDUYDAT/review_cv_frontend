@@ -50,13 +50,6 @@ async function turnOffNotify(userId) {
   return user;
 }
 
-async function addNotify(notifyId) {
-  const user = await addNotifyService.create({
-    notifyId
-  });
-  return user;
-}
-
 export { userService as userServiceRoot };
 
 export default {
@@ -66,6 +59,5 @@ export default {
   activeUser,
   deactiveUser,
   turnOnNotify,
-  turnOffNotify,
-  addNotify
+  turnOffNotify
 };

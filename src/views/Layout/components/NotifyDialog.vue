@@ -105,15 +105,6 @@ export default {
   created() {
     this.getData();
     notificationServiceRoot.on("created", async notify => {
-      // if (notify.from && notify.fromUser) {
-      //   if (notify.fromUser.role === 'member') {
-      //     this.listNotification.push({
-      //       ...notify
-      //     })
-      //   }
-      // }
-      // this.isNewStatus = true;
-      userService.addNotify(notify._id);
       this.notifications++;
       this.listNotification.unshift(notify);
     });
