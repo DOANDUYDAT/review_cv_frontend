@@ -5,6 +5,7 @@ const cvService = feathers.service("cvs");
 const interestService = feathers.service("cvs/interest");
 const reviewCvService = feathers.service("cvs/review-cv");
 const publicService = feathers.service("cvs/public");
+const writeCVService = feathers.service("cvs/new-cv");
 
 async function uploadCv(cv) {
   const fData = new FormData();
@@ -17,7 +18,7 @@ async function uploadCv(cv) {
   let myHeaders = new Headers();
   let token = "Bearer " + (await feathers.authentication.getAccessToken());
   myHeaders.append("Authorization", token);
-  const res = await fetch("http://localhost:3030/cvs", {
+  const res = await fetch("http://localhost:3030/cvs/uploads", {
     method: "POST",
     body: fData,
     headers: myHeaders,
@@ -110,6 +111,21 @@ async function getListUploadCv(userId) {
   return data;
 }
 
+async function writeNewCv(data) {
+  const cv = await writeCVService.create(data);
+  return cv;
+}
+
+async function editCv(cvId, data) {
+  const cv = await cvService.patch(cvId, data);
+  return cv;
+}
+
+async function deleteCv(cvId) {
+  const cv = await cvService.remove(cvId);
+  return cv;
+}
+
 export default {
   uploadCv,
   interestedCv,
@@ -121,5 +137,8 @@ export default {
   getTotalCv,
   publicCv,
   getListOnlineCv,
-  getListUploadCv
+  getListUploadCv,
+  deleteCv,
+  editCv,
+  writeNewCv
 };
