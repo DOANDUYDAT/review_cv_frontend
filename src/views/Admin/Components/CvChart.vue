@@ -11,6 +11,7 @@
 
 <script>
 import VueApexCharts from "vue-apexcharts";
+import cvService from "@/api/cv";
 
 export default {
   components: {
@@ -62,6 +63,17 @@ export default {
         }
       }
     };
+  },
+  methods: {
+    async getData() {
+      console.log(this.series[0].data);
+      for (let i = 0; i < 12; i++) {
+        this.series[0].data[i] = await cvService.getTotalCvInMonth(i);
+      }
+    }
+  },
+  created() {
+    this.getData();
   }
 };
 </script>

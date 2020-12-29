@@ -29,7 +29,12 @@
                   ><br />
                   <span>Địa điểm: {{ review.cv.location }}</span>
                 </v-col>
-                <v-col cols="3" class="text-end" style="align-self: flex-end">
+                <v-col
+                  cols="3"
+                  class="text-end"
+                  style="align-self: flex-end"
+                  v-if="isPublic(review.cv)"
+                >
                   <v-icon small color="green"
                     >mdi-checkbox-marked-circle</v-icon
                   >
@@ -42,7 +47,7 @@
                   <span class="green--text">{{ review.cv.exp }}</span>
                 </v-col>
                 <v-col cols="6" class="py-0 text-right">
-                  Review ngày {{ shortDate(review.cv.createdAt) }}
+                  Review ngày {{ shortDate(review.createdAt) }}
                 </v-col>
               </v-row>
             </v-col>
@@ -79,6 +84,11 @@ export default {
     //   let d = new Date(timeStamp);
     //   return d.toLocaleString();
     // },
+    isPublic(cv) {
+      return this.currentUser
+        ? cv.listViewer.includes(this.currentUser.userId)
+        : false;
+    },
     shortDate: timeStamp => {
       let d = new Date(timeStamp);
       return d.toLocaleDateString();

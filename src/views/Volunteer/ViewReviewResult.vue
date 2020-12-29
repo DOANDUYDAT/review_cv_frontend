@@ -240,7 +240,7 @@ export default {
       this.currentUser = volunteer;
       // this.status = volunteer.listReceivedCv.includes(cvId);
       let file = await (
-        await fetch(`http://localhost:3030/review/${this.review.link}`)
+        await fetch(`http://localhost:3030/review/${this.review.linkHidden}`)
       ).blob();
       this.fileReview = URL.createObjectURL(file).toString() + "#toolbar=0";
       this.listMessage = await messageService.findMessageByRoomId(

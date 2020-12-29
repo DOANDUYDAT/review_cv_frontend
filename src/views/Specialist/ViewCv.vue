@@ -156,7 +156,7 @@ export default {
       let listReceivedCvId = specialist.listReceivedCv.map(e => e.cvId);
       this.status = listReceivedCvId.includes(cvId);
       let file = await (
-        await fetch(`http://localhost:3030/cv/${this.cv.link}`)
+        await fetch(`http://localhost:3030/cv/${this.cv.linkHidden}`)
       ).blob();
       this.fileCv = URL.createObjectURL(file).toString() + "#toolbar=0";
     }
