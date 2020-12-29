@@ -106,6 +106,18 @@ const routes = [
         }
       },
       {
+        path: "volunteer-cv",
+        name: "CV_Volunteer",
+        component: () =>
+          import(
+            /* webpackChunkName: "CV" */ "../views/Quan_Ly_CV/BaseComponent/CV_Volunteer.vue"
+          ),
+        meta: {
+          requiresAuth: false,
+          roles: ["member"]
+        }
+      },
+      {
         path: "infor",
         name: "InforCV",
         component: () =>
