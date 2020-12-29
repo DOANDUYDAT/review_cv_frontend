@@ -110,8 +110,24 @@ async function getListUploadCv(userId) {
   return data;
 }
 
+async function getTotalCvInMonth(month) {
+  const currentYear = new Date().getFullYear();
+  const { total } = cvService.find({
+    query: {
+      createdAt: {
+        $gte: new Date(currentYear, month, 1).getTime(),
+        $lt: new Date(currentYear, month + 1, 1).getTime()
+      },
+      $limit: 0
+    }
+  });
+  console.log(total);
+  return total;
+}
+
 export default {
   uploadCv,
+  getTotalCvInMonth,
   interestedCv,
   getAllCvs,
   getCvById,

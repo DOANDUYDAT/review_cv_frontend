@@ -148,7 +148,7 @@ export default {
       this.currentUser = volunteer;
       let listReceivedCvId = volunteer.listReceivedCv.map(e => e.cvId);
       this.status = listReceivedCvId.includes(cvId);
-      let myUrl = "http://localhost:3030/cv/" + this.cv.link;
+      let myUrl = "http://localhost:3030/cv/" + this.cv.linkHidden;
       this.file = await (await fetch(myUrl)).blob();
       this.linkex = URL.createObjectURL(this.file).toString() + "#toolbar=0";
     }

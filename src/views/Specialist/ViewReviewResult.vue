@@ -208,7 +208,7 @@ export default {
   computed: {
     isPublic() {
       return this.cv && this.currentUser
-        ? this.cv.listViewer.includes(this.currentUser._id)
+        ? this.cv.listViewer.includes(this.currentUser.userId)
         : false;
     },
     cv() {
@@ -239,9 +239,16 @@ export default {
       const specialist = await specialistService.getSpecialist(userId);
       this.currentUser = specialist;
       // this.status = specialist.listReceivedCv.includes(cvId);
-      let file = await (
-        await fetch(`http://localhost:3030/cv/${this.cv.link}`)
-      ).blob();
+      let file = null;
+      if (this.isPublic) {
+        file = await (
+          await fetch(`http://localhost:3030/cv/${this.cv.link}`)
+        ).blob();
+      } else {
+        file = await (
+          await fetch(`http://localhost:3030/cv/${this.cv.linkHidden}`)
+        ).blob();
+      }
       this.fileReview = URL.createObjectURL(file).toString() + "#toolbar=0";
       this.listMessage = await messageService.findMessageByRoomId(
         this.review.roomId
