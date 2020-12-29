@@ -15,6 +15,8 @@
 import CvList from "./CvList";
 import FilterCv from "./FilterCv";
 import cvService from "../../api/cv";
+import EventBus from "../../services/event-bus";
+
 export default {
   components: {
     CvList,
@@ -44,6 +46,12 @@ export default {
   },
   created() {
     this.getData();
+    EventBus.$on("search-cv", async textSearch => {
+      this.listCv = await cvService.search(textSearch);
+    });
+  },
+  destroyed() {
+    EventBus.$off();
   }
 };
 </script>

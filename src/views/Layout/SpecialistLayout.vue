@@ -21,8 +21,11 @@
               hide-details
               rounded
               solo-inverted
-              prepend-inner-icon="mdi-magnify"
+              append-icon="mdi-magnify"
               label="Search"
+              @click:append="search"
+              @keyup.enter="search"
+              v-model="textSearch"
             ></v-text-field>
           </v-responsive>
         </v-col>
@@ -77,14 +80,20 @@ import NotifyDialog from "./components/NotifyDialog";
 import specialistService from "../../api/specialist";
 import { updateInfoService } from "../../api/specialist";
 import authService from "../../api/authentication";
+import EventBus from "../../services/event-bus";
+
 export default {
   data: () => ({
-    currentUser: null
+    currentUser: null,
+    searchText: ""
   }),
   components: {
     NotifyDialog
   },
   methods: {
+    search() {
+      EventBus.$emit("search-cv", this.searchText);
+    },
     GoToSpecialistHomePage() {
       const { role } = this.currentUser.user;
       let newPath = "";

@@ -1,6 +1,7 @@
 <template>
-  <v-card id="chart">
+  <v-card>
     <apexchart
+      v-if="series && series[0].data.length"
       type="area"
       width="730"
       :options="chartOptions"
@@ -22,7 +23,7 @@ export default {
       series: [
         {
           name: "Số lượng CV",
-          data: [31, 40, 28, 51, 42, 109, 100, 200, 58, 113, 234, 38]
+          data: []
         }
       ],
       chartOptions: {
@@ -66,10 +67,15 @@ export default {
   },
   methods: {
     async getData() {
-      console.log(this.series[0].data);
+      let newData = [];
       for (let i = 0; i < 12; i++) {
-        this.series[0].data[i] = await cvService.getTotalCvInMonth(i);
+        newData[i] = await cvService.getTotalCvInMonth(i);
       }
+      this.series = [
+        {
+          data: newData
+        }
+      ];
     }
   },
   created() {

@@ -11,6 +11,7 @@
 
 <script>
 import VueApexCharts from "vue-apexcharts";
+import questionService from "@/api/question";
 
 export default {
   components: {
@@ -21,7 +22,7 @@ export default {
       series: [
         {
           name: "Số lượng câu hỏi",
-          data: [44, 55, 41, 67, 22, 43, 21, 33, 45, 31, 87, 65, 35]
+          data: []
         }
       ],
       chartOptions: {
@@ -81,6 +82,22 @@ export default {
         }
       }
     };
+  },
+  methods: {
+    async getData() {
+      let newData = [];
+      for (let i = 0; i < 12; i++) {
+        newData[i] = await questionService.getTotalQuestionInMonth(i);
+      }
+      this.series = [
+        {
+          data: newData
+        }
+      ];
+    }
+  },
+  created() {
+    this.getData();
   }
 };
 </script>

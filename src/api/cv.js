@@ -128,7 +128,7 @@ async function deleteCv(cvId) {
 
 async function getTotalCvInMonth(month) {
   const currentYear = new Date().getFullYear();
-  const { total } = cvService.find({
+  const { total } = await cvService.find({
     query: {
       createdAt: {
         $gte: new Date(currentYear, month, 1).getTime(),
@@ -137,8 +137,16 @@ async function getTotalCvInMonth(month) {
       $limit: 0
     }
   });
-  console.log(total);
   return total;
+}
+
+async function search(text) {
+  const { data } = await cvService.find({
+    query: {
+      $search: text
+    }
+  });
+  return data;
 }
 
 export default {
@@ -156,5 +164,6 @@ export default {
   getListUploadCv,
   deleteCv,
   editCv,
-  writeNewCv
+  writeNewCv,
+  search
 };

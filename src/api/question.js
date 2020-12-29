@@ -52,10 +52,25 @@ async function likeQuestion(questionId) {
   return res;
 }
 
+async function getTotalQuestionInMonth(month) {
+  const currentYear = new Date().getFullYear();
+  const { total } = await questionService.find({
+    query: {
+      createdAt: {
+        $gte: new Date(currentYear, month, 1).getTime(),
+        $lt: new Date(currentYear, month + 1, 1).getTime()
+      },
+      $limit: 0
+    }
+  });
+  return total;
+}
+
 export default {
   getQuestion,
   createQuestion,
   getAllQuestions,
   closeQuestion,
-  likeQuestion
+  likeQuestion,
+  getTotalQuestionInMonth
 };

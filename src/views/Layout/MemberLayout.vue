@@ -63,6 +63,7 @@ import NotifyDialog from "./components/NotifyDialog";
 import memberService from "../../api/member";
 import { updateInfoService } from "../../api/member";
 import authService from "../../api/authentication";
+
 export default {
   data: () => ({
     currentUser: null

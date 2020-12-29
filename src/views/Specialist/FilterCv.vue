@@ -152,12 +152,7 @@ export default {
       this.filter.exp = [];
       this.filter.position = [];
       this.filter.timeType = [];
-    },
-    async getData() {}
-  },
-
-  created() {
-    this.getData();
+    }
   }
 };
 </script>
