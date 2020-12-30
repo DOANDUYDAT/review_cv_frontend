@@ -26,9 +26,11 @@
           >
             <v-card hover height="100%" exact class="px-4">
               <!-- eager giúp force các ảnh được load hết -->
-              <v-card-title class="sub-title text-center">{{
-                item.name
-              }}</v-card-title>
+              <v-card-title
+                class="sub-title text-center"
+                style="height: 96px"
+                >{{ item.name }}</v-card-title
+              >
               <!-- <v-img
                 :height="heightImage"
                 :src="item.image"

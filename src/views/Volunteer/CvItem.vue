@@ -10,10 +10,8 @@
         <v-row>
           <v-col cols="9" class="pb-0">
             <h3>{{ cv.author.user.fullName }}</h3>
-            <div>
-              Lĩnh vực làm việc:
-              <span v-for="(fi, i) in cv.fields" :key="i">{{ fi }}</span>
-            </div>
+            <span>Lĩnh vực làm việc: {{ cv.field }}</span>
+            <br />
             <span>Cấp bậc: {{ cv.position }}</span>
           </v-col>
           <v-col cols="3" class="text-right" v-if="receivedStatus">

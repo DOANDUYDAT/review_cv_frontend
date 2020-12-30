@@ -69,7 +69,7 @@
           </v-list-item-avatar>
           <v-list-item-content class="text-end">
             <v-list-item-title class="title mb-2 white--text">
-              Quà tặng
+              Loại quà tặng
             </v-list-item-title>
             <v-list-item-title class="headline mb-2 white--text">
               {{ totalGift }}

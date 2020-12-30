@@ -38,7 +38,7 @@
             <v-icon small>mdi-briefcase-account</v-icon>
           </v-col>
           <v-col cols="5" class="body-2 py-0">
-            <span v-for="(fi, i) in cv.fields" :key="i">{{ fi }}</span>
+            {{ cv.field }}
           </v-col>
           <v-col cols="1" class="py-0">
             <v-icon small>mdi-map-marker</v-icon>
@@ -145,7 +145,17 @@ export default {
       }
     },
     downloadCv() {
-      console.log("download CV");
+      // let save = document.createElement("a");
+      // save.href = `http://localhost:3030/cv/${this.cv.linkHidden}`;
+      // save.download = this.cv.name
+      //   ? this.cv.name
+      //   : `cv-${this.cv.author.user.fullName}`.toString();
+      // save.target = "_blank";
+      // console.log(save);
+      // document.body.appendChild(save);
+      // save.click();
+      // document.body.removeChild(save);
+      window.open(`http://localhost:3030/cv/${this.cv.linkHidden}`);
     },
     async getData() {
       const cvId = this.$route.params.cvId;

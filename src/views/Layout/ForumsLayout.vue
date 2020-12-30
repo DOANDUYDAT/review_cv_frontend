@@ -26,84 +26,86 @@
             ></v-text-field>
           </v-responsive>
         </v-col>
-        <v-col offset="1" cols="3">
-          <v-btn @click="goToHomeForums" text color="white">Diễn đàn</v-btn>
-          <v-btn text rounded dark>
-            Điểm uy tín: {{ currentUser.user.reputationPoint }}
-          </v-btn>
-          <v-menu offset-y v-if="currentUser">
-            <template v-slot:activator="{ on }">
-              <v-btn text dark v-on="on">
-                <v-icon left>mdi-account-circle</v-icon>
-                {{ currentUser.user.userName }}
-                <v-icon right>mdi-menu-down</v-icon>
-              </v-btn>
-            </template>
-            <v-list v-if="currentUser.user.role === 'member'">
-              <v-list-item @click="GoToUpdateProfilePage">
-                <v-list-item-title>Cập nhật thông tin</v-list-item-title>
-              </v-list-item>
-              <v-list-item @click="GoToChangeStatusNotifyPage">
-                <v-list-item-title>Cài đặt thông báo email</v-list-item-title>
-              </v-list-item>
-              <v-list-item @click="GoToRecentReviewResultListPage">
-                <v-list-item-title
-                  >Danh sách kết quả review gần đây</v-list-item-title
-                >
-              </v-list-item>
-              <v-list-item @click="LogOut">
-                <v-list-item-title>Đăng xuất</v-list-item-title>
-              </v-list-item>
-            </v-list>
-            <v-list v-else-if="currentUser.user.role === 'specialist'">
-              <v-list-item @click="GoToUpdateSpecialistProfilePage">
-                <v-list-item-title>Cập nhật thông tin</v-list-item-title>
-              </v-list-item>
-              <v-list-item @click="GoToSpecialistChangeStatusNotifyPage">
-                <v-list-item-title>Cài đặt thông báo email</v-list-item-title>
-              </v-list-item>
-              <v-list-item @click="GoToReceivedCvListPage">
-                <v-list-item-title>Danh sách CV đã nhận</v-list-item-title>
-              </v-list-item>
-              <v-list-item @click="GoToReviewHistoryPage">
-                <v-list-item-title>Lịch sử review</v-list-item-title>
-              </v-list-item>
-              <v-list-item @click="LogOut">
-                <v-list-item-title>Đăng xuất</v-list-item-title>
-              </v-list-item>
-            </v-list>
-            <v-list v-else-if="currentUser.user.role === 'volunteer'">
-              <v-list-item @click="GoToUpdateVolunteerProfilePage">
-                <v-list-item-title>Cập nhật thông tin</v-list-item-title>
-              </v-list-item>
-              <v-list-item @click="GoToVolunteerChangeStatusNotifyPage">
-                <v-list-item-title>Cài đặt thông báo email</v-list-item-title>
-              </v-list-item>
-              <v-list-item @click="GoToVolunteerReceivedCvListPage">
-                <v-list-item-title>Danh sách CV đã nhận</v-list-item-title>
-              </v-list-item>
-              <v-list-item @click="GoToVolunteerReviewHistoryPage">
-                <v-list-item-title>Lịch sử review</v-list-item-title>
-              </v-list-item>
-              <v-list-item @click="GoToConvertPointPage">
-                <v-list-item-title>Đổi điểm tích lũy</v-list-item-title>
-              </v-list-item>
-              <v-list-item @click="GoToExchangeGiftPage">
-                <v-list-item-title>Đổi quà</v-list-item-title>
-              </v-list-item>
-              <v-list-item @click="LogOut">
-                <v-list-item-title>Đăng xuất</v-list-item-title>
-              </v-list-item>
-            </v-list>
-            <v-list v-else-if="currentUser.user.role === 'admin'">
-              <v-list-item @click="GoToUpAdminPage">
-                <v-list-item-title>Trang quản trị</v-list-item-title>
-              </v-list-item>
-              <v-list-item @click="LogOut">
-                <v-list-item-title>Đăng xuất</v-list-item-title>
-              </v-list-item>
-            </v-list>
-          </v-menu>
+        <v-col offset="1" cols="4">
+          <v-row>
+            <v-btn @click="goToHomeForums" text color="white">Diễn đàn</v-btn>
+            <v-btn text rounded dark>
+              Điểm uy tín: {{ currentUser.user.reputationPoint }}
+            </v-btn>
+            <v-menu offset-y v-if="currentUser">
+              <template v-slot:activator="{ on }">
+                <v-btn text dark v-on="on">
+                  <v-icon left>mdi-account-circle</v-icon>
+                  {{ currentUser.user.userName }}
+                  <v-icon right>mdi-menu-down</v-icon>
+                </v-btn>
+              </template>
+              <v-list v-if="currentUser.user.role === 'member'">
+                <v-list-item @click="GoToUpdateProfilePage">
+                  <v-list-item-title>Cập nhật thông tin</v-list-item-title>
+                </v-list-item>
+                <v-list-item @click="GoToChangeStatusNotifyPage">
+                  <v-list-item-title>Cài đặt thông báo email</v-list-item-title>
+                </v-list-item>
+                <v-list-item @click="GoToRecentReviewResultListPage">
+                  <v-list-item-title
+                    >Danh sách kết quả review gần đây</v-list-item-title
+                  >
+                </v-list-item>
+                <v-list-item @click="LogOut">
+                  <v-list-item-title>Đăng xuất</v-list-item-title>
+                </v-list-item>
+              </v-list>
+              <v-list v-else-if="currentUser.user.role === 'specialist'">
+                <v-list-item @click="GoToUpdateSpecialistProfilePage">
+                  <v-list-item-title>Cập nhật thông tin</v-list-item-title>
+                </v-list-item>
+                <v-list-item @click="GoToSpecialistChangeStatusNotifyPage">
+                  <v-list-item-title>Cài đặt thông báo email</v-list-item-title>
+                </v-list-item>
+                <v-list-item @click="GoToReceivedCvListPage">
+                  <v-list-item-title>Danh sách CV đã nhận</v-list-item-title>
+                </v-list-item>
+                <v-list-item @click="GoToReviewHistoryPage">
+                  <v-list-item-title>Lịch sử review</v-list-item-title>
+                </v-list-item>
+                <v-list-item @click="LogOut">
+                  <v-list-item-title>Đăng xuất</v-list-item-title>
+                </v-list-item>
+              </v-list>
+              <v-list v-else-if="currentUser.user.role === 'volunteer'">
+                <v-list-item @click="GoToUpdateVolunteerProfilePage">
+                  <v-list-item-title>Cập nhật thông tin</v-list-item-title>
+                </v-list-item>
+                <v-list-item @click="GoToVolunteerChangeStatusNotifyPage">
+                  <v-list-item-title>Cài đặt thông báo email</v-list-item-title>
+                </v-list-item>
+                <v-list-item @click="GoToVolunteerReceivedCvListPage">
+                  <v-list-item-title>Danh sách CV đã nhận</v-list-item-title>
+                </v-list-item>
+                <v-list-item @click="GoToVolunteerReviewHistoryPage">
+                  <v-list-item-title>Lịch sử review</v-list-item-title>
+                </v-list-item>
+                <v-list-item @click="GoToConvertPointPage">
+                  <v-list-item-title>Đổi điểm tích lũy</v-list-item-title>
+                </v-list-item>
+                <v-list-item @click="GoToExchangeGiftPage">
+                  <v-list-item-title>Đổi quà</v-list-item-title>
+                </v-list-item>
+                <v-list-item @click="LogOut">
+                  <v-list-item-title>Đăng xuất</v-list-item-title>
+                </v-list-item>
+              </v-list>
+              <v-list v-else-if="currentUser.user.role === 'admin'">
+                <v-list-item @click="GoToUpAdminPage">
+                  <v-list-item-title>Trang quản trị</v-list-item-title>
+                </v-list-item>
+                <v-list-item @click="LogOut">
+                  <v-list-item-title>Đăng xuất</v-list-item-title>
+                </v-list-item>
+              </v-list>
+            </v-menu>
+          </v-row>
         </v-col>
       </v-row>
     </v-app-bar>
@@ -180,7 +182,7 @@ export default {
       this.$router.push({ name: "Volunteer Reviewed CV List" });
     },
     GoToUpAdminPage() {
-      this.$router.push({ name: "admin" });
+      this.$router.push({ name: "Admin-chart" });
     },
     async getData() {
       const user = await authService.getUserByRole();

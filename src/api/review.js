@@ -76,11 +76,12 @@ async function getReview(id) {
 }
 
 async function ratingReview(_id, content) {
+  console.log(_id);
   const review = await ratingService.create({
     _id,
     content
   });
-  console.log(review);
+
   return review;
 }
 

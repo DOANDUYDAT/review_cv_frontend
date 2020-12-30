@@ -2,7 +2,7 @@
   <v-sheet rounded="xs" class="pa-4">
     <div class="subtitle-2">Tiêu đề</div>
     <v-text-field
-      label="Enter title"
+      label="Nhập tiêu đề"
       outlined
       dense
       v-model="question.title"
@@ -15,19 +15,19 @@
             text
             icon
             class="menubar__button"
-            :class="{ 'is-active': isActive.heading({ level: 1 }) }"
-            @click="commands.heading({ level: 1 })"
+            :class="{ 'is-active': isActive.bold() }"
+            @click="commands.bold"
           >
-            <b> H1 </b>
+            <v-icon>mdi-format-bold</v-icon>
           </v-btn>
           <v-btn
             text
             icon
             class="menubar__button"
-            :class="{ 'is-active': isActive.bold() }"
-            @click="commands.bold"
+            :class="{ 'is-active': isActive.italic() }"
+            @click="commands.italic"
           >
-            <v-icon>mdi-format-bold</v-icon>
+            <v-icon>mdi-format-italic</v-icon>
           </v-btn>
 
           <v-btn
@@ -38,6 +38,53 @@
             @click="commands.underline"
           >
             <v-icon>mdi-format-underline</v-icon>
+          </v-btn>
+          <v-btn
+            text
+            icon
+            class="menubar__button"
+            :class="{ 'is-active': isActive.heading({ level: 1 }) }"
+            @click="commands.heading({ level: 1 })"
+          >
+            <v-icon>mdi-format-header-1</v-icon>
+          </v-btn>
+          <v-btn
+            text
+            icon
+            class="menubar__button"
+            :class="{ 'is-active': isActive.heading({ level: 2 }) }"
+            @click="commands.heading({ level: 2 })"
+          >
+            <v-icon>mdi-format-header-2</v-icon>
+          </v-btn>
+
+          <v-btn
+            text
+            icon
+            class="menubar__button"
+            :class="{ 'is-active': isActive.heading({ level: 3 }) }"
+            @click="commands.heading({ level: 3 })"
+          >
+            <v-icon>mdi-format-header-3</v-icon>
+          </v-btn>
+          <v-btn
+            text
+            icon
+            class="menubar__button"
+            :class="{ 'is-active': isActive.bullet_list() }"
+            @click="commands.bullet_list"
+          >
+            <v-icon>mdi-format-list-checkbox</v-icon>
+          </v-btn>
+
+          <v-btn
+            text
+            icon
+            class="menubar__button"
+            :class="{ 'is-active': isActive.ordered_list() }"
+            @click="commands.ordered_list"
+          >
+            <v-icon>mdi-format-list-numbered-rtl</v-icon>
           </v-btn>
         </div>
       </editor-menu-bar>
@@ -168,5 +215,8 @@ export default {
   .editor__content {
     border: 1px ridge gray;
   }
+}
+.menubar__button.is-active {
+  background-color: rgba(0, 0, 0, 0.1);
 }
 </style>

@@ -37,7 +37,12 @@
         </v-btn>
       </v-col> -->
       <v-col offset="9" cols="3" class="text-right py-0">
-        Trả lời bởi {{ answer.user.userName }}<br />
+        Trả lời bởi
+        <span class="teal--text">{{ answer.user.role }}</span>
+        {{ answer.user.userName }}<br />
+        <span class="teal--text"
+          >Điểm uy tín: {{ answer.user.reputationPoint }}</span
+        ><br />
         {{ shortDateTime(answer.createdAt) }}
       </v-col>
       <v-col cols="11" class="pl-4" offset="1" v-if="answer.comments">
@@ -65,6 +70,7 @@
       </v-col>
       <v-col cols="11" offset="1">
         <v-btn
+          class="px-0"
           color="primary"
           text
           @click="openComment = true"
@@ -72,8 +78,15 @@
           >Thêm bình luận</v-btn
         >
         <v-tooltip top v-else :open-on-click="true" :open-on-hover="false">
-          <template v-slot:activator="{ on: { click }, attrs }">
-            <v-btn color="primary" text dark v-bind="attrs" @click="click">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              color="primary"
+              text
+              dark
+              v-bind="attrs"
+              v-on="on"
+              @click="openComment = true"
+            >
               Thêm bình luận
             </v-btn>
           </template>
@@ -89,7 +102,7 @@
         </v-snackbar> -->
       </v-col>
     </v-row>
-    <v-row v-if="isAllowComment">
+    <v-row v-show="openComment">
       <v-col cols="11" offset="1">
         <ValidationObserver v-slot="{ invalid }">
           <ValidationProvider
@@ -172,7 +185,7 @@ export default {
       }
     },
     isAllowComment() {
-      return this.currentUserData.reputationPoint > 75 ? true : false;
+      return this.currentUserData.user.reputationPoint > 75 ? true : false;
     }
   },
   watch: {
@@ -210,13 +223,6 @@ export default {
         this.answer = updatedAnswer;
       } catch (err) {
         console.log(err);
-      }
-    },
-    checkPoint() {
-      if (this.currentUserData && this.currentUserData.reputationPoint > 10) {
-        this.isAllowComment = true;
-      } else {
-        this.snackbar = true;
       }
     },
     acceptAnswer() {

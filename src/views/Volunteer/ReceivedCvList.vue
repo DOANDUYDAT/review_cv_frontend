@@ -13,10 +13,8 @@
           <v-row>
             <v-col cols="9" class="py-0" @click.stop="goToCv(cv)">
               <h3>{{ cv.author.user.fullName }}</h3>
-              <div>
-                Lĩnh vực làm việc:
-                <span v-for="(fi, i) in cv.fields" :key="i">{{ fi }}</span>
-              </div>
+              <span>Lĩnh vực làm việc: {{ cv.field }}</span>
+              <br />
               <span>Cấp bậc: {{ cv.position }}</span
               ><br />
               <span>Địa điểm: {{ cv.location }}</span

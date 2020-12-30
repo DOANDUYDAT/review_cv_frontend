@@ -19,12 +19,8 @@
                   @click.stop="goToReviewResult(review)"
                 >
                   <h3>{{ review.cv.author.user.fullName }}</h3>
-                  <div>
-                    Lĩnh vực làm việc:
-                    <span v-for="(fi, i) in review.cv.fields" :key="i">{{
-                      fi
-                    }}</span>
-                  </div>
+                  <span>Lĩnh vực làm việc: {{ review.cv.field }}</span>
+                  <br />
                   <span>Cấp bậc: {{ review.cv.position }}</span
                   ><br />
                   <span>Địa điểm: {{ review.cv.location }}</span>

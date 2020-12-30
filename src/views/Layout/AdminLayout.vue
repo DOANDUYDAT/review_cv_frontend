@@ -7,14 +7,16 @@
       clipped-left
       app
     >
-      <v-toolbar-title class="headline">Trang quản trị</v-toolbar-title>
+      <v-toolbar-title class="headline" @click="GoToUpAdminPage"
+        >Trang quản trị</v-toolbar-title
+      >
 
       <v-spacer></v-spacer>
       <v-menu offset-y>
         <template v-slot:activator="{ on }">
           <v-btn text dark v-on="on">
             <v-icon left>mdi-account-circle</v-icon>
-            Quản trị viên
+            Admin
             <v-icon right>mdi-menu-down</v-icon>
           </v-btn>
         </template>
@@ -124,6 +126,9 @@ export default {
     };
   },
   methods: {
+    GoToUpAdminPage() {
+      this.$router.push({ name: "Admin-chart" });
+    },
     LogOut() {
       authService.logout().finally(() => {
         this.$router.push({ name: "Home" });

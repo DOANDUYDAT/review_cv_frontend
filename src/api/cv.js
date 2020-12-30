@@ -141,12 +141,16 @@ async function getTotalCvInMonth(month) {
 }
 
 async function search(text) {
-  const { data } = await cvService.find({
-    query: {
-      $search: text
-    }
-  });
-  return data;
+  if (text.trim()) {
+    const { data } = await cvService.find({
+      query: {
+        $search: text.trim()
+      }
+    });
+    return data;
+  } else {
+    return getAllCvs();
+  }
 }
 
 export default {

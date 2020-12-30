@@ -58,7 +58,7 @@
             <v-icon small>mdi-briefcase-account</v-icon>
           </v-col>
           <v-col cols="5" class="body-2 py-0">
-            <span v-for="(fi, i) in cv.fields" :key="i">{{ fi }}</span>
+            {{ review.cv.field }}
           </v-col>
           <v-col cols="1" class="py-0">
             <v-icon small>mdi-map-marker</v-icon>
@@ -239,9 +239,16 @@ export default {
       const volunteer = await volunteerService.getVolunteer(userId);
       this.currentUser = volunteer;
       // this.status = volunteer.listReceivedCv.includes(cvId);
-      let file = await (
-        await fetch(`http://localhost:3030/review/${this.review.linkHidden}`)
-      ).blob();
+      let file = null;
+      if (this.isPublic) {
+        file = await (
+          await fetch(`http://localhost:3030/cv/${this.cv.link}`)
+        ).blob();
+      } else {
+        file = await (
+          await fetch(`http://localhost:3030/cv/${this.cv.linkHidden}`)
+        ).blob();
+      }
       this.fileReview = URL.createObjectURL(file).toString() + "#toolbar=0";
       this.listMessage = await messageService.findMessageByRoomId(
         this.review.roomId

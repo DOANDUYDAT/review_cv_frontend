@@ -54,8 +54,17 @@
               xác nhận public CV
             </v-col>
             <v-col cols="12" class="pt-0 text-center">
-              <v-btn @click="publicCv" depressed outlined color="red">
+              <v-btn
+                @click="publicCv"
+                depressed
+                outlined
+                color="red"
+                v-if="!isPublic"
+              >
                 Public cv
+              </v-btn>
+              <v-btn v-else depressed outlined color="red">
+                Đã public
               </v-btn>
             </v-col>
           </v-row>
@@ -117,7 +126,7 @@
               </v-btn>
             </v-col>
           </v-row>
-          <v-row v-if="!isExpired" @click.stop="dialog = true">
+          <v-row v-if="!isExpired" @click.stop="openReport">
             <v-col class="py-0">
               <v-btn text>
                 <v-icon class="mr-4" left>mdi-message-alert-outline</v-icon>
@@ -307,6 +316,12 @@ export default {
     };
   },
   computed: {
+    isPublic() {
+      return this.cv ? this.cv.listViewer.includes(this.review.userId) : false;
+    },
+    cv() {
+      return this.review.cv;
+    },
     isSpecialist() {
       return this.review
         ? this.review.author.user.role === "specialist"
@@ -314,6 +329,9 @@ export default {
     },
     isRating() {
       return this.review.rating ? true : false;
+    },
+    isReport() {
+      return this.review.report ? true : false;
     },
     isExpired() {
       return Date.now() - this.review.createdAt > 86400000 ? true : false;
@@ -329,6 +347,11 @@ export default {
     }
   },
   methods: {
+    openReport() {
+      if (!this.isReport) {
+        this.dialog = true;
+      }
+    },
     async publicCv() {
       const result = await this.$swal({
         icon: "question",
@@ -347,6 +370,8 @@ export default {
             title: "Public CV thành công",
             icon: "success"
           });
+          let reviewId = this.$route.params.reviewId;
+          this.review = await reviewService.getReview(reviewId);
         } catch (err) {
           this.$swal({
             title: "Thất bại",
@@ -371,6 +396,8 @@ export default {
           showConfirmButton: false,
           timer: 1500
         });
+        let reviewId = this.$route.params.reviewId;
+        this.review = await reviewService.getReview(reviewId);
       } catch (err) {
         this.$swal({
           toast: true,

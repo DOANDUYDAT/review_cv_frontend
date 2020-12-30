@@ -48,7 +48,7 @@
           {{ shortDateTime(item.createdAt) }}
         </v-col>
         <v-col class="text-right" md="2">
-          Trả lời bởi {{ item.user.userName }}
+          Được hỏi bởi {{ item.user.userName }}
         </v-col>
       </v-row>
       <v-divider></v-divider>
