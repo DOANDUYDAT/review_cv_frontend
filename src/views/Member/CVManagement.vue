@@ -142,7 +142,7 @@
                         @click.stop="goToReviewResultList(cv)"
                       >
                         <v-icon left> mdi-file-eye </v-icon>
-                        Xem kết quả review</v-btn
+                        {{ cv.listReview.length }} kết quả review</v-btn
                       >
                     </v-col>
                   </v-row>

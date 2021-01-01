@@ -28,7 +28,13 @@ async function uploadCv(cv) {
 }
 
 async function getAllCvs() {
-  const { data } = await cvService.find({});
+  const { data } = await cvService.find({
+    query: {
+      $sort: {
+        createdAt: -1
+      }
+    }
+  });
   return data;
 }
 
@@ -105,7 +111,10 @@ async function getListUploadCv(userId) {
   const { data } = await cvService.find({
     query: {
       userId,
-      type: "upload"
+      type: "upload",
+      $sort: {
+        createdAt: -1
+      }
     }
   });
   return data;

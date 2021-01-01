@@ -240,15 +240,9 @@ export default {
       this.currentUser = volunteer;
       // this.status = volunteer.listReceivedCv.includes(cvId);
       let file = null;
-      if (this.isPublic) {
-        file = await (
-          await fetch(`http://localhost:3030/cv/${this.cv.link}`)
-        ).blob();
-      } else {
-        file = await (
-          await fetch(`http://localhost:3030/cv/${this.cv.linkHidden}`)
-        ).blob();
-      }
+      file = await (
+        await fetch(`http://localhost:3030/review/${this.review.link}`)
+      ).blob();
       this.fileReview = URL.createObjectURL(file).toString() + "#toolbar=0";
       this.listMessage = await messageService.findMessageByRoomId(
         this.review.roomId
