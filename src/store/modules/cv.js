@@ -81,10 +81,10 @@ const mutations = {
     let contentCvItem = state.cv.content.find(
       item => item.order === data.order
     );
-    console.log('payload: ', data);
+    console.log("payload: ", data);
     contentCvItem = JSON.parse(JSON.stringify(data));
     // contentCvItem.content = [];
-    console.log('content Item: ', contentCvItem);
+    console.log("content Item: ", contentCvItem);
   }
 };
 /*eslint no-useless-catch: "error"*/

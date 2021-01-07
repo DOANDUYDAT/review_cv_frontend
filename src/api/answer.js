@@ -6,7 +6,7 @@ const dislikeService = feathers.service("answers/dislike");
 const likeService = feathers.service("answers/like");
 const acceptService = feathers.service("answers/accept");
 
-const LIMIT_NUMBER = 20;
+const LIMIT_NUMBER = 5;
 
 async function getAnswer(id) {
   const res = await answerService.get(id);
@@ -18,31 +18,33 @@ async function createAnswer(data) {
   return res;
 }
 
-// async function getListAnswersByQuestionId(questionId, pageNumber) {
-//   const skipNumber = (pageNumber - 1) * LIMIT_NUMBER;
-//   const { data } = await answerService.find({
-//     query: {
-//       $limit: LIMIT_NUMBER,
-//       $sort: {
-//         createdAt: -1
-//       },
-//       $skip: skipNumber,
-//       questionId
-//     }
-//   });
-//   return data;
-// }
-async function getListAnswersByQuestionId(questionId) {
+async function getListAnswersByQuestionId(questionId, pageNumber) {
+  const skipNumber = (pageNumber - 1) * LIMIT_NUMBER;
   const { data } = await answerService.find({
     query: {
+      $limit: LIMIT_NUMBER,
       $sort: {
         createdAt: -1
       },
+      $skip: skipNumber,
       questionId
     }
   });
   return data;
 }
+
+// async function getListAnswersByQuestionId(questionId) {
+//   const { data } = await answerService.find({
+//     query: {
+//       $sort: {
+//         createdAt: -1
+//       },
+//       questionId
+//     }
+//   });
+//   return data;
+// }
+
 async function getTotalAnswer(questionId) {
   const { total } = await answerService.find({
     query: {

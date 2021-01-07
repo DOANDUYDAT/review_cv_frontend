@@ -56,37 +56,43 @@ export default {
         return null;
       }
     },
-    listAnswersData: {
-      type: Array,
-      required: true,
-      default: function() {
-        return null;
-      }
+    totalAnswer: {
+      type: Number,
+      required: true
     }
   },
   computed: {
     lengthPage() {
-      return Math.floor(this.listAnswers.length / 5) + 1;
+      if (this.totalAnswer === 0) {
+        return 1;
+      } else {
+        if (this.totalAnswer % 5 === 0) {
+          return Math.floor(this.totalAnswer / 5);
+        } else {
+          return Math.floor(this.totalAnswer / 5) + 1;
+        }
+      }
     }
   },
   watch: {
     page: function() {
       this.getData();
-    },
-    listAnswersData: {
-      handler: function(val, oldVal) {
-        this.listAnswers = JSON.parse(JSON.stringify(val));
-      },
-      deep: true
     }
   },
   methods: {
     async getData() {
-      this.listAnswers = JSON.parse(JSON.stringify(this.listAnswersData));
+      const questionId = this.$route.params.questionId;
+      // this.listAnswers = JSON.parse(JSON.stringify(this.listAnswersData));
+      console.log(questionId);
+      this.listAnswers = await answerService.getListAnswersByQuestionId(
+        questionId,
+        this.page
+      );
     }
   },
   created() {
     this.getData();
+    answerServiceRoot.on("created", async () => this.getData());
   }
 };
 </script>
