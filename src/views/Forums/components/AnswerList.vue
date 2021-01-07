@@ -30,7 +30,8 @@ export default {
   data() {
     return {
       listAnswers: null,
-      page: 1
+      page: 1,
+      pageSize: 5
     };
   },
   components: {
@@ -66,10 +67,10 @@ export default {
       if (this.totalAnswer === 0) {
         return 1;
       } else {
-        if (this.totalAnswer % 5 === 0) {
-          return Math.floor(this.totalAnswer / 5);
+        if (this.totalAnswer % this.pageSize === 0) {
+          return Math.floor(this.totalAnswer / this.pageSize);
         } else {
-          return Math.floor(this.totalAnswer / 5) + 1;
+          return Math.floor(this.totalAnswer / this.pageSize) + 1;
         }
       }
     }
