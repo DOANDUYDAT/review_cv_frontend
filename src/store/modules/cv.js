@@ -76,6 +76,15 @@ const mutations = {
     const { type } = data;
     let categoryItem = state.cv.content.find(item => item.type == type);
     categoryItem = JSON.parse(JSON.stringify(data));
+  },
+  updateContentCv(state, data) {
+    let contentCvItem = state.cv.content.find(
+      item => item.order === data.order
+    );
+    console.log('payload: ', data);
+    contentCvItem = JSON.parse(JSON.stringify(data));
+    // contentCvItem.content = [];
+    console.log('content Item: ', contentCvItem);
   }
 };
 /*eslint no-useless-catch: "error"*/
@@ -122,6 +131,9 @@ const actions = {
   },
   updateCategoryData({ state, commit }, data) {
     commit("updateCategoryItem", data);
+  },
+  updateContentCv({ state, commit }, data) {
+    commit("updateContentCv", data);
   }
   // exec(command, arg) {
   //   document.execCommand(command, false, arg);

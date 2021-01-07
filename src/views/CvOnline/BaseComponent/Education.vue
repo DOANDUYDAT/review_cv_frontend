@@ -2,18 +2,8 @@
   <div class="cv__study item__cv">
     <div class="cv__infor--content ">
       <div class="cv__study--title item__cv--title">
-        <input
-          type="text"
-          @mouseup="getCurrentTagName"
-          contenteditable="true"
-          v-model.lazy="command"
-          :style="{ fontSize: bigfont + 'px', fontFamily: fontfamily }"
-          id="titleEduCate"
-        />
         <div
-          @mouseup="getCurrentTagName"
-          contenteditable="true"
-          @blur="goodJob"
+          contenteditable
           :style="{ fontSize: bigfont + 'px', fontFamily: fontfamily }"
           v-html="contentDetails.name"
         ></div>
@@ -21,17 +11,23 @@
       <v-divider></v-divider>
       <div v-for="(item, i) in contentDetails.content" :key="i">
         <div class="cv__study--content content__cv">
-          <div
-            @mouseup="getCurrentTagName"
-            contenteditable="true"
+          <!-- <div
+            contenteditable
             :style="{
               fontSize: smallFont + 'px',
               marginTop: lineheight + 'px',
               fontFamily: fontfamily
             }"
-            @blur="editItem($event, i)"
+            @input="editItem($event, i)"
             v-html="item.value"
-          ></div>
+          ></div> -->
+          <base-editor
+            :value.sync="item.value"
+            :bigfont="bigfont"
+            :smallFont="smallFont"
+            :lineheight="lineheight"
+            :fontfamily="fontfamily"
+          ></base-editor>
           <div class="option__content">
             <v-btn color="success" small @click="addContent(i)">
               <v-icon>mdi-plus</v-icon>
@@ -46,7 +42,7 @@
       </div>
     </div>
     <div class="option">
-      <v-icon @click="$emit('finished')"> mdi-menu</v-icon>
+      <v-icon @click="changeTab('AddCV')">mdi-menu</v-icon>
       <v-icon @click="incrementOrder(contentDetails.order)">
         mdi-menu-down</v-icon
       >
@@ -62,9 +58,15 @@
 </template>
 <script>
 /* eslint-disable no-unused-vars */
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
+import BaseEditor from "./BaseEditor";
+
 export default {
   name: "Education",
+  components: {
+    BaseEditor
+  },
+  props: ["data", "bigfont", "smallFont", "lineheight", "fontfamily"],
   data() {
     return {
       contentDetails: {},
@@ -73,53 +75,82 @@ export default {
       idItem: ""
     };
   },
-  watch: {
-    currentTagName() {
-      console.log(this.command);
-      this.getCurrentTagName();
-    },
-    command: function(newVal, oldVal) {
-      // watch it
-      console.log("Prop changed: ", newVal, " | was: ", oldVal);
-      // console.log(this);
-      this.exec(newVal);
-    },
-    contentDetails: {
-      handler: function(val, oldVal) {
-        this.updateCategoryData(val);
-      },
-      deep: true
-    }
-  },
   computed: {
     ...mapGetters("Cv", {
-      command: "command",
+      // command: "command",
       loading: "loading",
       error: "error"
     })
+    // ...mapState("Editor", ["currentSelection"])
+  },
+  watch: {
+    // currentTagName() {
+    //   // console.log(this.command);
+    //   this.getCurrentTagName();
+    // },
+    // command: function(newVal, oldVal) {
+    //   // watch it
+    //   console.log("Prop changed: ", newVal, " | was: ", oldVal);
+    //   // console.log(this);
+    //   this.exec(newVal);
+    // }
+    // contentDetails: {
+    //   handler: function(val, oldVal) {
+    //     this.updateCategoryData(val);
+    //   },
+    //   deep: true
+    // }
   },
   methods: {
-    editItem(e, i) {
-      const item = e.srcElement;
-      this.contentDetails.content[i].value = item.innerHTML;
+    ...mapActions("Cv", [
+      "incrementOrder",
+      "decrementOrder",
+      "hiddenCategory",
+      "updateCategoryData",
+      "updateContentCv"
+    ]),
+    ...mapActions("Editor", [
+      "changeTab",
+      "changeOSelection",
+      "changeSFormat",
+      "changeSJusitfy",
+      "changeEditting"
+    ]),
+    editItem(evt, i) {
+      // this.contentDetails.content[i].value = evt.target.innerHTML;
+      console.log(this.contentDetails.content[i].value);
     },
-    goodJob() {
-      debugger;
-      const title = this.$refs.titleEduca.innerHTML;
-      this.contentDetails.name = title;
+    updateSelectedElement(evt) {
+      let oSelection = evt.target;
+      this.changeOSelection(oSelection);
     },
-    exec(command, arg) {
-      debugger;
-      console.log(this.command);
-      document.execCommand(command, false, arg);
-    },
-    getCurrentTagName() {
-      if (window.getSelection().baseNode) {
-        this.currentTagName = window.getSelection().baseNode.parentNode.tagName;
-        console.log(this.currentTagName);
-      }
+    updateCommand() {
+      // query command state
+      let lFormatText = ["bold", "italic", "underline"];
+      let lJustifyText = ["justifyLeft", "justifyCenter", "justifyRight"];
+      let sFormat = [];
+      let sJustify = null;
+      // clear command
+      this.changeSFormat(sFormat);
+      this.changeSJusitfy(sJustify);
+      lFormatText.forEach((e, i) => {
+        if (document.queryCommandState(e)) {
+          sFormat.push(i);
+        }
+      });
+      lJustifyText.forEach((e, i) => {
+        if (document.queryCommandState(e)) {
+          sJustify = i;
+        }
+      });
+      // console.log("asa");
+      console.log(sFormat, sJustify);
+      //update command
+      this.changeSFormat(sFormat);
+      this.changeSJusitfy(sJustify);
     },
     addContent(i) {
+      document.getSelection().removeAllRanges();
       const elementArray = [...this.contentDetails.content];
       const newElement = { ...elementArray[i] };
       this.contentDetails.content.splice(i + 1, 0, newElement);
@@ -133,19 +164,10 @@ export default {
       if (i <= length - 1 && length > 1) {
         this.contentDetails.content.splice(i, 1);
       }
-    },
-    ...mapActions("Cv", [
-      "incrementOrder",
-      "decrementOrder",
-      "hiddenCategory",
-      "updateCategoryData"
-    ])
+    }
   },
-  props: ["data", "bigfont", "smallFont", "lineheight", "fontfamily"],
   created() {
     this.contentDetails = JSON.parse(JSON.stringify(this.data));
-    // console.log(this.content);
-    // console.log(this.bigFont);
   }
 };
 </script>

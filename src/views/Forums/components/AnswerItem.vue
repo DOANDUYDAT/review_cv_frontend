@@ -74,19 +74,12 @@
           color="primary"
           text
           @click="openComment = true"
-          v-if="isAllowComment"
+          v-if="isAllowComment || isOwner"
           >Thêm bình luận</v-btn
         >
         <v-tooltip top v-else :open-on-click="true" :open-on-hover="false">
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn
-              color="primary"
-              text
-              dark
-              v-bind="attrs"
-              v-on="on"
-              @click="openComment = true"
-            >
+          <template v-slot:activator="{ on: { click }, attrs }">
+            <v-btn color="primary" text dark v-bind="attrs" @click="click">
               Thêm bình luận
             </v-btn>
           </template>

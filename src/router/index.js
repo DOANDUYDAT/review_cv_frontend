@@ -76,17 +76,7 @@ const routes = [
     ]
   },
   {
-    path: "/viet-cv",
-    name: "New Cv",
-    component: () =>
-      import(/* webpackChunkName: "CvOnline" */ "../views/CvOnline/NewCv"),
-    meta: {
-      requiresAuth: true,
-      roles: ["member"]
-    }
-  },
-  {
-    path: "/cv",
+    path: "/cv-online",
     component: () =>
       import(/* webpackChunkName: "CV" */ "../views/Layout/CvLayout.vue"),
     meta: {
@@ -94,6 +84,16 @@ const routes = [
       roles: ["member"]
     },
     children: [
+      {
+        path: "viet-cv",
+        name: "New Cv",
+        component: () =>
+          import(/* webpackChunkName: "CvOnline" */ "../views/CvOnline/NewCv"),
+        meta: {
+          requiresAuth: true,
+          roles: ["member"]
+        }
+      },
       {
         path: "",
         name: "Quan Ly",
