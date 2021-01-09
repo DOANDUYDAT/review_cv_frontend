@@ -61,7 +61,7 @@
     <answer-list
       :question-is-close="question.isClose"
       :current-user-data="currentUser"
-      :list-answers-data="question.answers"
+      :total-answer="totalAnswer"
       :owner-of-question="question.user"
       v-if="question && currentUser"
     ></answer-list>

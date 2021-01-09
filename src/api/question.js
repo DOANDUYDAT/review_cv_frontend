@@ -5,7 +5,7 @@ const questionService = feathers.service("questions");
 const closeService = feathers.service("questions/close");
 const likeService = feathers.service("questions/like");
 
-const LIMIT_NUMBER = 20;
+const LIMIT_NUMBER = 10;
 
 async function getQuestion(id, params) {
   const res = await questionService.get(id, params);
@@ -17,25 +17,35 @@ async function createQuestion(data, params) {
   return res;
 }
 
-async function getAllQuestions(pageNumber) {
-  // const skipNumber = (pageNumber - 1) * LIMIT_NUMBER;
-  // const res = questionService.find({
-  //   query: {
-  //     $limit: LIMIT_NUMBER,
-  //     $sort: {
-  //       createdAt: -1
-  //     },
-  //     $skip: skipNumber
-  //   }
-  // });
-  const res = await questionService.find({
+async function getListQuestions(pageNumber) {
+  const skipNumber = (pageNumber - 1) * LIMIT_NUMBER;
+  const { data } = await questionService.find({
     query: {
+      $limit: LIMIT_NUMBER,
       $sort: {
         createdAt: -1
-      }
+      },
+      $skip: skipNumber
     }
   });
-  return res;
+  // const res = await questionService.find({
+  //   query: {
+  //     $sort: {
+  //       createdAt: -1
+  //     }
+  //   }
+  // });
+
+  return data;
+}
+
+async function getTotalQuestion() {
+  const { total } = await questionService.find({
+    query: {
+      $limit: 0
+    }
+  });
+  return total;
 }
 
 async function closeQuestion(questionId) {
@@ -66,11 +76,14 @@ async function getTotalQuestionInMonth(month) {
   return total;
 }
 
+export { questionService as questionServiceRoot };
+
 export default {
   getQuestion,
   createQuestion,
-  getAllQuestions,
+  getListQuestions,
   closeQuestion,
   likeQuestion,
-  getTotalQuestionInMonth
+  getTotalQuestionInMonth,
+  getTotalQuestion
 };

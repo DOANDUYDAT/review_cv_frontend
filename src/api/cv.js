@@ -162,6 +162,15 @@ async function search(text) {
   }
 }
 
+async function getListUnreviewCv() {
+  const { data } = await cvService.find({
+    query: {
+      listReview: []
+    }
+  });
+  return data;
+}
+
 export default {
   uploadCv,
   getTotalCvInMonth,
@@ -178,5 +187,6 @@ export default {
   deleteCv,
   editCv,
   writeNewCv,
-  search
+  search,
+  getListUnreviewCv
 };

@@ -41,7 +41,7 @@ export default {
       }
     },
     async getData() {
-      this.listCv = await cvService.getAllCvs();
+      this.listCv = await cvService.getListUnreviewCv();
     }
   },
   created() {

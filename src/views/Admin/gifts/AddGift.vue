@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ValidationObserver v-slot="{ invalid }">
+    <ValidationObserver v-slot="{ invalid }" ref="formAddGift">
       <v-card flat>
         <v-toolbar color="primary" dark flat>
           <v-card-title>
@@ -144,6 +144,8 @@ export default {
             timer: 1500
           });
           this.resetInput();
+          //then do this to reset your ValidationObserver
+          this.$nextTick(() => this.$refs.formAddGift.reset());
         })
         .catch(err => {
           console.log(err);
@@ -166,7 +168,7 @@ export default {
       this.gift.value = "";
       this.gift.category = "";
       this.gift.quantity = "";
-      this.gift.image = [];
+      this.gift.image = null;
     }
   }
 };

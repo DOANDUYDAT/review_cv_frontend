@@ -256,6 +256,7 @@
               placeholder="Nhập vào đây để trò chuyện"
               outlined
               v-model="msg"
+              hide-details
               append-outer-icon="mdi-send"
               @keyup.enter="sendMessage"
               @click:append-outer="sendMessage"
@@ -475,7 +476,6 @@ export default {
   created() {
     this.getData();
     messageServiceRoot.on("created", message => {
-      console.log(message);
       this.listMessage.push(message);
     });
   }
