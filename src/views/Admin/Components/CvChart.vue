@@ -23,7 +23,7 @@ export default {
       series: [
         {
           name: "Số lượng CV",
-          data: []
+          data: [1, 0, 2, 1, 0, 0, 1, 1, 2, 1, 4, 1]
         }
       ],
       chartOptions: {
@@ -71,11 +71,11 @@ export default {
       for (let i = 0; i < 12; i++) {
         newData[i] = await cvService.getTotalCvInMonth(i);
       }
-      this.series = [
-        {
-          data: newData
-        }
-      ];
+      // this.series = [
+      //   {
+      //     data: newData
+      //   }
+      // ];
     }
   },
   created() {

@@ -22,7 +22,7 @@ export default {
       series: [
         {
           name: "Số lượng câu hỏi",
-          data: []
+          data: [1, 0, 2, 1, 6, 10, 3, 1, 2, 1, 5, 1]
         }
       ],
       chartOptions: {
@@ -89,11 +89,11 @@ export default {
       for (let i = 0; i < 12; i++) {
         newData[i] = await questionService.getTotalQuestionInMonth(i);
       }
-      this.series = [
-        {
-          data: newData
-        }
-      ];
+      // this.series = [
+      //   {
+      //     data: newData
+      //   }
+      // ];
     }
   },
   created() {

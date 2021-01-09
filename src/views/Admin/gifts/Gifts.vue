@@ -32,9 +32,9 @@
         color="blue"
         >mdi-pencil</v-icon
       >
-      <v-icon small class="mr-2" @click.stop="deleteItem(item)" color="red"
+      <!-- <v-icon small class="mr-2" @click.stop="deleteItem(item)" color="red"
         >mdi-trash-can-outline</v-icon
-      >
+      > -->
     </template>
     <template v-slot:[`item.image`]="{ item }">
       <v-img
