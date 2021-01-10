@@ -49,6 +49,9 @@
             </v-col>
           </v-row>
           <v-divider></v-divider>
+          <div class="text-center">
+            <v-pagination v-model="page" :length="lengthPage"></v-pagination>
+          </div>
         </div>
       </v-sheet>
       <v-sheet class="pa-4" v-else>
@@ -80,8 +83,24 @@ export default {
     return {
       file: null,
       listReview: null,
-      currentUser: null
+      currentUser: null,
+      page: 1,
+      pageSize: 10,
+      totalReview: 0
     };
+  },
+  computed: {
+    lengthPage() {
+      if (this.totalReview === 0) {
+        return 1;
+      } else {
+        if (this.totalReview % this.pageSize === 0) {
+          return Math.floor(this.totalReview / this.pageSize);
+        } else {
+          return Math.floor(this.totalReview / this.pageSize) + 1;
+        }
+      }
+    }
   },
   methods: {
     // shortDateTime: timeStamp => {
@@ -106,6 +125,7 @@ export default {
       const userId = await authService.getCurrentUserId();
       const specialist = await specialistService.getSpecialist(userId);
       this.currentUser = specialist;
+      this.totalReview = specialist.listReview.length;
       this.listReview = await reviewService.getListReviewByListReviewId(
         this.currentUser.listReview
       );

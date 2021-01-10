@@ -30,11 +30,14 @@ async function uploadCv(cv) {
   return res;
 }
 
-async function getAllCvs() {
+async function getAllCvs(pageNumber) {
+  const skipNumber = (pageNumber - 1) * LIMIT_NUMBER;
   let query = {
     $sort: {
       createdAt: -1
-    }
+    },
+    $limit: LIMIT_NUMBER,
+    $skip: skipNumber
   };
   const role = await authService.getRole();
   if (role === "volunteer") {

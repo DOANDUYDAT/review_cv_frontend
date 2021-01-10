@@ -5,6 +5,8 @@ const reviewService = feathers.service("reviews");
 const reportService = feathers.service("reviews/report");
 const ratingService = feathers.service("reviews/rate");
 
+const LIMIT_NUMBER = 10;
+
 async function uploadReview(cvId, reviewUpload) {
   const fData = new FormData();
   fData.append("uri", reviewUpload);
@@ -44,7 +46,8 @@ async function getListReviewByListCvId(listCvId) {
   return data;
 }
 
-async function getListReviewByListReviewId(listReviewId) {
+async function getListReviewByListReviewId(listReviewId, pageNumber) {
+  const skipNumber = (pageNumber - 1) * LIMIT_NUMBER;
   const { data } = await reviewService.find({
     query: {
       _id: {
@@ -52,7 +55,9 @@ async function getListReviewByListReviewId(listReviewId) {
       },
       $sort: {
         createdAt: -1
-      }
+      },
+      $limit: LIMIT_NUMBER,
+      $skip: skipNumber
     }
   });
   return data;

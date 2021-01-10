@@ -1,5 +1,5 @@
 <template>
-  <v-container v-if="listCv && listCv.length">
+  <v-container v-if="listCv && listCv.length" style="min-height: 80vh">
     <cv-item
       v-for="item in listCv"
       :key="item._id"
@@ -8,9 +8,6 @@
       :received-status="received(item)"
     >
     </cv-item>
-  </v-container>
-  <v-container v-else>
-    Không có CV phù hợp
   </v-container>
 </template>
 <script>
