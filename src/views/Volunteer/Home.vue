@@ -4,8 +4,14 @@
       <v-col cols="3">
         <filter-cv @filter-cv="onFilter"></filter-cv>
       </v-col>
-      <v-col cols="9">
+      <v-col cols="9" v-if="listCv && listCv.length">
         <cv-list v-if="listCv" :list-cv-data="listCv"></cv-list>
+        <div class="text-center">
+          <v-pagination v-model="page" :length="lengthPage"></v-pagination>
+        </div>
+      </v-col>
+      <v-col cols="9" v-else>
+        <h3>Không có CV phù hợp</h3>
       </v-col>
     </v-row>
   </v-container>
@@ -24,8 +30,24 @@ export default {
   },
   data() {
     return {
-      listCv: null
+      listCv: null,
+      page: 1,
+      pageSize: 10,
+      totalUnreviewCv: 0
     };
+  },
+  computed: {
+    lengthPage() {
+      if (this.totalUnreviewCv === 0) {
+        return 1;
+      } else {
+        if (this.totalUnreviewCv % this.pageSize === 0) {
+          return Math.floor(this.totalUnreviewCv / this.pageSize);
+        } else {
+          return Math.floor(this.totalUnreviewCv / this.pageSize) + 1;
+        }
+      }
+    }
   },
   methods: {
     async onFilter(filter) {
@@ -42,6 +64,7 @@ export default {
     },
     async getData() {
       this.listCv = await cvService.getListUnreviewCv();
+      this.totalUnreviewCv = await cvService.getTotalUnreviewCv();
     }
   },
   created() {

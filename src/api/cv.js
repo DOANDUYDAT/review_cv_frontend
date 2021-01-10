@@ -6,6 +6,9 @@ const interestService = feathers.service("cvs/interest");
 const reviewCvService = feathers.service("cvs/review-cv");
 const publicService = feathers.service("cvs/public");
 const writeCVService = feathers.service("cvs/new-cv");
+import authService from "./authentication";
+
+const LIMIT_NUMBER = 10;
 
 async function uploadCv(cv) {
   const fData = new FormData();
@@ -28,12 +31,21 @@ async function uploadCv(cv) {
 }
 
 async function getAllCvs() {
-  const { data } = await cvService.find({
-    query: {
-      $sort: {
-        createdAt: -1
-      }
+  let query = {
+    $sort: {
+      createdAt: -1
     }
+  };
+  const role = await authService.getRole();
+  if (role === "volunteer") {
+    query = {
+      ...query,
+      listReview: []
+    };
+  }
+  console.log(query);
+  const { data } = await cvService.find({
+    query
   });
   return data;
 }
@@ -68,7 +80,14 @@ async function reviewCv(cvId) {
 }
 
 async function getListCvByFilter(filter) {
+  const role = await authService.getRole();
   let query = {};
+  if (role === "volunteer") {
+    query = {
+      ...query,
+      listReview: []
+    };
+  }
   for (let [key, value] of Object.entries(filter)) {
     if (value.length) {
       query[key] = { $in: value };
@@ -162,13 +181,26 @@ async function search(text) {
   }
 }
 
-async function getListUnreviewCv() {
+async function getListUnreviewCv(pageNumber) {
+  const skipNumber = (pageNumber - 1) * LIMIT_NUMBER;
   const { data } = await cvService.find({
     query: {
-      listReview: []
+      listReview: [],
+      $limit: LIMIT_NUMBER,
+      $skip: skipNumber
     }
   });
   return data;
+}
+
+async function getTotalUnreviewCv() {
+  const { total } = await cvService.find({
+    query: {
+      listReview: [],
+      $limit: 0
+    }
+  });
+  return total;
 }
 
 export default {
@@ -188,5 +220,6 @@ export default {
   editCv,
   writeNewCv,
   search,
-  getListUnreviewCv
+  getListUnreviewCv,
+  getTotalUnreviewCv
 };
