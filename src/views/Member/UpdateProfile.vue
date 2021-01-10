@@ -28,6 +28,23 @@
                 <v-form>
                   <ValidationProvider
                     mode="aggressive"
+                    name="Fullname"
+                    rules="required"
+                    v-slot="{ errors }"
+                    :bails="false"
+                  >
+                    <v-text-field
+                      v-model="currentUser.user.fullName"
+                      label="Fullname"
+                      type="text"
+                      prepend-icon="mdi-account-details"
+                    ></v-text-field>
+                    <span class="red--text text--lighten-1">{{
+                      errors[0]
+                    }}</span>
+                  </ValidationProvider>
+                  <ValidationProvider
+                    mode="aggressive"
                     name="Username"
                     rules="required"
                     v-slot="{ errors }"
@@ -124,12 +141,13 @@ export default {
       const {
         _id,
         userId,
-        user: { phone, userName, getEmailNotification }
+        user: { phone, fullName, userName, getEmailNotification }
       } = this.currentUser;
       await memberService.updateInfo({
         _id,
         userId,
         phone,
+        fullName,
         userName,
         getEmailNotification
       });

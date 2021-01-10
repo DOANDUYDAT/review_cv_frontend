@@ -22,7 +22,7 @@
               rounded
               solo-inverted
               prepend-inner-icon="mdi-magnify"
-              label="Search"
+              label="Tìm kiếm"
             ></v-text-field>
           </v-responsive>
         </v-col>

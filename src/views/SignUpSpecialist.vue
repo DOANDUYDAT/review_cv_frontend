@@ -20,7 +20,7 @@
               v-model="form.fullName"
               label="Fullname"
               type="text"
-              prepend-icon="mdi-account"
+              prepend-icon="mdi-account-details"
             ></v-text-field>
             <span class="red--text text--lighten-1">{{ errors[0] }}</span>
           </ValidationProvider>
@@ -119,7 +119,7 @@
             <v-text-field
               v-model="form.company"
               label="Company"
-              type="company"
+              type="text"
               prepend-icon="mdi-office-building"
             ></v-text-field>
             <span class="red--text text--lighten-1">{{ errors[0] }}</span>
@@ -134,7 +134,7 @@
             <v-text-field
               v-model="form.website"
               label="Website"
-              type="website"
+              type="text"
               prepend-icon="mdi-web"
             ></v-text-field>
             <span class="red--text text--lighten-1">{{ errors[0] }}</span>

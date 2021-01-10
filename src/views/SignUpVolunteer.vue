@@ -20,7 +20,7 @@
               v-model="form.fullName"
               label="Fullname"
               type="text"
-              prepend-icon="mdi-account"
+              prepend-icon="mdi-account-details"
             ></v-text-field>
             <span class="red--text text--lighten-1">{{ errors[0] }}</span>
           </ValidationProvider>

@@ -25,7 +25,7 @@
               @click:append="search"
               @keyup.enter="search"
               v-model="searchText"
-              label="Search"
+              label="Tìm kiếm"
             ></v-text-field>
           </v-responsive>
         </v-col>

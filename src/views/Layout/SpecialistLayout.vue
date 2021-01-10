@@ -22,7 +22,7 @@
               rounded
               solo-inverted
               append-icon="mdi-magnify"
-              label="Search"
+              label="Tìm kiếm"
               @click:append="search"
               @keyup.enter="search"
               v-model="searchText"

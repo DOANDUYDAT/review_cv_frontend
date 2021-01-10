@@ -101,7 +101,7 @@
               <v-row class="px-6 py-3">
                 <v-col cols="2">
                   <v-img
-                    src="https://picsum.photos/350/165?random"
+                    src="../../assets/cv2.jpg"
                     height="125"
                     class="grey darken-4"
                   ></v-img>

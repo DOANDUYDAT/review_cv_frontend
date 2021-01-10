@@ -15,7 +15,7 @@
               class="mr-10"
               color="grey darken-1"
               size="132"
-              style="position: absolute; top: -66px; left: 100px; z-index: 10"
+              style="position: absolute; top: -66px; left: 60px; z-index: 10"
             >
               <v-img src="../../assets/avatar.jpg"></v-img>
             </v-avatar>
@@ -26,6 +26,23 @@
                 flat
               >
                 <v-form>
+                  <ValidationProvider
+                    mode="aggressive"
+                    name="Fullname"
+                    rules="required"
+                    v-slot="{ errors }"
+                    :bails="false"
+                  >
+                    <v-text-field
+                      v-model="currentUser.user.fullName"
+                      label="Fullname"
+                      type="text"
+                      prepend-icon="mdi-account-details"
+                    ></v-text-field>
+                    <span class="red--text text--lighten-1">{{
+                      errors[0]
+                    }}</span>
+                  </ValidationProvider>
                   <ValidationProvider
                     mode="aggressive"
                     name="Username"
@@ -78,6 +95,45 @@
                       errors[0]
                     }}</span>
                   </ValidationProvider>
+                  <!-- <ValidationProvider>
+                    <v-autocomplete
+                      v-model="form.fields"
+                      :items="fieldsData"
+                      filled
+                      chips
+                      prepend-icon="mdi-briefcase"
+                      background-color="white"
+                      label="Select filed"
+                      item-text="name"
+                      item-value="name"
+                      multiple
+                    >
+                      <template v-slot:selection="data">
+                        <v-chip
+                          :input-value="data.selected"
+                          close
+                          @click="data.select"
+                          @click:close="remove(data.item)"
+                        >
+                          {{ data.item.name }}
+                        </v-chip>
+                      </template>
+                      <template v-slot:item="data">
+                        <template v-if="typeof data.item !== 'object'">
+                          <v-list-item-content
+                            v-text="data.item"
+                          ></v-list-item-content>
+                        </template>
+                        <template v-else>
+                          <v-list-item-content>
+                            <v-list-item-title
+                              v-html="data.item.name"
+                            ></v-list-item-title>
+                          </v-list-item-content>
+                        </template>
+                      </template>
+                    </v-autocomplete>
+                  </ValidationProvider> -->
                 </v-form>
 
                 <v-card-actions class="d-flex justify-end">
