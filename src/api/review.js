@@ -32,7 +32,8 @@ async function reportReview(reviewId, content) {
   return res;
 }
 
-async function getListReviewByListCvId(listCvId) {
+async function getListReviewByListCvId(listCvId, pageNumber) {
+  const skipNumber = (pageNumber - 1) * LIMIT_NUMBER;
   const { data } = await reviewService.find({
     query: {
       cvId: {
@@ -40,7 +41,9 @@ async function getListReviewByListCvId(listCvId) {
       },
       $sort: {
         createdAt: -1
-      }
+      },
+      $limit: LIMIT_NUMBER,
+      $skip: skipNumber
     }
   });
   return data;

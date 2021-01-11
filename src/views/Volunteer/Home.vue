@@ -49,6 +49,11 @@ export default {
       }
     }
   },
+  watch: {
+    page: function() {
+      this.getData();
+    }
+  },
   methods: {
     async onFilter(filter) {
       if (
@@ -57,13 +62,13 @@ export default {
         filter.position.length === 0 &&
         filter.timeType.length === 0
       ) {
-        this.listCv = await cvService.getAllCvs();
+        this.listCv = await cvService.getAllCvs(this.page);
       } else {
         this.listCv = await cvService.getListCvByFilter(filter);
       }
     },
     async getData() {
-      this.listCv = await cvService.getListUnreviewCv();
+      this.listCv = await cvService.getListUnreviewCv(this.page);
       this.totalUnreviewCv = await cvService.getTotalUnreviewCv();
     }
   },

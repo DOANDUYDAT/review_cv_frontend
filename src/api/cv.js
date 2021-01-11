@@ -84,7 +84,11 @@ async function reviewCv(cvId) {
 
 async function getListCvByFilter(filter) {
   const role = await authService.getRole();
-  let query = {};
+  let query = {
+    $sort: {
+      createdAt: -1
+    }
+  };
   if (role === "volunteer") {
     query = {
       ...query,

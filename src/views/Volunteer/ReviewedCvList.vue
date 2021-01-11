@@ -1,59 +1,63 @@
 <template>
   <v-row>
     <v-col cols="9">
-      <v-sheet class="pa-4" v-if="listReview && listReview.length">
-        <h2 class="font-weight-medium">Danh sách CV đã review</h2>
-        <v-divider></v-divider>
-        <div v-for="review in listReview" :key="review._id">
-          <v-row>
-            <v-col cols="2" class="text-center" align-self="center">
-              <v-avatar color="grey darken-1" size="100">
-                <v-img src="../../assets/avatar.jpg"></v-img>
-              </v-avatar>
-            </v-col>
-            <v-col cols="10">
-              <v-row>
-                <v-col
-                  cols="9"
-                  class="py-0"
-                  @click.stop="goToReviewResult(review)"
-                >
-                  <h3>{{ review.cv.author.user.fullName }}</h3>
-                  <span>Lĩnh vực làm việc: {{ review.cv.field }}</span>
-                  <br />
-                  <span>Cấp bậc: {{ review.cv.position }}</span
-                  ><br />
-                  <span>Địa điểm: {{ review.cv.location }}</span>
-                </v-col>
-                <!-- <v-col cols="3" class="text-end" style="align-self: flex-end">
+      <div v-if="listReview && listReview.length">
+        <v-sheet class="pa-4" min-height="80vh">
+          <h2 class="font-weight-medium">Danh sách CV đã review</h2>
+          <v-divider></v-divider>
+          <div v-for="review in listReview" :key="review._id">
+            <v-row>
+              <v-col cols="2" class="text-center" align-self="center">
+                <v-avatar color="grey darken-1" size="100">
+                  <v-img src="../../assets/avatar.jpg"></v-img>
+                </v-avatar>
+              </v-col>
+              <v-col cols="10">
+                <v-row>
+                  <v-col
+                    cols="9"
+                    class="py-0"
+                    @click.stop="goToReviewResult(review)"
+                  >
+                    <h3>{{ review.cv.author.user.fullName }}</h3>
+                    <span>Lĩnh vực làm việc: {{ review.cv.field }}</span>
+                    <br />
+                    <span>Cấp bậc: {{ review.cv.position }}</span
+                    ><br />
+                    <span>Địa điểm: {{ review.cv.location }}</span>
+                  </v-col>
+                  <!-- <v-col cols="3" class="text-end" style="align-self: flex-end">
                   <v-icon small color="green"
                     >mdi-checkbox-marked-circle</v-icon
                   >
                   <span class="body-2 green--text">Đã public</span>
                 </v-col> -->
-              </v-row>
-              <v-row>
-                <v-col cols="6" class="py-0 text-left"
-                  >Kinh nghiệm:
-                  <span class="green--text">{{ review.cv.exp }}</span>
-                </v-col>
-                <v-col cols="6" class="py-0 text-right">
-                  Review ngày {{ shortDate(review.cv.createdAt) }}
-                </v-col>
-              </v-row>
-            </v-col>
-          </v-row>
-          <v-divider></v-divider>
-          <div class="text-center">
-            <v-pagination v-model="page" :length="lengthPage"></v-pagination>
+                </v-row>
+                <v-row>
+                  <v-col cols="6" class="py-0 text-left"
+                    >Kinh nghiệm:
+                    <span class="green--text">{{ review.cv.exp }}</span>
+                  </v-col>
+                  <v-col cols="6" class="py-0 text-right">
+                    Review ngày {{ shortDate(review.cv.createdAt) }}
+                  </v-col>
+                </v-row>
+              </v-col>
+            </v-row>
+            <v-divider></v-divider>
           </div>
+        </v-sheet>
+        <div class="text-center">
+          <v-pagination v-model="page" :length="lengthPage"></v-pagination>
         </div>
-      </v-sheet>
-      <v-sheet class="pa-4" v-else>
-        <h2 class="font-weight-medium">Danh sách CV đã review</h2>
-        <v-divider></v-divider>
-        <div class="pt-4">Bạn chưa review CV nào</div>
-      </v-sheet>
+      </div>
+      <div v-else>
+        <v-sheet class="pa-4">
+          <h2 class="font-weight-medium">Danh sách CV đã review</h2>
+          <v-divider></v-divider>
+          <div class="pt-4">Bạn chưa review CV nào</div>
+        </v-sheet>
+      </div>
     </v-col>
     <v-col cols="3" class="pl-0">
       <v-sheet>
@@ -97,6 +101,11 @@ export default {
       }
     }
   },
+  watch: {
+    page: function() {
+      this.getData();
+    }
+  },
   methods: {
     shortDate: timeStamp => {
       let d = new Date(timeStamp);
@@ -113,7 +122,8 @@ export default {
       this.currentUser = volunteer;
       this.totalReview = volunteer.listReview.length;
       this.listReview = await reviewService.getListReviewByListReviewId(
-        this.currentUser.listReview
+        this.currentUser.listReview,
+        this.page
       );
     }
   },

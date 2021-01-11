@@ -2,7 +2,7 @@
   <v-container class="pt-0" v-if="listReview">
     <v-row>
       <v-col cols="9">
-        <v-sheet class="pa-4" min-height="100vh">
+        <v-sheet class="pa-4" min-height="80vh">
           <h2 class="font-weight-medium">
             Danh sách kết quả review CV gần đây
           </h2>
@@ -67,6 +67,9 @@
             <v-divider></v-divider>
           </div>
         </v-sheet>
+        <div class="text-center">
+          <v-pagination v-model="page" :length="lengthPage"></v-pagination>
+        </div>
       </v-col>
       <v-col cols="3" class="pl-0">
         <v-sheet>
@@ -90,8 +93,29 @@ export default {
   data() {
     return {
       listReview: null,
-      currentUser: null
+      currentUser: null,
+      page: 1,
+      pageSize: 10,
+      totalReview: 0
     };
+  },
+  computed: {
+    lengthPage() {
+      if (this.totalReview === 0) {
+        return 1;
+      } else {
+        if (this.totalReview % this.pageSize === 0) {
+          return Math.floor(this.totalReview / this.pageSize);
+        } else {
+          return Math.floor(this.totalReview / this.pageSize) + 1;
+        }
+      }
+    }
+  },
+  watch: {
+    page: function() {
+      this.getData();
+    }
   },
   methods: {
     shortDate: timeStamp => {
@@ -105,8 +129,10 @@ export default {
       const userId = await authService.getCurrentUserId();
       const member = await memberService.getMember(userId);
       this.currentUser = member;
+      this.totalReview = member.listCv.length;
       this.listReview = await reviewService.getListReviewByListCvId(
-        this.currentUser.listCv
+        this.currentUser.listCv,
+        this.page
       );
     },
     isSpecialist(author) {

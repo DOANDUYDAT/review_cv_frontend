@@ -14,14 +14,14 @@
             <v-avatar
               class="mr-10"
               color="grey darken-1"
-              size="132"
-              style="position: absolute; top: -66px; left: 60px; z-index: 10"
+              size="110"
+              style="position: absolute; top: -55px; left: 60px; z-index: 2"
             >
               <v-img src="../../assets/avatar.jpg"></v-img>
             </v-avatar>
             <ValidationObserver>
               <v-card
-                :width="$vuetify.breakpoint.xs ? '100%' : '50%'"
+                :width="$vuetify.breakpoint.xs ? '100%' : '60%'"
                 class="pa-10 mx-auto"
                 flat
               >
@@ -95,43 +95,9 @@
                       errors[0]
                     }}</span>
                   </ValidationProvider>
-                  <ValidationProvider
-                    mode="aggressive"
-                    name="Company"
-                    rules="required"
-                    v-slot="{ errors }"
-                    :bails="false"
-                  >
-                    <v-text-field
-                      v-model="currentUser.company"
-                      label="Company"
-                      type="text"
-                      prepend-icon="mdi-office-building"
-                    ></v-text-field>
-                    <span class="red--text text--lighten-1">{{
-                      errors[0]
-                    }}</span>
-                  </ValidationProvider>
-                  <ValidationProvider
-                    mode="aggressive"
-                    name="Website"
-                    rules="required"
-                    v-slot="{ errors }"
-                    :bails="false"
-                  >
-                    <v-text-field
-                      v-model="currentUser.websiteCompany"
-                      label="Website"
-                      type="text"
-                      prepend-icon="mdi-web"
-                    ></v-text-field>
-                    <span class="red--text text--lighten-1">{{
-                      errors[0]
-                    }}</span>
-                  </ValidationProvider>
-                  <!-- <ValidationProvider>
+                  <ValidationProvider>
                     <v-autocomplete
-                      v-model="form.fields"
+                      v-model="currentUser.user.fields"
                       :items="fieldsData"
                       filled
                       chips
@@ -167,7 +133,7 @@
                         </template>
                       </template>
                     </v-autocomplete>
-                  </ValidationProvider> -->
+                  </ValidationProvider>
                 </v-form>
 
                 <v-card-actions class="d-flex justify-end">
@@ -208,6 +174,18 @@ import authService from "../../api/authentication";
 import userService from "@/api/user";
 export default {
   data: () => ({
+    fieldsData: [
+      { name: "An toàn lao động" },
+      { name: "Bất động sản" },
+      { name: "Bưu chính - Viễn thông" },
+      { name: "Công nghệ thông tin" },
+      { name: "Dệt may/Da giày" },
+      { name: "Điện tử viễn thông" },
+      { name: "Du lịch" },
+      { name: "Kế toán/Kiểm toán" },
+      { name: "Luật/Pháp lý" },
+      { name: "Quản lý điều hành" }
+    ],
     currentUser: null
   }),
   methods: {
@@ -215,10 +193,7 @@ export default {
       const {
         _id,
         userId,
-        user: { phone, fullName, userName, getEmailNotification },
-        fields,
-        company,
-        websiteCompany
+        user: { phone, fullName, userName, fields }
       } = this.currentUser;
       await specialistService.updateSpecialistInfo({
         _id,
@@ -226,10 +201,7 @@ export default {
         phone,
         fullName,
         userName,
-        getEmailNotification,
-        fields,
-        company,
-        websiteCompany
+        fields
       });
       await authService.reAuthenticate();
       this.$swal({
@@ -299,6 +271,10 @@ export default {
     getActiveLabel(status) {
       if (status) return "Trạng thái nhận thông báo đang bật";
       else return "Trạng thái nhận thông báo đang tắt";
+    },
+    remove(item) {
+      const index = this.currentUser.user.fields.indexOf(item.name);
+      if (index >= 0) this.currentUser.user.fields.splice(index, 1);
     }
   },
   created() {
