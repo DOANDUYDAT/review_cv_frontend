@@ -83,7 +83,7 @@
               Thêm bình luận
             </v-btn>
           </template>
-          <span>Bạn phải có đủ 50 điểm uy tin để bình luận</span>
+          <span>Bạn phải có đủ 75 điểm uy tin để bình luận</span>
         </v-tooltip>
         <!-- <v-snackbar v-model="snackbar" top>
           Bạn phải có đủ 50 điểm uy tin để bình luận

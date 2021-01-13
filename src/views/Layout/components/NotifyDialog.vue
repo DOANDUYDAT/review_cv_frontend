@@ -75,17 +75,17 @@ export default {
         };
       } else if (notify.type === "publicCv") {
         return {
-          color: "primary",
+          color: "success",
           text: "mdi-account-check"
         };
       } else if (notify.type === "newCv") {
         return {
-          color: "success",
+          color: "warning",
           text: "mdi-file-plus"
         };
       } else if (notify.type === "newReview") {
         return {
-          color: "info",
+          color: "primary",
           text: "mdi-file-document-edit"
         };
       }

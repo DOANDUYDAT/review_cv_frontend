@@ -374,7 +374,8 @@ const routes = [
       ),
     meta: {
       requiresAuth: true,
-      roles: ["specialist"]
+      roles: ["specialist"],
+      requiresAccept: true
     },
     children: [
       {
@@ -386,7 +387,8 @@ const routes = [
           ),
         meta: {
           requiresAuth: false,
-          roles: ["specialist"]
+          roles: ["specialist"],
+          requiresAccept: true
         }
       },
       {
@@ -398,7 +400,8 @@ const routes = [
           ),
         meta: {
           requiresAuth: false,
-          roles: ["specialist"]
+          roles: ["specialist"],
+          requiresAccept: true
         }
       },
       {
@@ -410,7 +413,8 @@ const routes = [
           ),
         meta: {
           requiresAuth: false,
-          roles: ["specialist"]
+          roles: ["specialist"],
+          requiresAccept: true
         }
       },
       {
@@ -422,7 +426,8 @@ const routes = [
           ),
         meta: {
           requiresAuth: false,
-          roles: ["specialist"]
+          roles: ["specialist"],
+          requiresAccept: true
         }
       },
       {
@@ -434,7 +439,8 @@ const routes = [
           ),
         meta: {
           requiresAuth: false,
-          roles: ["specialist"]
+          roles: ["specialist"],
+          requiresAccept: true
         }
       },
       {
@@ -446,7 +452,8 @@ const routes = [
           ),
         meta: {
           requiresAuth: false,
-          roles: ["specialist"]
+          roles: ["specialist"],
+          requiresAccept: true
         }
       }
     ]
@@ -459,7 +466,8 @@ const routes = [
       ),
     meta: {
       requiresAuth: true,
-      roles: ["volunteer"]
+      roles: ["volunteer"],
+      requiresAccept: true
     },
     children: [
       {
@@ -471,7 +479,8 @@ const routes = [
           ),
         meta: {
           requiresAuth: false,
-          roles: ["volunteer"]
+          roles: ["volunteer"],
+          requiresAccept: true
         }
       },
       {
@@ -483,7 +492,8 @@ const routes = [
           ),
         meta: {
           requiresAuth: false,
-          roles: ["volunteer"]
+          roles: ["volunteer"],
+          requiresAccept: true
         }
       },
       {
@@ -495,7 +505,8 @@ const routes = [
           ),
         meta: {
           requiresAuth: false,
-          roles: ["volunteer"]
+          roles: ["volunteer"],
+          requiresAccept: true
         }
       },
       {
@@ -507,7 +518,8 @@ const routes = [
           ),
         meta: {
           requiresAuth: false,
-          roles: ["volunteer"]
+          roles: ["volunteer"],
+          requiresAccept: true
         }
       },
       {
@@ -519,7 +531,8 @@ const routes = [
           ),
         meta: {
           requiresAuth: false,
-          roles: ["volunteer"]
+          roles: ["volunteer"],
+          requiresAccept: true
         }
       },
       {
@@ -531,7 +544,8 @@ const routes = [
           ),
         meta: {
           requiresAuth: false,
-          roles: ["volunteer"]
+          roles: ["volunteer"],
+          requiresAccept: true
         }
       },
       {
@@ -543,7 +557,8 @@ const routes = [
           ),
         meta: {
           requiresAuth: false,
-          roles: ["volunteer"]
+          roles: ["volunteer"],
+          requiresAccept: true
         }
       },
       {
@@ -555,7 +570,8 @@ const routes = [
           ),
         meta: {
           requiresAuth: false,
-          roles: ["volunteer"]
+          roles: ["volunteer"],
+          requiresAccept: true
         }
       }
     ]
@@ -613,6 +629,15 @@ const routes = [
     }
   },
   {
+    path: "/not-accept",
+    name: "Not Accept",
+    component: () =>
+      import(/* webpackChunkName: "forbidden" */ "../views/NotAccept.vue"),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
     path: "*",
     name: "Page Not Found",
     component: PageNotFound,
@@ -649,13 +674,28 @@ router.beforeEach((to, from, next) => {
       if (!to.meta.roles) {
         next();
       } else {
+        // page yêu cầu isAccept
+        if (to.meta.requiresAccept) {
+          // lấy thông tin isAccept. nếu là member, admin thì isAccept = undefined
+          authService.getUserByRole().then(detailUser => {
+            const isAccept = detailUser.isAccept;
+            if (isAccept) {
+              next();
+            } else {
+              next({
+                path: "/not-accept",
+                query: { redirect: to.fullPath }
+              });
+            }
+          });
+        }
         // TH3: page yêu cầu quyền
         if (to.meta.roles.includes(user.role)) {
           next();
         } else {
           // TH4: không có quyền
           next({
-            path: "/Forbidden",
+            path: "/forbidden",
             query: { redirect: to.fullPath }
           });
         }
