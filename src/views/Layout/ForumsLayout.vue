@@ -21,8 +21,11 @@
               hide-details
               rounded
               solo-inverted
-              prepend-inner-icon="mdi-magnify"
+              append-icon="mdi-magnify"
               label="Tìm kiếm"
+              @click:append="search"
+              @keyup.enter="search"
+              v-model="searchText"
             ></v-text-field>
           </v-responsive>
         </v-col>
@@ -120,11 +123,17 @@
 
 <script>
 import authService from "../../api/authentication";
+import EventBus from "../../services/event-bus";
+
 export default {
   data: () => ({
-    currentUser: null
+    currentUser: null,
+    searchText: ""
   }),
   methods: {
+    search() {
+      EventBus.$emit("search-question", this.searchText);
+    },
     GoToMemberHomePage() {
       const { role } = this.currentUser.user;
       if (role === "member") {

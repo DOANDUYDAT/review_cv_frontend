@@ -76,6 +76,19 @@ async function getTotalQuestionInMonth(month) {
   return total;
 }
 
+async function search(text) {
+  if (text.trim()) {
+    const { data } = await questionService.find({
+      query: {
+        $search: text.trim()
+      }
+    });
+    return data;
+  } else {
+    return getListQuestions(1);
+  }
+}
+
 export { questionService as questionServiceRoot };
 
 export default {
@@ -85,5 +98,6 @@ export default {
   closeQuestion,
   likeQuestion,
   getTotalQuestionInMonth,
-  getTotalQuestion
+  getTotalQuestion,
+  search
 };

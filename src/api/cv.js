@@ -184,7 +184,7 @@ async function search(text) {
     });
     return data;
   } else {
-    return getAllCvs();
+    return getAllCvs(1);
   }
 }
 

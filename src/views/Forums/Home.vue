@@ -1,10 +1,6 @@
 <template>
-  <div>
-    <v-sheet
-      min-height="70vh"
-      rounded="lg"
-      v-if="listQuestions && listQuestions.length > 0"
-    >
+  <div v-if="listQuestions && listQuestions.length > 0">
+    <v-sheet min-height="70vh" rounded="lg">
       <v-row>
         <v-col cols="6">
           <h2>Câu hỏi hàng đầu</h2>
@@ -63,11 +59,29 @@
       <v-pagination v-model="page" :length="lengthPage"></v-pagination>
     </div>
   </div>
+  <div v-else>
+    <v-row>
+      <v-col cols="6">
+        <h2>Câu hỏi hàng đầu</h2>
+      </v-col>
+      <!-- <v-spacer></v-spacer> -->
+      <v-col class="text-right">
+        <v-btn
+          :small="$vuetify.breakpoint.mobile"
+          depressed
+          color="primary"
+          @click="goToQuestionAsk"
+          >Đặt câu hỏi</v-btn
+        >
+      </v-col>
+    </v-row>
+  </div>
 </template>
 
 <script>
 import questionService from "@/api/question.js";
 import { questionServiceRoot } from "@/api/question.js";
+import EventBus from "../../services/event-bus";
 
 export default {
   name: "HomeForums",
@@ -127,6 +141,13 @@ export default {
     questionServiceRoot.on("created", () => {
       this.getData();
     });
+    EventBus.$on("search-question", async textSearch => {
+      console.log(textSearch);
+      this.listQuestions = await questionService.search(textSearch);
+    });
+  },
+  destroyed() {
+    EventBus.$off();
   }
 };
 </script>
