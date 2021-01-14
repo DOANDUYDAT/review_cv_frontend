@@ -1,15 +1,14 @@
 <template>
-  <v-container>
-    <v-card class="pa-10 mx-auto">
+  <v-container jutify-center>
+    <v-card style="max-width:60%; margin:auto;">
       <v-toolbar flat dark>
-        <h2>Tài khoản đang chờ phê duyệt</h2>
+        <h2>Xác thực tài khoản</h2>
       </v-toolbar>
-      <v-card-title
-        >Chúng tôi đang xem xét thông tin đăng ký của bạn.<br />
-        Bạn vui lòng đăng nhập sau khi tài khoản được phê duyệt.
+      <v-card-title style="justify-content: center;"
+        >Bạn đã xác thực tài khoản thành công.
       </v-card-title>
-      <v-card-actions>
-        <v-btn to="/forums">Đi đến diễn đàn</v-btn>
+      <v-card-actions style="justify-content: center;">
+        <v-btn to="/login">Đăng nhập tại đây</v-btn>
       </v-card-actions>
     </v-card>
   </v-container>

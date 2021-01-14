@@ -629,10 +629,16 @@ const routes = [
     }
   },
   {
+    path: "/verify",
+    name: "Verify",
+    component: () =>
+      import(/* webpackChunkName: "verify" */ "../views/Verify.vue")
+  },
+  {
     path: "/not-accept",
     name: "Not Accept",
     component: () =>
-      import(/* webpackChunkName: "forbidden" */ "../views/NotAccept.vue"),
+      import(/* webpackChunkName: "notAccept" */ "../views/NotAccept.vue"),
     meta: {
       requiresAuth: true
     }
