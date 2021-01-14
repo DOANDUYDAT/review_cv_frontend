@@ -110,12 +110,6 @@
             <span class="red--text text--lighten-1">{{ errors[0] }}</span>
           </ValidationProvider>
         </v-form>
-<v-btn
-      depressed
-      color="primary"
-    >
-      Primary
-    </v-btn>
         <v-card-actions class="d-flex justify-end">
           <v-btn color="primary" @click="SignUpMember" :disabled="invalid"
             >Đăng ký</v-btn
