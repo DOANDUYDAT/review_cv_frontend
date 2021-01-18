@@ -74,7 +74,7 @@ export default {
   data() {
     return {
       filter: {
-        fields: [],
+        field: [],
         exp: [],
         position: [],
         timeType: []
@@ -83,7 +83,7 @@ export default {
       items: [
         {
           text: "Lĩnh vực làm việc",
-          model: "fields",
+          model: "field",
           children: [
             { text: "An toàn lao động" },
             { text: "Bất động sản" },
@@ -128,7 +128,7 @@ export default {
         {
           text: "Thời gian làm việc",
           model: "timeType",
-          children: [{ text: "Fulltime" }, { text: "Parttime" }]
+          children: [{ text: "Full-time" }, { text: "Part-time" }]
         }
       ]
     };
@@ -139,16 +139,16 @@ export default {
       setTimeout(() => (this.loading = false), 1000);
     },
     submit() {
-      const { fields, exp, timeType, position } = this.filter;
+      const { field, exp, timeType, position } = this.filter;
       this.$emit("filter-cv", {
-        fields,
+        field,
         exp,
         timeType,
         position
       });
     },
     resetFilter() {
-      this.filter.fields = [];
+      this.filter.field = [];
       this.filter.exp = [];
       this.filter.position = [];
       this.filter.timeType = [];
