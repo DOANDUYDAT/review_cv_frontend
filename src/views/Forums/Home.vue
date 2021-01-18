@@ -142,7 +142,6 @@ export default {
       this.getData();
     });
     EventBus.$on("search-question", async textSearch => {
-      console.log(textSearch);
       this.listQuestions = await questionService.search(textSearch);
     });
   },

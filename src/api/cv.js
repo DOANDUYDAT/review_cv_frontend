@@ -46,7 +46,7 @@ async function getAllCvs(pageNumber) {
       listReview: []
     };
   }
-  console.log(query);
+
   const { data } = await cvService.find({
     query
   });
@@ -100,6 +100,7 @@ async function getListCvByFilter(filter) {
       query[key] = { $in: value };
     }
   }
+
   const { data } = await cvService.find({
     query
   });

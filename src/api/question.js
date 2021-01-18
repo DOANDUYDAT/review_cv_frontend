@@ -77,12 +77,16 @@ async function getTotalQuestionInMonth(month) {
 }
 
 async function search(text) {
+  const query = {
+    $text: text.trim()
+  };
+
   if (text.trim()) {
+    console.log(query);
     const { data } = await questionService.find({
-      query: {
-        $search: text.trim()
-      }
+      query
     });
+
     return data;
   } else {
     return getListQuestions(1);
