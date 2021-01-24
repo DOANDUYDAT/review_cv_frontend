@@ -405,6 +405,19 @@ const routes = [
         }
       },
       {
+        path: "add-recruitment",
+        name: "Add Recruitment",
+        component: () =>
+          import(
+            /* webpackChunkName: "specialistHome" */ "../views/Specialist/AddRecruitment.vue"
+          ),
+        meta: {
+          requiresAuth: false,
+          roles: ["specialist"],
+          requiresAccept: true
+        }
+      },
+      {
         path: "received-cv-list",
         name: "Received CV List",
         component: () =>
@@ -616,9 +629,31 @@ const routes = [
         meta: {
           requiresAuth: true
         }
+      },
+      {
+        path: "/recruitment-news/:recruitmentId",
+        name: "Recruitment News",
+        component: () =>
+          import(
+            /* webpackChunkName: "recruitmentNews" */ "../views/RecruitmentDetail.vue"
+          ),
+        meta: {
+          requiresAuth: true
+        }
       }
     ]
   },
+  // {
+  //   path: "/recruitment-news/:recruitmentId",
+  //   name: "Recruitment News",
+  //   component: () =>
+  //     import(
+  //       /* webpackChunkName: "notAccept" */ "../views/RecruitmentDetail.vue"
+  //     ),
+  //   meta: {
+  //     requiresAuth: true
+  //   }
+  // },
   {
     path: "/forbidden",
     name: "Forbidden",

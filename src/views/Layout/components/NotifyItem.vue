@@ -54,6 +54,10 @@ export default {
         }
       } else if (notify.type === "newReview") {
         return `${baseUrl}/memberHome/review-result/${notify.reviewId}`;
+      } else if (notify.type === "interestCv" && notify.recruitmentId) {
+        return `${baseUrl}/recruitment-news/${notify.recruitmentId}`;
+      } else {
+        return "";
       }
     }
   }

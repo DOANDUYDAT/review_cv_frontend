@@ -7,8 +7,67 @@
         </h2>
       </v-card-title>
       <v-tabs color="teal accent-4" left>
-        <v-tab>Danh sách CV online</v-tab>
         <v-tab>Danh sách CV upload</v-tab>
+        <v-tab>Danh sách CV online</v-tab>
+        <v-tab-item>
+          <v-container fluid v-if="listUploadCv && listUploadCv.length">
+            <v-card v-for="cv in listUploadCv" :key="cv._id">
+              <v-row class="px-6 py-3">
+                <v-col cols="2">
+                  <v-img
+                    src="../../assets/cv2.jpg"
+                    height="125"
+                    class="grey darken-4"
+                  ></v-img>
+                </v-col>
+                <v-col cols="10" class="pb-0">
+                  <v-row>
+                    <v-col cols="9">
+                      <h2 class="teal--text font-weight-medium">
+                        CV {{ cv.field }}
+                      </h2>
+                    </v-col>
+                    <v-col cols="3" class="text-right">
+                      {{ shortDateTime(cv.createdAt) }}
+                    </v-col>
+                    <v-col cols="12">
+                      <v-input hide-details="auto">
+                        <span class="ma-2">{{ cv.link }}</span>
+                      </v-input>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col class="pb-0 text-right" cols="12">
+                      <v-btn
+                        small
+                        color="#f6f6f6"
+                        class="mx-2 grey--text"
+                        depressed
+                        @click="openDetailCv(cv)"
+                      >
+                        <v-icon left> mdi-eye-outline </v-icon>Xem CV</v-btn
+                      >
+
+                      <v-btn
+                        small
+                        color="#f6f6f6"
+                        class="mx-2 grey--text"
+                        depressed
+                        @click.stop="goToReviewResultList(cv)"
+                      >
+                        <v-icon left> mdi-file-eye </v-icon>
+                        {{ cv.listReview.length }} kết quả review</v-btn
+                      >
+                    </v-col>
+                  </v-row>
+                </v-col>
+              </v-row>
+            </v-card>
+          </v-container>
+          <v-container fluid v-else>
+            <h3>Bạn chưa tải lên CV nào</h3>
+          </v-container>
+        </v-tab-item>
 
         <v-tab-item>
           <v-container fluid v-if="listOnlineCv && listOnlineCv.length">
@@ -93,65 +152,6 @@
           </v-container>
           <v-container fluid v-else>
             <h3>Bạn chưa tạo CV online nào.</h3>
-          </v-container>
-        </v-tab-item>
-        <v-tab-item>
-          <v-container fluid v-if="listUploadCv && listUploadCv.length">
-            <v-card v-for="cv in listUploadCv" :key="cv._id">
-              <v-row class="px-6 py-3">
-                <v-col cols="2">
-                  <v-img
-                    src="../../assets/cv2.jpg"
-                    height="125"
-                    class="grey darken-4"
-                  ></v-img>
-                </v-col>
-                <v-col cols="10" class="pb-0">
-                  <v-row>
-                    <v-col cols="9">
-                      <h2 class="teal--text font-weight-medium">
-                        CV {{ cv.field }}
-                      </h2>
-                    </v-col>
-                    <v-col cols="3" class="text-right">
-                      {{ shortDateTime(cv.createdAt) }}
-                    </v-col>
-                    <v-col cols="12">
-                      <v-input hide-details="auto">
-                        <span class="ma-2">{{ cv.link }}</span>
-                      </v-input>
-                    </v-col>
-                  </v-row>
-                  <v-row>
-                    <v-col class="pb-0 text-right" cols="12">
-                      <v-btn
-                        small
-                        color="#f6f6f6"
-                        class="mx-2 grey--text"
-                        depressed
-                        @click="openDetailCv(cv)"
-                      >
-                        <v-icon left> mdi-eye-outline </v-icon>Xem CV</v-btn
-                      >
-
-                      <v-btn
-                        small
-                        color="#f6f6f6"
-                        class="mx-2 grey--text"
-                        depressed
-                        @click.stop="goToReviewResultList(cv)"
-                      >
-                        <v-icon left> mdi-file-eye </v-icon>
-                        {{ cv.listReview.length }} kết quả review</v-btn
-                      >
-                    </v-col>
-                  </v-row>
-                </v-col>
-              </v-row>
-            </v-card>
-          </v-container>
-          <v-container fluid v-else>
-            <h3>Bạn chưa tải lên CV nào</h3>
           </v-container>
         </v-tab-item>
       </v-tabs>

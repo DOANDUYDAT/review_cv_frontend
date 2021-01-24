@@ -29,42 +29,46 @@
             ></v-text-field>
           </v-responsive>
         </v-col>
-        <v-col offset="2" cols="2">
+        <v-col class="d-flex justify-end" cols="4">
           <v-btn text @click="GoToForumsPage" color="white">
             Diễn đàn
+          </v-btn>
+          <v-btn text @click="GoToRecruitmentPage" color="white">
+            Tin tuyển dụng
           </v-btn>
           <v-btn text rounded dark>
             Điểm uy tín: {{ currentUser.user.reputationPoint }}
           </v-btn>
         </v-col>
-        <v-menu offset-y>
-          <template v-slot:activator="{ on }">
-            <v-btn text dark v-on="on">
-              <v-icon left>mdi-account-circle</v-icon>
-              {{ currentUser.user.userName }}
-              <v-icon right>mdi-menu-down</v-icon>
-            </v-btn>
-          </template>
-          <v-list>
-            <v-list-item @click="GoToUpdateSpecialistProfilePage">
-              <v-list-item-title>Cập nhật thông tin</v-list-item-title>
-            </v-list-item>
-            <v-list-item @click="GoToChangeStatusNotifyPage">
-              <v-list-item-title>Cài đặt thông báo email</v-list-item-title>
-            </v-list-item>
-            <v-list-item @click="GoToReceivedCvListPage">
-              <v-list-item-title>Danh sách CV đã nhận</v-list-item-title>
-            </v-list-item>
-            <v-list-item @click="GoToReviewHistoryPage">
-              <v-list-item-title>Lịch sử review</v-list-item-title>
-            </v-list-item>
-            <v-list-item @click="LogOut">
-              <v-list-item-title>Đăng xuất</v-list-item-title>
-            </v-list-item>
-          </v-list>
-        </v-menu>
-        <v-spacer></v-spacer>
-        <notify-dialog></notify-dialog>
+        <v-col cols="2">
+          <v-menu offset-y>
+            <template v-slot:activator="{ on }">
+              <v-btn text dark v-on="on">
+                <v-icon left>mdi-account-circle</v-icon>
+                {{ currentUser.user.userName }}
+                <v-icon right>mdi-menu-down</v-icon>
+              </v-btn>
+            </template>
+            <v-list>
+              <v-list-item @click="GoToUpdateSpecialistProfilePage">
+                <v-list-item-title>Cập nhật thông tin</v-list-item-title>
+              </v-list-item>
+              <v-list-item @click="GoToChangeStatusNotifyPage">
+                <v-list-item-title>Cài đặt thông báo email</v-list-item-title>
+              </v-list-item>
+              <v-list-item @click="GoToReceivedCvListPage">
+                <v-list-item-title>Danh sách CV đã nhận</v-list-item-title>
+              </v-list-item>
+              <v-list-item @click="GoToReviewHistoryPage">
+                <v-list-item-title>Lịch sử review</v-list-item-title>
+              </v-list-item>
+              <v-list-item @click="LogOut">
+                <v-list-item-title>Đăng xuất</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+          <notify-dialog></notify-dialog>
+        </v-col>
       </v-row>
     </v-app-bar>
 
@@ -73,6 +77,7 @@
         <router-view></router-view>
       </v-container>
     </v-main>
+    <the-footer></the-footer>
   </v-app>
 </template>
 <script>
@@ -81,6 +86,7 @@ import specialistService from "../../api/specialist";
 import { updateInfoService } from "../../api/specialist";
 import authService from "../../api/authentication";
 import EventBus from "../../services/event-bus";
+import TheFooter from "./components/TheFooter.vue";
 
 export default {
   data: () => ({
@@ -88,7 +94,8 @@ export default {
     searchText: ""
   }),
   components: {
-    NotifyDialog
+    NotifyDialog,
+    TheFooter
   },
   methods: {
     search() {
@@ -122,6 +129,9 @@ export default {
     },
     GoToReviewHistoryPage() {
       this.$router.push({ name: "Reviewed CV List" });
+    },
+    GoToRecruitmentPage() {
+      this.$router.push({ name: "Add Recruitment" });
     },
     GoToForumsPage() {
       this.$router.push({ name: "Forums Home" });

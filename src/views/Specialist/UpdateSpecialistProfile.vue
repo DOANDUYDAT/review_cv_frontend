@@ -163,6 +163,18 @@
               </template>
             </v-card-text>
           </v-card>
+          <v-card class="my-4">
+            <v-card-title class="py-2">Thông tin công ty</v-card-title>
+            <v-divider></v-divider>
+            <v-card-text>
+              <v-img src="../../assets/company.jpg"></v-img>
+            </v-card-text>
+            <v-card-text>
+              <h2>{{ currentUser.company }}</h2>
+              <br />
+              <h3>Website: {{ currentUser.websiteCompany }}</h3>
+            </v-card-text>
+          </v-card>
         </v-col>
       </v-row>
     </div>
@@ -193,7 +205,7 @@ export default {
       const {
         _id,
         userId,
-        user: { phone, fullName, userName, fields }
+        user: { phone, fullName, userName, getEmailNotification, fields }
       } = this.currentUser;
       await specialistService.updateSpecialistInfo({
         _id,
@@ -201,6 +213,7 @@ export default {
         phone,
         fullName,
         userName,
+        getEmailNotification,
         fields
       });
       await authService.reAuthenticate();

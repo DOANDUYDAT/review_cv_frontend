@@ -56,6 +56,7 @@
       <toolbar-editor :is-sticky="isSticky"></toolbar-editor>
       <router-view></router-view>
     </v-main>
+    <the-footer></the-footer>
   </v-app>
 </template>
 <script>
@@ -64,6 +65,7 @@ import memberService from "../../api/member";
 import { updateInfoService } from "../../api/member";
 import authService from "../../api/authentication";
 import ToolbarEditor from "./components/ToolbarEditor";
+import TheFooter from "./components/TheFooter.vue";
 
 export default {
   data: () => ({
@@ -73,7 +75,8 @@ export default {
   }),
   components: {
     NotifyDialog,
-    ToolbarEditor
+    ToolbarEditor,
+    TheFooter
   },
   computed: {},
   methods: {

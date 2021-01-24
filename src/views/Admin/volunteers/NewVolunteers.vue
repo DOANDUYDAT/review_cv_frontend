@@ -102,7 +102,7 @@ export default {
     headers: [
       {
         text: "Fullname",
-        value: "fullName",
+        value: "user.fullName",
         sortable: true
       },
       {

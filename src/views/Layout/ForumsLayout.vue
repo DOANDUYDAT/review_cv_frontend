@@ -118,14 +118,17 @@
         <router-view></router-view>
       </v-container>
     </v-main>
+    <the-footer></the-footer>
   </v-app>
 </template>
 
 <script>
 import authService from "../../api/authentication";
 import EventBus from "../../services/event-bus";
+import TheFooter from "./components/TheFooter.vue";
 
 export default {
+  components: { TheFooter },
   data: () => ({
     currentUser: null,
     searchText: ""
