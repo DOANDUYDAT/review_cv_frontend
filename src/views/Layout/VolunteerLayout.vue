@@ -29,7 +29,7 @@
             ></v-text-field>
           </v-responsive>
         </v-col>
-        <v-col offset="2" cols="2">
+        <v-col class="d-flex justify-end" cols="4">
           <v-btn text @click="GoToForumsPage" color="white">
             Diễn đàn
           </v-btn>
@@ -37,40 +37,41 @@
             Điểm uy tín: {{ currentUser.user.reputationPoint }}
           </v-btn>
         </v-col>
-        <v-menu offset-y v-if="currentUser">
-          <template v-slot:activator="{ on }">
-            <v-btn text dark v-on="on">
-              <v-icon left>mdi-account-circle</v-icon>
-              {{ currentUser.user.userName }}
-              <v-icon right>mdi-menu-down</v-icon>
-            </v-btn>
-          </template>
-          <v-list>
-            <v-list-item @click="GoToUpdateVolunteerProfilePage">
-              <v-list-item-title>Cập nhật thông tin</v-list-item-title>
-            </v-list-item>
-            <v-list-item @click="GoToChangeStatusNotifyPage">
-              <v-list-item-title>Cài đặt thông báo email</v-list-item-title>
-            </v-list-item>
-            <v-list-item @click="GoToReceivedCvListPage">
-              <v-list-item-title>Danh sách CV đã nhận</v-list-item-title>
-            </v-list-item>
-            <v-list-item @click="GoToReviewHistoryPage">
-              <v-list-item-title>Lịch sử review</v-list-item-title>
-            </v-list-item>
-            <v-list-item @click="GoToConvertPointPage">
-              <v-list-item-title>Đổi điểm tích lũy</v-list-item-title>
-            </v-list-item>
-            <v-list-item @click="GoToExchangeGiftPage">
-              <v-list-item-title>Đổi quà</v-list-item-title>
-            </v-list-item>
-            <v-list-item @click="LogOut">
-              <v-list-item-title>Đăng xuất</v-list-item-title>
-            </v-list-item>
-          </v-list>
-        </v-menu>
-        <v-spacer></v-spacer>
-        <notify-dialog></notify-dialog>
+        <v-col cols="2">
+          <v-menu offset-y v-if="currentUser">
+            <template v-slot:activator="{ on }">
+              <v-btn text dark v-on="on">
+                <v-icon left>mdi-account-circle</v-icon>
+                {{ currentUser.user.userName }}
+                <v-icon right>mdi-menu-down</v-icon>
+              </v-btn>
+            </template>
+            <v-list>
+              <v-list-item @click="GoToUpdateVolunteerProfilePage">
+                <v-list-item-title>Cập nhật thông tin</v-list-item-title>
+              </v-list-item>
+              <v-list-item @click="GoToChangeStatusNotifyPage">
+                <v-list-item-title>Cài đặt thông báo email</v-list-item-title>
+              </v-list-item>
+              <v-list-item @click="GoToReceivedCvListPage">
+                <v-list-item-title>Danh sách CV đã nhận</v-list-item-title>
+              </v-list-item>
+              <v-list-item @click="GoToReviewHistoryPage">
+                <v-list-item-title>Lịch sử review</v-list-item-title>
+              </v-list-item>
+              <v-list-item @click="GoToConvertPointPage">
+                <v-list-item-title>Đổi điểm tích lũy</v-list-item-title>
+              </v-list-item>
+              <v-list-item @click="GoToExchangeGiftPage">
+                <v-list-item-title>Đổi quà</v-list-item-title>
+              </v-list-item>
+              <v-list-item @click="LogOut">
+                <v-list-item-title>Đăng xuất</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+          <notify-dialog></notify-dialog>
+        </v-col>
       </v-row>
     </v-app-bar>
 
@@ -79,6 +80,7 @@
         <router-view></router-view>
       </v-container>
     </v-main>
+    <the-footer></the-footer>
   </v-app>
 </template>
 <script>
@@ -87,6 +89,7 @@ import volunteerService from "../../api/volunteer";
 import { updateInfoService, exchangePointService } from "../../api/volunteer";
 import authService from "../../api/authentication";
 import EventBus from "../../services/event-bus";
+import TheFooter from "./components/TheFooter.vue";
 
 export default {
   data: () => ({
@@ -94,7 +97,8 @@ export default {
     searchText: ""
   }),
   components: {
-    NotifyDialog
+    NotifyDialog,
+    TheFooter
   },
   methods: {
     search() {

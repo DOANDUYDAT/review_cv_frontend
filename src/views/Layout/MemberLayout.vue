@@ -12,7 +12,7 @@
             <v-img src="../../assets/logo.png"></v-img>
           </v-avatar>
         </v-col>
-        <v-col cols="3">
+        <v-col class="d-flex justify-end" cols="3">
           <v-btn text @click="GoToForumsPage" color="white">
             Diễn đàn
           </v-btn>
@@ -23,39 +23,41 @@
             Điểm uy tín: {{ currentUser.user.reputationPoint }}
           </v-btn>
         </v-col>
-        <v-menu offset-y>
-          <template v-slot:activator="{ on }">
-            <v-btn text dark v-on="on">
-              <v-icon left>mdi-account-circle</v-icon>
-              {{ currentUser.user.userName }}
-              <v-icon right>mdi-menu-down</v-icon>
-            </v-btn>
-          </template>
-          <v-list>
-            <v-list-item @click="GoToUpdateProfilePage">
-              <v-list-item-title>Cập nhật thông tin</v-list-item-title>
-            </v-list-item>
-            <v-list-item @click="GoToChangeStatusNotifyPage">
-              <v-list-item-title>Cài đặt thông báo email</v-list-item-title>
-            </v-list-item>
-            <v-list-item @click="GoToRecentReviewResultListPage">
-              <v-list-item-title
-                >Danh sách kết quả review gần đây</v-list-item-title
-              >
-            </v-list-item>
-            <v-list-item @click="LogOut">
-              <v-list-item-title>Đăng xuất</v-list-item-title>
-            </v-list-item>
-          </v-list>
-        </v-menu>
-        <v-spacer></v-spacer>
-        <notify-dialog></notify-dialog>
+        <v-col cols="2">
+          <v-menu offset-y>
+            <template v-slot:activator="{ on }">
+              <v-btn text dark v-on="on">
+                <v-icon left>mdi-account-circle</v-icon>
+                {{ currentUser.user.userName }}
+                <v-icon right>mdi-menu-down</v-icon>
+              </v-btn>
+            </template>
+            <v-list>
+              <v-list-item @click="GoToUpdateProfilePage">
+                <v-list-item-title>Cập nhật thông tin</v-list-item-title>
+              </v-list-item>
+              <v-list-item @click="GoToChangeStatusNotifyPage">
+                <v-list-item-title>Cài đặt thông báo email</v-list-item-title>
+              </v-list-item>
+              <v-list-item @click="GoToRecentReviewResultListPage">
+                <v-list-item-title
+                  >Danh sách kết quả review gần đây</v-list-item-title
+                >
+              </v-list-item>
+              <v-list-item @click="LogOut">
+                <v-list-item-title>Đăng xuất</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+          <notify-dialog></notify-dialog>
+        </v-col>
       </v-row>
     </v-app-bar>
 
     <v-main>
       <router-view></router-view>
     </v-main>
+    <the-footer></the-footer>
   </v-app>
 </template>
 <script>
@@ -63,13 +65,15 @@ import NotifyDialog from "./components/NotifyDialog";
 import memberService from "../../api/member";
 import { updateInfoService } from "../../api/member";
 import authService from "../../api/authentication";
+import TheFooter from "./components/TheFooter.vue";
 
 export default {
   data: () => ({
     currentUser: null
   }),
   components: {
-    NotifyDialog
+    NotifyDialog,
+    TheFooter
   },
   methods: {
     GoToMemberHomePage() {
