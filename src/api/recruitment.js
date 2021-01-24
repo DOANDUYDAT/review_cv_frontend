@@ -2,6 +2,7 @@
 import feathers from "../services/socketClient";
 
 const recruitmentService = feathers.service("recruitments");
+const primaryService = feathers.service("recruitments/primary");
 
 async function getRecruitment(recruitmentId) {
   const res = await recruitmentService.get(recruitmentId);
@@ -21,11 +22,20 @@ async function getListRecruitment(listId) {
       }
     }
   });
+
   return data;
+}
+
+async function setPrimary(id) {
+  const res = await primaryService.create({
+    recruitmentId: id
+  });
+  return res;
 }
 
 export default {
   getRecruitment,
   getListRecruitment,
-  createRecruitment
+  createRecruitment,
+  setPrimary
 };

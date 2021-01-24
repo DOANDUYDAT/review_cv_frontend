@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-tabs color="teal accent-4" left>
+    <v-tabs color="teal accent-4" left v-model="tab">
       <v-tab>Tin tuyển dụng</v-tab>
       <v-tab>Thêm tin tuyển dụng mới</v-tab>
       <v-tab-item>
@@ -25,6 +25,9 @@
                   <th class="subtitle-1 text-center">
                     Địa điểm làm việc
                   </th>
+                  <th class="subtitle-1 text-center">
+                    Thao tác
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -33,12 +36,30 @@
                   :key="recruitment._id"
                   @click.stop="goToRecruitmentDetailPage(recruitment)"
                 >
-                  <td class="text-center">{{ recruitment.title }}</td>
+                  <td class="text-left">
+                    {{ recruitment.title }}
+                    <v-icon
+                      v-if="isPrimary(recruitment._id)"
+                      small
+                      color="warning"
+                      >mdi-star</v-icon
+                    >
+                  </td>
                   <td class="text-center">
                     {{ shortDate(recruitment.expiredDate) }}
                   </td>
                   <td class="text-center">{{ recruitment.field }}</td>
                   <td class="text-center">{{ recruitment.location }}</td>
+                  <td class="text-center">
+                    <v-btn
+                      text
+                      color="primary"
+                      v-if="!isPrimary(recruitment._id)"
+                      @click.stop="setPrimary(recruitment._id)"
+                      >Đặt làm tin chính</v-btn
+                    >
+                    <!-- <v-icon left small> mdi-star</v-icon>Đặt làm tin chính -->
+                  </td>
                 </tr>
               </tbody>
             </template>
@@ -209,7 +230,6 @@
               <editor-content class="editor__content" :editor="editor" />
             </div>
 
-            <!-- <pre><code v-html="question.content">{{ question.content }}</code></pre> -->
             <v-btn
               small
               color="error"
@@ -227,7 +247,8 @@
 </template>
 
 <script>
-// import questionService from "@/api/question";
+/* eslint-disable no-unused-vars */
+import authService from "@/api/authentication";
 import specialistService from "@/api/specialist.js";
 import recruitmentService from "@/api/recruitment.js";
 import { Editor, EditorContent, EditorMenuBar } from "tiptap";
@@ -307,7 +328,8 @@ export default {
         location: ""
       },
       listRecruitment: null,
-      specialist: null
+      specialist: null,
+      tab: null
     };
   },
   methods: {
@@ -315,13 +337,16 @@ export default {
       let d = new Date(timeStamp);
       return d.toLocaleDateString();
     },
+    isPrimary(recruitmentId) {
+      return this.specialist.primaryRecruitment === recruitmentId;
+    },
     goToRecruitmentDetailPage(recruitment) {
       this.$router.push({ path: `/recruitment-news/${recruitment._id}` });
     },
     async getData() {
-      this.specialist = await specialistService.getSpecialist(
-        this.recruitment.userId
-      );
+      const userId = await authService.getCurrentUserId();
+      this.specialist = await specialistService.getSpecialist(userId);
+
       const { listRecruitmentNews } = this.specialist;
       this.listRecruitment = await recruitmentService.getListRecruitment(
         listRecruitmentNews
@@ -366,10 +391,54 @@ export default {
       recruitmentService
         .createRecruitment(data)
         .then(res => {
-          console.log(res);
+          this.tab = 0;
+          this.$swal({
+            toast: true,
+            position: "top-end",
+            icon: "success",
+            title: "Thêm tin tuyển dụng thành công",
+            showConfirmButton: false,
+            timer: 1500
+          });
         })
         .catch(err => {
-          console.log(err);
+          this.$swal({
+            toast: true,
+            position: "top-end",
+            title: "Thêm tin tuyển dụng thất bại!",
+            text: err,
+            icon: "error",
+            showConfirmButton: false,
+            timer: 1500
+          });
+        });
+    },
+    setPrimary(recruitmentId) {
+      recruitmentService
+        .setPrimary(recruitmentId)
+        .then(res => {
+          this.$swal({
+            toast: true,
+            position: "top-end",
+            icon: "success",
+            title: "Đặt tin tuyển dụng chính thành công",
+            showConfirmButton: false,
+            timer: 1500
+          });
+        })
+        .catch(err => {
+          this.$swal({
+            toast: true,
+            position: "top-end",
+            title: "Đặt tin tuyển dụng chính thất bại!",
+            text: err,
+            icon: "error",
+            showConfirmButton: false,
+            timer: 1500
+          });
+        })
+        .finally(() => {
+          this.getData();
         });
     }
   },

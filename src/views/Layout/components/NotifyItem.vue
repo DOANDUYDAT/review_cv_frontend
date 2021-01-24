@@ -60,6 +60,8 @@ export default {
         }
       } else if (notify.type === "newReview") {
         linkCv = `${baseUrl}/memberHome/review-result/${notify.reviewId}`;
+      } else if (notify.type === "interestCv") {
+        linkCv = `${baseUrl}/recruitment-news/${notify.recruitmentId}`;
       } else {
         linkCv = "";
       }

@@ -175,6 +175,7 @@ export default {
             position: "center",
             icon: "success",
             title: "Đăng ký thành công",
+            text: "Vui lòng kiểm tra email của bạn!",
             showConfirmButton: false,
             timer: 1500
           });

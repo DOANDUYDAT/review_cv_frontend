@@ -6,12 +6,16 @@ const updateInfoService = feathers.service("specialists/update-info");
 const acceptService = feathers.service("specialists/accept");
 
 async function getSpecialist(userId) {
-  const { data } = await specialistService.find({
-    query: {
-      userId
-    }
-  });
-  return data[0];
+  if (userId) {
+    const { data } = await specialistService.find({
+      query: {
+        userId
+      }
+    });
+    return data[0];
+  } else {
+    throw new Error("Id is not invalid");
+  }
 }
 
 async function accept(_id) {
