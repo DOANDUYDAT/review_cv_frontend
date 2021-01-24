@@ -1,5 +1,5 @@
 <template>
-  <v-list-item link :href="getLink()">
+  <v-list-item link :href="getLink()" v-if="role">
     <v-list-item-avatar>
       <v-icon :color="icon.color" large>
         {{ icon.text }}
@@ -20,6 +20,11 @@
 import authService from "@/api/authentication";
 
 export default {
+  data() {
+    return {
+      role: null
+    };
+  },
   props: {
     data: {
       type: Object,
@@ -42,20 +47,30 @@ export default {
       return d.toLocaleDateString();
     },
     getLink() {
-      const role = authService.getRole();
+      const role = this.role;
       const notify = this.data;
       const baseUrl = "http://localhost:8080";
+      let linkCv = "";
       if (notify.type === "newCv") {
         if (role === "volunteer") {
-          return `${baseUrl}/volunteerHome/view-cv/${notify.cvId}`;
+          linkCv = `${baseUrl}/volunteerHome/view-cv/${notify.cvId}`;
         }
         if (role === "specialist") {
-          return `${baseUrl}/specialistHome/view-cv/${notify.cvId}`;
+          linkCv = `${baseUrl}/specialistHome/view-cv/${notify.cvId}`;
         }
       } else if (notify.type === "newReview") {
-        return `${baseUrl}/memberHome/review-result/${notify.reviewId}`;
+        linkCv = `${baseUrl}/memberHome/review-result/${notify.reviewId}`;
+      } else {
+        linkCv = "";
       }
+      return linkCv;
+    },
+    async getData() {
+      this.role = await authService.getRole();
     }
+  },
+  created() {
+    this.getData();
   }
 };
 </script>
