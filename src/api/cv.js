@@ -178,10 +178,18 @@ async function getTotalCvInMonth(month) {
 
 async function search(text) {
   if (text.trim()) {
+    const role = await authService.getRole();
+    let query = {
+      $search: text.trim()
+    };
+    if (role === "volunteer") {
+      query = {
+        ...query,
+        listReview: []
+      };
+    }
     const { data } = await cvService.find({
-      query: {
-        $search: text.trim()
-      }
+      query
     });
     return data;
   } else {

@@ -67,6 +67,7 @@
               </v-list-item>
             </v-list>
           </v-menu>
+          <message-dialog></message-dialog>
           <notify-dialog></notify-dialog>
         </v-col>
       </v-row>
@@ -87,6 +88,7 @@ import { updateInfoService } from "../../api/specialist";
 import authService from "../../api/authentication";
 import EventBus from "../../services/event-bus";
 import TheFooter from "./components/TheFooter.vue";
+import MessageDialog from "./components/MessageDialog";
 
 export default {
   data: () => ({
@@ -95,7 +97,8 @@ export default {
   }),
   components: {
     NotifyDialog,
-    TheFooter
+    TheFooter,
+    MessageDialog
   },
   methods: {
     search() {

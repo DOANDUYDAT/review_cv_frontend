@@ -57,7 +57,7 @@ export default {
   methods: {
     async onFilter(filter) {
       if (
-        filter.fields.length === 0 &&
+        filter.field.length === 0 &&
         filter.exp.length === 0 &&
         filter.position.length === 0 &&
         filter.timeType.length === 0

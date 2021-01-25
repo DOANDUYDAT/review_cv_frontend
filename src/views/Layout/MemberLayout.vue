@@ -49,6 +49,7 @@
               </v-list-item>
             </v-list>
           </v-menu>
+          <message-dialog></message-dialog>
           <notify-dialog></notify-dialog>
         </v-col>
       </v-row>
@@ -66,6 +67,7 @@ import memberService from "../../api/member";
 import { updateInfoService } from "../../api/member";
 import authService from "../../api/authentication";
 import TheFooter from "./components/TheFooter.vue";
+import MessageDialog from "./components/MessageDialog";
 
 export default {
   data: () => ({
@@ -73,7 +75,8 @@ export default {
   }),
   components: {
     NotifyDialog,
-    TheFooter
+    TheFooter,
+    MessageDialog
   },
   methods: {
     GoToMemberHomePage() {

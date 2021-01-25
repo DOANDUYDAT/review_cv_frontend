@@ -695,10 +695,10 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.path === from.path) {
-    console.log(to.path, from.path);
-    window.location.reload();
-  }
+  // if (to.path === from.path) {
+  //   console.log(to.path, from.path);
+  //   window.location.reload();
+  // }
   authService
     .reAuthenticate()
     .then(user => {
