@@ -78,7 +78,7 @@ async function getTotalQuestionInMonth(month) {
 
 async function search(text) {
   const query = {
-    $text: text.trim()
+    $search: text.trim()
   };
 
   if (text.trim()) {

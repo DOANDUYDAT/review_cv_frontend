@@ -116,6 +116,7 @@
         </v-row>
       </v-col>
     </v-row>
+
     <v-dialog v-model="dialog2" max-width="450">
       <v-card class="elevation-4">
         <v-toolbar>
@@ -130,7 +131,7 @@
             </v-btn>
           </div>
         </v-toolbar>
-        <v-card-text style="height: 50vh">
+        <v-card-text class="px-1" style="height: 50vh">
           <v-list
             ref="chat"
             id="listMessage"
@@ -143,8 +144,17 @@
                 :key="msg._id"
                 :class="{ 'd-flex flex-row-reverse': isMe(msg) }"
               >
+                <v-avatar class="mx-1" color="grey darken-1" size="20">
+                  <v-img src="@/assets/avatar.jpg"></v-img>
+                </v-avatar>
                 <v-menu offset-y>
                   <template v-slot:activator="{ on }">
+                    <span
+                      class="caption mx-2
+                    "
+                      style="align-self: center"
+                      >{{ shortTime(msg.createdAt) }}</span
+                    >
                     <v-chip
                       :color="isMe(msg) ? 'primary' : 'grey'"
                       dark
@@ -161,7 +171,7 @@
           </v-list>
         </v-card-text>
         <v-card-actions>
-          <v-text-field
+          <!-- <v-text-field
             placeholder="Nhập vào đây để trò chuyện"
             outlined
             hide-details
@@ -170,7 +180,65 @@
             @keyup.enter="sendMessage"
             @click:append-outer="sendMessage"
           >
-          </v-text-field>
+          </v-text-field> -->
+          <div class="emoji-wrapper">
+            <textarea
+              class="regular-input"
+              v-model="msg"
+              :style="{ width: emojiWidth, height: emojiHeight }"
+            ></textarea>
+
+            <emoji-picker @emoji="append" :search="search">
+              <div
+                class="emoji-invoker"
+                slot="emoji-invoker"
+                slot-scope="{ events: { click: clickEvent } }"
+                @click.stop="clickEvent"
+              >
+                <svg
+                  height="24"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M0 0h24v24H0z" fill="none" />
+                  <path
+                    d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"
+                  />
+                </svg>
+              </div>
+              <div slot="emoji-picker" slot-scope="{ emojis, insert }">
+                <div
+                  class="emoji-picker"
+                  :style="{ top: emojiPickerHeight, left: emojiPickerWidth }"
+                >
+                  <!-- <div class="emoji-picker__search">
+                    <input type="text" v-model="search" v-focus />
+                  </div> -->
+                  <div>
+                    <div
+                      v-for="(emojiGroup, category) in emojis"
+                      :key="category"
+                    >
+                      <h5>{{ category }}</h5>
+                      <div class="emojis">
+                        <span
+                          v-for="(emoji, emojiName) in emojiGroup"
+                          :key="emojiName"
+                          @click="insert(emoji)"
+                          :title="emojiName"
+                          >{{ emoji }}</span
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </emoji-picker>
+          </div>
+          <v-btn color="primary" icon @click="sendMessage"
+            ><v-icon>mdi-send</v-icon></v-btn
+          >
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -193,8 +261,17 @@ export default {
       fileReview: null,
       listMessage: null,
       msg: "",
-      review: null
+      review: null,
+      input: "",
+      search: "",
+      emojiWidth: "24em",
+      emojiHeight: "3em",
+      emojiPickerHeight: "-15em",
+      emojiPickerWidth: "9em"
     };
+  },
+  components: {
+    // VEmojiPicker
   },
   watch: {
     listMessage() {
@@ -216,6 +293,13 @@ export default {
     }
   },
   methods: {
+    append(emoji) {
+      this.msg += emoji;
+    },
+    shortTime: timeStamp => {
+      let d = new Date(timeStamp);
+      return d.toLocaleTimeString();
+    },
     async sendMessage() {
       const data = {
         content: this.msg,
@@ -252,6 +336,13 @@ export default {
       return this.currentUser.user._id === msg.userId ? true : false;
     }
   },
+  directives: {
+    focus: {
+      inserted(el) {
+        el.focus();
+      }
+    }
+  },
   created() {
     this.getData();
     messageServiceRoot.on("created", message => {
@@ -266,6 +357,90 @@ export default {
   overflow: auto;
 }
 .v-chip {
-  max-width: 70%;
+  max-width: 65%;
+}
+/* Tailwind CSS-styled demo is available here: https://codepen.io/DCzajkowski/pen/Brxvzj */
+
+.emoji-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.regular-input {
+  padding: 0.5rem 1rem;
+  border-radius: 3px;
+  border: 1px solid #ccc;
+  outline: none;
+}
+
+.regular-input:focus {
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
+}
+
+.emoji-invoker {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.emoji-invoker:hover {
+  transform: scale(1.1);
+}
+.emoji-invoker > svg {
+  fill: #b1c6d0;
+}
+
+.emoji-picker {
+  position: absolute;
+  // z-index: 10;
+  font-family: Montserrat;
+  border: 1px solid #ccc;
+  width: 15rem;
+  height: 15rem;
+  overflow: scroll;
+  padding: 1rem;
+  box-sizing: border-box;
+  border-radius: 0.5rem;
+  background: #fff;
+  box-shadow: 1px 1px 8px #c7dbe6;
+}
+.emoji-picker__search {
+  display: flex;
+}
+.emoji-picker__search > input {
+  flex: 1;
+  border-radius: 10rem;
+  border: 1px solid #ccc;
+  padding: 0.5rem 1rem;
+  outline: none;
+}
+.emoji-picker h5 {
+  margin-bottom: 0;
+  color: #b1b1b1;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  cursor: default;
+}
+.emoji-picker .emojis {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.emoji-picker .emojis:after {
+  content: "";
+  flex: auto;
+}
+.emoji-picker .emojis span {
+  padding: 0.2rem;
+  cursor: pointer;
+  border-radius: 5px;
+}
+.emoji-picker .emojis span:hover {
+  background: #ececec;
+  cursor: pointer;
 }
 </style>

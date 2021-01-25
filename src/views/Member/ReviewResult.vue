@@ -221,7 +221,7 @@
               </v-btn>
             </div>
           </v-toolbar>
-          <v-card-text style="height: 50vh">
+          <v-card-text class="px-1" style="height: 60vh">
             <v-list
               ref="chat"
               id="listMessage"
@@ -234,8 +234,14 @@
                   :key="msg._id"
                   :class="{ 'd-flex flex-row-reverse': isMe(msg) }"
                 >
+                  <v-avatar class="mx-1" color="grey darken-1" size="20">
+                    <v-img src="@/assets/avatar.jpg"></v-img>
+                  </v-avatar>
                   <v-menu offset-y>
                     <template v-slot:activator="{ on }">
+                      <span class="caption mx-2" style="align-self: center">{{
+                        shortTime(msg.createdAt)
+                      }}</span>
                       <v-chip
                         :color="isMe(msg) ? 'primary' : 'grey'"
                         dark
@@ -269,6 +275,7 @@
   </v-container>
 </template>
 <script>
+/* eslint-disable no-unused-vars */
 import reviewService from "../../api/review";
 import memberService from "../../api/member";
 import authService from "../../api/authentication";
@@ -343,11 +350,22 @@ export default {
       if (this.$refs.chat) {
         setTimeout(() => {
           this.$refs.chat.$el.scrollTop = this.$refs.chat.$el.scrollHeight;
-        }, 500);
+        }, 200);
+      }
+    },
+    dialog2: function(oldValue, newValue) {
+      if (this.$refs.chat) {
+        setTimeout(() => {
+          this.$refs.chat.$el.scrollTop = this.$refs.chat.$el.scrollHeight;
+        }, 200);
       }
     }
   },
   methods: {
+    shortTime: timeStamp => {
+      let d = new Date(timeStamp);
+      return d.toLocaleTimeString();
+    },
     openReport() {
       if (!this.isReport) {
         this.dialog = true;
@@ -483,10 +501,10 @@ export default {
 </script>
 <style lang="scss" scoped>
 #listMessage {
-  height: 400px;
+  height: 60vh;
   overflow: auto;
 }
 .v-chip {
-  max-width: 70%;
+  max-width: 65%;
 }
 </style>

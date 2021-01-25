@@ -70,6 +70,7 @@
               </v-list-item>
             </v-list>
           </v-menu>
+          <message-dialog></message-dialog>
           <notify-dialog></notify-dialog>
         </v-col>
       </v-row>
@@ -85,6 +86,7 @@
 </template>
 <script>
 import NotifyDialog from "./components/NotifyDialog";
+import MessageDialog from "./components/MessageDialog";
 import volunteerService from "../../api/volunteer";
 import { updateInfoService, exchangePointService } from "../../api/volunteer";
 import authService from "../../api/authentication";
@@ -98,7 +100,8 @@ export default {
   }),
   components: {
     NotifyDialog,
-    TheFooter
+    TheFooter,
+    MessageDialog
   },
   methods: {
     search() {

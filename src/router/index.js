@@ -695,13 +695,10 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  console.log(to);
-  // authService.getCurrentUserId();
-  // if (currentUserId) {
-
-  // } else {
-
-  // }
+  if (to.path === from.path) {
+    console.log(to.path, from.path);
+    window.location.reload();
+  }
   authService
     .reAuthenticate()
     .then(user => {
@@ -745,7 +742,6 @@ router.beforeEach((to, from, next) => {
     .catch(err => {
       if (err.code == 404) {
         // clear token cũ
-        console.log("errrrr: ", err);
         localStorage.clear();
         // let currentPath = window.location;
         window.location.assign(window.location);
